@@ -19,7 +19,101 @@ function loadTaskFilters() {
         projectFilter.appendChild(option);
     });
 }
+// Add these new functions to js/tasks.js
 
+function toggleTaskDropdown(taskId) {
+    const dropdown = document.getElementById(`dropdown-${taskId}`);
+    const isOpen = dropdown.classList.contains('show');
+
+    // Close all other dropdowns
+    document.querySelectorAll('.dropdown-menu').forEach(menu => {
+        menu.classList.remove('show');
+    });
+
+    // Toggle current dropdown
+    if (!isOpen) {
+        dropdown.classList.add('show');
+    }
+
+    // Close dropdown when clicking outside
+    if (!isOpen) {
+        setTimeout(() => {
+            document.addEventListener('click', function closeDropdown(e) {
+                if (!e.target.closest(`#task-${taskId}`)) {
+                    dropdown.classList.remove('show');
+                    document.removeEventListener('click', closeDropdown);
+                }
+            });
+        }, 10);
+    }
+}
+
+function updateTaskStatus(taskId, newStatus) {
+    let tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+    const taskIndex = tasks.findIndex(task => task.id === taskId);
+
+    if (taskIndex !== -1) {
+        tasks[taskIndex].status = newStatus;
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+        loadTaskList();
+
+        // Show confirmation
+        showNotification(`Task status updated to ${newStatus.replace('-', ' ')}`, 'success');
+    }
+}
+
+function viewTaskDetails(taskId) {
+    const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+    const task = tasks.find(t => t.id === taskId);
+    const projects = JSON.parse(localStorage.getItem('projects') || '[]');
+    const team = JSON.parse(localStorage.getItem('team') || '[]');
+
+    if (!task) return;
+
+    const project = projects.find(p => p.id === task.projectId);
+    const assignee = team.find(m => m.id === task.assignee);
+
+    // Populate modal content
+    const modalBody = document.getElementById('taskDetailsBody');
+    modalBody.innerHTML = `
+        <strong>Task:</strong> ${task.name}<br>
+        <strong>Description:</strong> ${task.description}<br>
+        <strong>Project:</strong> ${project ? project.name : 'N/A'}<br>
+        <strong>Due Date:</strong> ${formatDate(task.dueDate)}<br>
+        <strong>Priority:</strong> ${task.priority}<br>
+        <strong>Status:</strong> ${task.status.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}<br>
+        ${assignee ? `<strong>Assignee:</strong> ${assignee.name}<br>` : ''}
+    `;
+
+    // Show the modal
+    app.showModal('taskDetailsModal');
+}
+
+function assignTask(taskId) {
+    // This would open an assignment modal in a full implementation
+    alert(`Assign task ${taskId} - This would open assignment interface`);
+}
+
+function addTaskComment(taskId) {
+    // This would open a comment modal in a full implementation
+    alert(`Add comment to task ${taskId} - This would open comment interface`);
+}
+
+function showNotification(message, type = 'info') {
+    // Simple notification system
+    console.log(`[${type.toUpperCase()}] ${message}`);
+}
+// Enhanced notification function
+function showNotification(message, type = 'info') {
+    const notification = document.getElementById('notification');
+    notification.textContent = message;
+    notification.className = `notification ${type}`;
+    notification.classList.add('show');
+
+    setTimeout(() => {
+        notification.classList.remove('show');
+    }, 3000);
+}
 function loadTaskList() {
     const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
     const team = JSON.parse(localStorage.getItem('team') || '[]');
@@ -72,30 +166,38 @@ function loadTaskList() {
         const statusText = task.status.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase());
 
         return `
-            <div class="task-card ${task.priority}">
-                <div class="task-header">
-                    <h3 class="task-title">${task.name}</h3>
-                    <span class="task-priority ${priorityClass}">${priorityText}</span>
-                </div>
-                <p class="task-description">${task.description}</p>
-                <div class="task-meta">
-                    <span><i class="fas fa-project-diagram"></i> ${project ? project.name : 'Unknown Project'}</span>
-                    <span><i class="far fa-calendar"></i> Due: ${formatDate(task.dueDate)}</span>
-                    ${assignee ? `<span><i class="fas fa-user"></i> ${assignee.name}</span>` : ''}
-                </div>
-                <div class="task-footer">
-                    <span class="task-status ${statusClass}">${statusText}</span>
-                    <div class="task-actions">
-                        <button class="btn btn-outline btn-sm" onclick="editTask(${task.id})">
-                            <i class="fas fa-edit"></i> Edit
+        <div class="task-card ${task.priority}" id="task-${task.id}">
+            <div class="task-header">
+                <h3 class="task-title">${task.name}</h3>
+                <span class="task-priority ${priorityClass}">${priorityText}</span>
+            </div>
+            <p class="task-description">${task.description}</p>
+            <div class="task-meta">
+                <span><i class="fas fa-project-diagram"></i> ${project ? project.name : 'Unknown Project'}</span>
+                <span><i class="far fa-calendar"></i> Due: ${formatDate(task.dueDate)}</span>
+                ${assignee ? `<span><i class="fas fa-user"></i> ${assignee.name}</span>` : ''}
+            </div>
+            <div class="task-footer">
+                <span class="task-status ${statusClass}">${statusText}</span>
+                <div class="task-actions">
+                    <div class="dropdown">
+                        <button class="btn btn-outline btn-sm dropdown-toggle" onclick="toggleTaskDropdown(${task.id})">
+                            <i class="fas fa-ellipsis-v"></i>
                         </button>
-                        <button class="btn btn-danger btn-sm" onclick="deleteTask(${task.id})">
-                            <i class="fas fa-trash"></i> Delete
-                        </button>
+                        <div class="dropdown-menu" id="dropdown-${task.id}">
+                            <a href="#" onclick="viewTaskDetails(${task.id})"><i class="fas fa-eye"></i> View Details</a>
+                            <a href="#" onclick="editTask(${task.id})"><i class="fas fa-edit"></i> Edit Task</a>
+                            <a href="#" onclick="updateTaskStatus(${task.id}, 'in-progress')"><i class="fas fa-play"></i> Start Task</a>
+                            <a href="#" onclick="updateTaskStatus(${task.id}, 'completed')"><i class="fas fa-check"></i> Mark Complete</a>
+                            <a href="#" onclick="assignTask(${task.id})"><i class="fas fa-user-plus"></i> Assign</a>
+                            <a href="#" onclick="addTaskComment(${task.id})"><i class="fas fa-comment"></i> Add Comment</a>
+                            <a href="#" onclick="deleteTask(${task.id})" class="danger"><i class="fas fa-trash"></i> Delete</a>
+                        </div>
                     </div>
                 </div>
             </div>
-        `;
+        </div>
+    `;
     }).join('');
 }
 

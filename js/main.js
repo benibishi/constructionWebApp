@@ -88,6 +88,8 @@ class ConstructionManager {
         });
     }
 
+    // Replace the existing showModal and hideModal methods with these:
+
     showModal(modalId) {
         this.closeAllModals();
         document.getElementById(modalId).style.display = 'block';
@@ -95,6 +97,12 @@ class ConstructionManager {
 
     hideModal(modalId) {
         document.getElementById(modalId).style.display = 'none';
+    }
+
+    closeAllModals() {
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.style.display = 'none';
+        });
     }
 }
 
@@ -199,4 +207,7 @@ const sampleData = {
 // Initialize app when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     window.app = new ConstructionManager();
+    document.querySelector('#taskDetailsModal .close').addEventListener('click', () => {
+        app.hideModal('taskDetailsModal');
+    });
 });
