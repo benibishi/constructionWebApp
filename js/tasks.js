@@ -1,3 +1,13 @@
+// Add the formatDate function here at the top:
+function formatDate(dateString) {
+    if (!dateString) return 'No date set';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+    });
+}
 // Task Management Module
 function loadTasks() {
     loadTaskFilters();
@@ -68,25 +78,150 @@ function viewTaskDetails(taskId) {
     const projects = JSON.parse(localStorage.getItem('projects') || '[]');
     const team = JSON.parse(localStorage.getItem('team') || '[]');
 
-    if (!task) return;
+    if (!task) {
+        console.error('Task not found:', taskId);
+        return;
+    }
 
     const project = projects.find(p => p.id === task.projectId);
     const assignee = team.find(m => m.id === task.assignee);
 
-    // Populate modal content
-    const modalBody = document.getElementById('taskDetailsBody');
-    modalBody.innerHTML = `
-        <strong>Task:</strong> ${task.name}<br>
-        <strong>Description:</strong> ${task.description}<br>
-        <strong>Project:</strong> ${project ? project.name : 'N/A'}<br>
-        <strong>Due Date:</strong> ${formatDate(task.dueDate)}<br>
-        <strong>Priority:</strong> ${task.priority}<br>
-        <strong>Status:</strong> ${task.status.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}<br>
-        ${assignee ? `<strong>Assignee:</strong> ${assignee.name}<br>` : ''}
+    // Create a more professional layout
+    let detailsHTML = `
+        <div class="task-details-container">
+            <!-- Header Section -->
+            <div class="task-detail-header">
+                <div class="task-detail-title">
+                    <h3>${task.name}</h3>
+                    <span class="task-priority priority-${task.priority}">${task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}</span>
+                    <span class="task-status status-${task.status.replace(' ', '-')}">${task.status.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}</span>
+                </div>
+                <p class="task-detail-description">${task.description || 'No description provided'}</p>
+            </div>
+
+            <!-- Main Details Grid -->
+            <div class="task-details-grid">
+                <div class="detail-card">
+                    <div class="detail-card-header">
+                        <i class="fas fa-project-diagram"></i>
+                        <h4>Project Information</h4>
+                    </div>
+                    <div class="detail-card-body">
+                        <div class="detail-item">
+                            <span class="detail-label">Project Name</span>
+                            <span class="detail-value">${project ? project.name : 'No project assigned'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Project Status</span>
+                            <span class="detail-value">${project ? project.status.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase()) : 'N/A'}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-card">
+                    <div class="detail-card-header">
+                        <i class="far fa-calendar"></i>
+                        <h4>Timeline</h4>
+                    </div>
+                    <div class="detail-card-body">
+                        <div class="detail-item">
+                            <span class="detail-label">Due Date</span>
+                            <span class="detail-value">${formatDate(task.dueDate)}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Created</span>
+                            <span class="detail-value">${task.createdAt ? formatDate(task.createdAt) : 'N/A'}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-card">
+                    <div class="detail-card-header">
+                        <i class="fas fa-user"></i>
+                        <h4>Assignment</h4>
+                    </div>
+                    <div class="detail-card-body">
     `;
 
+    if (assignee) {
+        detailsHTML += `
+                        <div class="detail-item">
+                            <span class="detail-label">Assignee</span>
+                            <span class="detail-value">${assignee.name}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Role</span>
+                            <span class="detail-value">${getRoleText(assignee.role)}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Contact</span>
+                            <span class="detail-value">${assignee.email}</span>
+                        </div>
+        `;
+    } else {
+        detailsHTML += `
+                        <div class="detail-item">
+                            <span class="detail-label">Assignee</span>
+                            <span class="detail-value">Unassigned</span>
+                        </div>
+        `;
+    }
+
+    detailsHTML += `
+                    </div>
+                </div>
+
+                <div class="detail-card">
+                    <div class="detail-card-header">
+                        <i class="fas fa-tasks"></i>
+                        <h4>Task Properties</h4>
+                    </div>
+                    <div class="detail-card-body">
+                        <div class="detail-item">
+                            <span class="detail-label">Priority</span>
+                            <span class="detail-value">
+                                <span class="task-priority priority-${task.priority}">${task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}</span>
+                            </span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Status</span>
+                            <span class="detail-value">
+                                <span class="task-status status-${task.status.replace(' ', '-')}">${task.status.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}</span>
+                            </span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Task ID</span>
+                            <span class="detail-value">#${task.id}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="task-detail-actions">
+                <button class="btn btn-outline" onclick="editTask(${task.id})">
+                    <i class="fas fa-edit"></i> Edit Task
+                </button>
+                <button class="btn btn-primary" onclick="updateTaskStatus(${task.id}, 'in-progress')">
+                    <i class="fas fa-play"></i> Start Task
+                </button>
+                <button class="btn btn-success" onclick="updateTaskStatus(${task.id}, 'completed')">
+                    <i class="fas fa-check"></i> Complete Task
+                </button>
+            </div>
+        </div>
+    `;
+
+    // Populate modal content
+    document.getElementById('taskDetailsBody').innerHTML = detailsHTML;
+    document.getElementById('taskDetailsTitle').textContent = 'Task Details';
+
     // Show the modal
-    app.showModal('taskDetailsModal');
+    if (window.app && typeof window.app.showModal === 'function') {
+        window.app.showModal('taskDetailsModal');
+    } else {
+        document.getElementById('taskDetailsModal').style.display = 'block';
+    }
 }
 
 function assignTask(taskId) {
@@ -322,7 +457,44 @@ document.getElementById('addTaskBtn').addEventListener('click', function () {
     populateAssigneeDropdown();
     app.showModal('taskModal');
 });
+// Add event listeners for closing the task details modal
+document.addEventListener('DOMContentLoaded', function () {
+    const closeButtons = document.querySelectorAll('#closeTaskDetails, #closeTaskDetailsBtn');
+    closeButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            if (window.app && typeof window.app.hideModal === 'function') {
+                window.app.hideModal('taskDetailsModal');
+            } else {
+                document.getElementById('taskDetailsModal').style.display = 'none';
+            }
+        });
+    });
 
+    // Close modal when clicking outside
+    const modal = document.getElementById('taskDetailsModal');
+    if (modal) {
+        modal.addEventListener('click', function (e) {
+            if (e.target === modal) {
+                if (window.app && typeof window.app.hideModal === 'function') {
+                    window.app.hideModal('taskDetailsModal');
+                } else {
+                    modal.style.display = 'none';
+                }
+            }
+        });
+    }
+});
+// Add this helper function if it doesn't exist
+function getRoleText(role) {
+    const roles = {
+        'project-manager': 'Project Manager',
+        'site-supervisor': 'Site Supervisor',
+        'engineer': 'Engineer',
+        'foreman': 'Foreman',
+        'worker': 'Worker'
+    };
+    return roles[role] || role;
+}
 // Filter event listeners
 document.getElementById('projectFilter').addEventListener('change', loadTaskList);
 document.getElementById('statusFilter').addEventListener('change', loadTaskList);
