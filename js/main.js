@@ -92,6 +92,9 @@ class ConstructionManager {
         if (!localStorage.getItem('team')) {
             localStorage.setItem('team', JSON.stringify(sampleData.team));
         }
+        if (!localStorage.getItem('notifications')) {
+            localStorage.setItem('notifications', JSON.stringify(sampleData.notifications));
+        }
     }
 
     closeAllModals() {
@@ -112,7 +115,7 @@ class ConstructionManager {
     }
 }
 
-// Sample Data
+// Sample Data - Corrected version
 const sampleData = {
     projects: [
         {
@@ -143,8 +146,6 @@ const sampleData = {
             progress: 78
         }
     ],
-    // Update the sample data tasks array in main.js
-    // Update the sample data tasks array in main.js
     tasks: [
         {
             id: 1,
@@ -155,21 +156,10 @@ const sampleData = {
             priority: "high",
             status: "completed",
             assignee: 1,
-            dependencies: [] // No dependencies
+            dependencies: []
         },
         {
             id: 2,
-            projectId: 1,
-            name: "Foundation Pouring",
-            description: "Pour concrete for foundation",
-            dueDate: "2024-02-20",
-            priority: "critical",
-            status: "pending",
-            assignee: 2,
-            dependencies: [1] // Depends on task 1
-        },
-        {
-            id: 3,
             projectId: 1,
             name: "Steel Framework Installation",
             description: "Install steel framework for floors 1-5",
@@ -177,10 +167,10 @@ const sampleData = {
             priority: "critical",
             status: "in-progress",
             assignee: 2,
-            dependencies: [2] // Depends on task 2
+            dependencies: [1]
         },
         {
-            id: 4,
+            id: 3,
             projectId: 2,
             name: "Site Preparation",
             description: "Clear and grade construction site",
@@ -188,10 +178,10 @@ const sampleData = {
             priority: "medium",
             status: "completed",
             assignee: 3,
-            dependencies: [] // No dependencies
+            dependencies: []
         },
         {
-            id: 5,
+            id: 4,
             projectId: 2,
             name: "Utility Connections",
             description: "Install water, sewer, and electrical connections",
@@ -199,7 +189,7 @@ const sampleData = {
             priority: "high",
             status: "pending",
             assignee: null,
-            dependencies: [4] // Depends on task 4
+            dependencies: [3]
         }
     ],
     team: [
@@ -224,9 +214,40 @@ const sampleData = {
             role: "engineer",
             phone: "+1 (555) 345-6789"
         }
+    ],
+    notifications: [
+        {
+            id: 1,
+            type: "task-due",
+            message: "Foundation Excavation is due today",
+            taskId: 1,
+            projectId: 1,
+            priority: "high",
+            read: false,
+            timestamp: new Date().toISOString()
+        },
+        {
+            id: 2,
+            type: "task-completed",
+            message: "Site Preparation has been completed",
+            taskId: 3,
+            projectId: 2,
+            priority: "medium",
+            read: false,
+            timestamp: new Date(Date.now() - 86400000).toISOString()
+        },
+        {
+            id: 3,
+            type: "task-assigned",
+            message: "You have been assigned to Steel Framework Installation",
+            taskId: 2,
+            projectId: 1,
+            priority: "high",
+            read: true,
+            timestamp: new Date(Date.now() - 172800000).toISOString()
+        }
     ]
 };
-
 // Initialize app when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     window.app = new ConstructionManager();
