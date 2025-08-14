@@ -43,13 +43,21 @@ class ConstructionManager {
         document.querySelectorAll('.nav-link').forEach(link => {
             link.classList.remove('active');
         });
-        document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+
+        const activeLink = document.querySelector(`[data-tab="${tabName}"]`);
+        if (activeLink) {
+            activeLink.classList.add('active');
+        }
 
         // Update content
         document.querySelectorAll('.tab-content').forEach(tab => {
             tab.classList.remove('active');
         });
-        document.getElementById(tabName).classList.add('active');
+
+        const activeTab = document.getElementById(tabName);
+        if (activeTab) {
+            activeTab.classList.add('active');
+        }
 
         this.currentTab = tabName;
         this.loadTab(tabName);
@@ -65,6 +73,10 @@ class ConstructionManager {
                 break;
             case 'team':
                 if (typeof loadTeam === 'function') loadTeam();
+                break;
+            // Add this case to the switch statement in loadTab function
+            case 'projects':
+                if (typeof loadProjectsList === 'function') loadProjectsList();
                 break;
         }
     }
@@ -97,12 +109,6 @@ class ConstructionManager {
 
     hideModal(modalId) {
         document.getElementById(modalId).style.display = 'none';
-    }
-
-    closeAllModals() {
-        document.querySelectorAll('.modal').forEach(modal => {
-            modal.style.display = 'none';
-        });
     }
 }
 
@@ -207,7 +213,46 @@ const sampleData = {
 // Initialize app when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     window.app = new ConstructionManager();
-    document.querySelector('#taskDetailsModal .close').addEventListener('click', () => {
-        app.hideModal('taskDetailsModal');
-    });
+
+    // Add event listeners for modal close buttons
+    const taskDetailsClose = document.querySelector('#taskDetailsModal .close');
+    if (taskDetailsClose) {
+        taskDetailsClose.addEventListener('click', () => {
+            if (window.app) {
+                window.app.hideModal('taskDetailsModal');
+            }
+        });
+    }
+
+    const projectDetailsClose = document.querySelector('#projectDetailsModal .close');
+    if (projectDetailsClose) {
+        projectDetailsClose.addEventListener('click', () => {
+            if (window.app) {
+                window.app.hideModal('projectDetailsModal');
+            }
+        });
+    }
+
+    // Also add click outside to close functionality for modals
+    const taskDetailsModal = document.getElementById('taskDetailsModal');
+    if (taskDetailsModal) {
+        taskDetailsModal.addEventListener('click', (e) => {
+            if (e.target === taskDetailsModal) {
+                if (window.app) {
+                    window.app.hideModal('taskDetailsModal');
+                }
+            }
+        });
+    }
+
+    const projectDetailsModal = document.getElementById('projectDetailsModal');
+    if (projectDetailsModal) {
+        projectDetailsModal.addEventListener('click', (e) => {
+            if (e.target === projectDetailsModal) {
+                if (window.app) {
+                    window.app.hideModal('projectDetailsModal');
+                }
+            }
+        });
+    }
 });

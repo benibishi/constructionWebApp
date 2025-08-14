@@ -416,9 +416,10 @@
 }
 
 /* Button sizes */
+
 .btn-sm {
-    padding: 0.5rem 1rem;
-    font-size: 0.85rem;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
 }
 
 /* Notification styles (optional) */
@@ -627,4 +628,454 @@
     .task-detail-actions .btn {
         width: 100%;
     }
+}
+
+/* Add these styles to css/dashboard.css */
+
+/* Project Details Modal Styles */
+.project-details-container {
+    padding: 1rem 0;
+}
+
+.project-detail-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.project-detail-title {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.project-detail-title h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--dark);
+}
+
+.project-detail-description {
+    color: var(--secondary);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.project-details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+/* Team Member Item */
+.team-member-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.team-member-item:last-child {
+    border-bottom: none;
+}
+
+.team-avatar-small {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.team-member-info {
+    flex: 1;
+}
+
+.member-name {
+    display: block;
+    font-weight: 500;
+    color: var(--dark);
+    font-size: 0.95rem;
+}
+
+.member-role {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--secondary);
+}
+
+/* Progress Container */
+.progress-container {
+    margin: 1rem 0;
+}
+
+/* Recent Tasks Section */
+.recent-tasks-section {
+    margin-bottom: 2rem;
+}
+
+.recent-tasks-list {
+    background: var(--light);
+    border-radius: 0.75rem;
+    border: 1px solid var(--border);
+    padding: 1rem;
+}
+
+.recent-task-item {
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.recent-task-item:last-child {
+    border-bottom: none;
+}
+
+.recent-task-item h5 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--dark);
+}
+
+.recent-task-item p {
+    margin: 0 0 0.75rem 0;
+    color: var(--secondary);
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.task-meta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.task-meta .task-status {
+    font-size: 0.8rem;
+    padding: 0.25rem 0.5rem;
+}
+
+.task-due,
+.task-assignee {
+    font-size: 0.85rem;
+    color: var(--secondary);
+}
+
+.no-tasks-message {
+    text-align: center;
+    padding: 2rem;
+    color: var(--secondary);
+}
+
+.no-tasks-message i {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: var(--gray);
+}
+
+/* Project Detail Actions */
+.project-detail-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+}
+
+.project-detail-actions .btn {
+    min-width: 120px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .project-details-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .project-detail-title {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .project-detail-actions {
+        flex-direction: column;
+    }
+
+    .project-detail-actions .btn {
+        width: 100%;
+    }
+
+    .task-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+}
+
+/* Add these styles to css/dashboard.css */
+
+/* Projects List Page */
+.projects-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Project Details Page */
+#project-details .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.header-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.header-actions:first-child {
+    flex: 1;
+}
+
+/* Project Details Content */
+.project-details-content {
+    background: white;
+    border-radius: 0.75rem;
+    box-shadow: var(--card-shadow);
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.project-detail-section {
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.project-detail-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.project-detail-section h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.project-detail-section h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 1rem;
+}
+
+/* Project Overview */
+.project-overview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.overview-card {
+    background: var(--light);
+    border-radius: 0.75rem;
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+}
+
+.overview-card h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.overview-stats {
+    display: grid;
+    gap: 1rem;
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.stat-item:last-child {
+    border-bottom: none;
+}
+
+.stat-label {
+    font-weight: 500;
+    color: var(--secondary);
+}
+
+.stat-value {
+    font-weight: 600;
+    color: var(--dark);
+}
+
+/* Tasks Section */
+.tasks-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tasks-table th {
+    text-align: left;
+    padding: 1rem;
+    background: var(--light);
+    border-bottom: 2px solid var(--border);
+    font-weight: 600;
+    color: var(--dark);
+}
+
+.tasks-table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--secondary);
+}
+
+.tasks-table tr:last-child td {
+    border-bottom: none;
+}
+
+.tasks-table tr:hover {
+    background: var(--light);
+}
+
+.task-name-cell {
+    font-weight: 500;
+    color: var(--dark);
+}
+
+.task-actions-cell {
+    text-align: right;
+}
+
+/* Team Section */
+.team-members-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.team-member-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    background: var(--light);
+}
+
+.team-member-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.team-member-info h4 {
+    margin: 0 0 0.25rem 0;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--dark);
+}
+
+.team-member-info p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--secondary);
+}
+
+/* Empty State */
+.empty-state-full {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--secondary);
+}
+
+.empty-state-full i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: var(--gray);
+}
+
+.empty-state-full h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--dark);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .project-overview-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .team-members-grid {
+        grid-template-columns: 1fr;
+    }
+
+    #project-details .page-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .header-actions {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .tasks-table {
+        display: block;
+        overflow-x: auto;
+    }
+}
+
+.loading {
+    text-align: center;
+    padding: 2rem;
+    color: var(--secondary);
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+
+
+/* Make sure the projects tab can be updated */
+#projects .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
 }
