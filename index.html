@@ -202,9 +202,13 @@
             <div class="modal-body">
                 <form id="projectForm">
                     <input type="hidden" id="projectId">
+                    <!-- Dependencies section in task modal -->
                     <div class="form-group">
-                        <label for="projectName">Project Name</label>
-                        <input type="text" id="projectName" required>
+                        <label for="taskDependencies">Dependencies</label>
+                        <select id="taskDependencies" multiple size="4">
+                            <option value="">No dependencies</option>
+                        </select>
+                        <small class="form-text">Hold Ctrl/Cmd to select multiple tasks</small>
                     </div>
                     <div class="form-group">
                         <label for="projectDescription">Description</label>
@@ -281,6 +285,14 @@
                         <select id="taskAssignee">
                             <option value="">Unassigned</option>
                         </select>
+                        <!-- Add this after the assignee section in the taskForm -->
+                        <div class="form-group">
+                            <label for="taskDependencies">Dependencies</label>
+                            <select id="taskDependencies" multiple size="4">
+                                <option value="">No dependencies</option>
+                            </select>
+                            <small class="form-text">Hold Ctrl/Cmd to select multiple tasks</small>
+                        </div>
                     </div>
                     <div class="form-actions">
                         <button type="button" class="btn btn-secondary" id="cancelTask">Cancel</button>

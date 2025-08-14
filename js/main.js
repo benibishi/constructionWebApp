@@ -143,6 +143,8 @@ const sampleData = {
             progress: 78
         }
     ],
+    // Update the sample data tasks array in main.js
+    // Update the sample data tasks array in main.js
     tasks: [
         {
             id: 1,
@@ -152,37 +154,52 @@ const sampleData = {
             dueDate: "2024-02-15",
             priority: "high",
             status: "completed",
-            assignee: 1
+            assignee: 1,
+            dependencies: [] // No dependencies
         },
         {
             id: 2,
+            projectId: 1,
+            name: "Foundation Pouring",
+            description: "Pour concrete for foundation",
+            dueDate: "2024-02-20",
+            priority: "critical",
+            status: "pending",
+            assignee: 2,
+            dependencies: [1] // Depends on task 1
+        },
+        {
+            id: 3,
             projectId: 1,
             name: "Steel Framework Installation",
             description: "Install steel framework for floors 1-5",
             dueDate: "2024-03-30",
             priority: "critical",
             status: "in-progress",
-            assignee: 2
+            assignee: 2,
+            dependencies: [2] // Depends on task 2
         },
         {
-            id: 3,
+            id: 4,
             projectId: 2,
             name: "Site Preparation",
             description: "Clear and grade construction site",
             dueDate: "2024-02-28",
             priority: "medium",
             status: "completed",
-            assignee: 3
+            assignee: 3,
+            dependencies: [] // No dependencies
         },
         {
-            id: 4,
+            id: 5,
             projectId: 2,
             name: "Utility Connections",
             description: "Install water, sewer, and electrical connections",
             dueDate: "2024-04-15",
             priority: "high",
             status: "pending",
-            assignee: null
+            assignee: null,
+            dependencies: [4] // Depends on task 4
         }
     ],
     team: [

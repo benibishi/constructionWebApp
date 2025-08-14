@@ -292,6 +292,7 @@ function loadTaskList() {
         return;
     }
 
+    // Update the task card generation in loadTaskList function
     container.innerHTML = filteredTasks.map(task => {
         const project = projects.find(p => p.id === task.projectId);
         const assignee = team.find(m => m.id === task.assignee);
@@ -300,6 +301,18 @@ function loadTaskList() {
         const statusClass = `status-${task.status.replace(' ', '-')}`;
         const statusText = task.status.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase());
 
+        // Get dependency task names
+        let dependencyInfo = '';
+        if (task.dependencies && task.dependencies.length > 0) {
+            const dependencyTasks = tasks.filter(t => task.dependencies.includes(t.id));
+            const dependencyNames = dependencyTasks.map(t => t.name);
+            dependencyInfo = `
+            <div class="task-dependencies">
+                <strong>Depends on:</strong> ${dependencyNames.join(', ')}
+            </div>
+        `;
+        }
+
         return `
         <div class="task-card ${task.priority}" id="task-${task.id}">
             <div class="task-header">
@@ -307,6 +320,7 @@ function loadTaskList() {
                 <span class="task-priority ${priorityClass}">${priorityText}</span>
             </div>
             <p class="task-description">${task.description}</p>
+            ${dependencyInfo}
             <div class="task-meta">
                 <span><i class="fas fa-project-diagram"></i> ${project ? project.name : 'Unknown Project'}</span>
                 <span><i class="far fa-calendar"></i> Due: ${formatDate(task.dueDate)}</span>
@@ -336,6 +350,7 @@ function loadTaskList() {
     }).join('');
 }
 
+// Updated editTask function
 function editTask(taskId) {
     const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
     const task = tasks.find(t => t.id === taskId);
@@ -349,9 +364,22 @@ function editTask(taskId) {
         document.getElementById('taskPriority').value = task.priority;
         document.getElementById('taskAssignee').value = task.assignee || '';
 
-        document.getElementById('taskModalTitle').textContent = 'Edit Task';
+        // Populate dropdowns
         populateProjectDropdown();
         populateAssigneeDropdown();
+        safelyPopulateDependencies(taskId);
+
+        // Set selected dependencies
+        const dependenciesSelect = document.getElementById('taskDependencies');
+        if (dependenciesSelect && task.dependencies && task.dependencies.length > 0) {
+            Array.from(dependenciesSelect.options).forEach(option => {
+                if (task.dependencies.includes(parseInt(option.value))) {
+                    option.selected = true;
+                }
+            });
+        }
+
+        document.getElementById('taskModalTitle').textContent = 'Edit Task';
         app.showModal('taskModal');
     }
 }
@@ -365,7 +393,7 @@ function deleteTask(taskId) {
     }
 }
 
-// Helper functions
+// Update populateProjectDropdown function
 function populateProjectDropdown() {
     const projects = JSON.parse(localStorage.getItem('projects') || '[]');
     const select = document.getElementById('taskProject');
@@ -384,6 +412,7 @@ function populateProjectDropdown() {
     });
 }
 
+// Update populateAssigneeDropdown function
 function populateAssigneeDropdown() {
     const team = JSON.parse(localStorage.getItem('team') || '[]');
     const select = document.getElementById('taskAssignee');
@@ -402,11 +431,41 @@ function populateAssigneeDropdown() {
     });
 }
 
-// Form handling
+// Update the populateDependenciesDropdown function
+function populateDependenciesDropdown(currentTaskId = null) {
+    const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+    const select = document.getElementById('taskDependencies');
+
+    // Clear existing options
+    select.innerHTML = '<option value="">No dependencies</option>';
+
+    // Add task options (exclude current task to prevent self-dependency)
+    tasks.forEach(task => {
+        // If editing a task, exclude the current task from dependencies
+        if (currentTaskId && task.id === currentTaskId) return;
+
+        const option = document.createElement('option');
+        option.value = task.id;
+        option.textContent = `${task.name} (#${task.id})`;
+        select.appendChild(option);
+    });
+}
+
+// Update the task form submit event listener with better error handling
 document.getElementById('taskForm').addEventListener('submit', function (e) {
     e.preventDefault();
 
     const taskId = document.getElementById('taskId').value;
+    const dependenciesSelect = document.getElementById('taskDependencies');
+
+    // Get selected dependencies safely
+    let selectedDependencies = [];
+    if (dependenciesSelect) {
+        selectedDependencies = Array.from(dependenciesSelect.selectedOptions || [])
+            .map(option => parseInt(option.value))
+            .filter(value => !isNaN(value) && value !== ''); // Filter out invalid values
+    }
+
     const task = {
         id: taskId ? parseInt(taskId) : Date.now(),
         projectId: parseInt(document.getElementById('taskProject').value),
@@ -414,8 +473,9 @@ document.getElementById('taskForm').addEventListener('submit', function (e) {
         description: document.getElementById('taskDescription').value,
         dueDate: document.getElementById('taskDueDate').value,
         priority: document.getElementById('taskPriority').value,
-        status: 'pending',
-        assignee: document.getElementById('taskAssignee').value ? parseInt(document.getElementById('taskAssignee').value) : null
+        status: taskId ? document.getElementById('taskStatus')?.value || 'pending' : 'pending',
+        assignee: document.getElementById('taskAssignee').value ? parseInt(document.getElementById('taskAssignee').value) : null,
+        dependencies: selectedDependencies
     };
 
     let tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
@@ -440,7 +500,9 @@ document.getElementById('taskForm').addEventListener('submit', function (e) {
     app.hideModal('taskModal');
 
     // Refresh task list
-    loadTaskList();
+    if (typeof loadTaskList === 'function') {
+        loadTaskList();
+    }
 });
 
 document.getElementById('cancelTask').addEventListener('click', function () {
@@ -450,11 +512,22 @@ document.getElementById('cancelTask').addEventListener('click', function () {
     app.hideModal('taskModal');
 });
 
-// Add Task Button
+// Updated add task button handler
 document.getElementById('addTaskBtn').addEventListener('click', function () {
+    // Reset the form
+    const taskForm = document.getElementById('taskForm');
+    if (taskForm) {
+        taskForm.reset();
+    }
+
+    document.getElementById('taskId').value = '';
     document.getElementById('taskModalTitle').textContent = 'Add New Task';
+
+    // Populate dropdowns
     populateProjectDropdown();
     populateAssigneeDropdown();
+    safelyPopulateDependencies(); // No current task ID for new tasks
+
     app.showModal('taskModal');
 });
 // Add event listeners for closing the task details modal
@@ -470,6 +543,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
+
     // Close modal when clicking outside
     const modal = document.getElementById('taskDetailsModal');
     if (modal) {
@@ -484,6 +558,51 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
+// Add this helper function to safely populate the dependencies dropdown
+function safelyPopulateDependencies(currentTaskId = null) {
+    const dependenciesSelect = document.getElementById('taskDependencies');
+    if (!dependenciesSelect) {
+        console.warn('Dependencies dropdown not found');
+        return;
+    }
+
+    populateDependenciesDropdown(currentTaskId);
+}
+// Add this helper function to check if dependencies are met
+function areTaskDependenciesMet(taskId) {
+    const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+    const task = tasks.find(t => t.id === taskId);
+
+    if (!task || !task.dependencies || task.dependencies.length === 0) {
+        return true; // No dependencies to check
+    }
+
+    // Check if all dependency tasks are completed
+    const dependencyTasks = tasks.filter(t => task.dependencies.includes(t.id));
+    return dependencyTasks.every(t => t.status === 'completed');
+}
+
+// Add this function to update task status with dependency checking
+function updateTaskStatus(taskId, newStatus) {
+    let tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+    const taskIndex = tasks.findIndex(task => task.id === taskId);
+
+    if (taskIndex !== -1) {
+        // If trying to start or complete a task, check dependencies
+        if ((newStatus === 'in-progress' || newStatus === 'completed') &&
+            !areTaskDependenciesMet(taskId)) {
+            alert('Cannot start this task. Please complete all dependent tasks first.');
+            return;
+        }
+
+        tasks[taskIndex].status = newStatus;
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+        loadTaskList();
+
+        // Show notification
+        showNotification(`Task status updated to ${newStatus.replace('-', ' ')}`, 'success');
+    }
+}
 // Add this helper function if it doesn't exist
 function getRoleText(role) {
     const roles = {

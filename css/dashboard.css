@@ -1079,3 +1079,17 @@
     flex-wrap: wrap;
     gap: 1rem;
 }
+
+/* Add to css/dashboard.css */
+.task-dependencies {
+    background: #f0f9ff;
+    border-left: 3px solid var(--primary);
+    padding: 0.75rem;
+    margin: 1rem 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 0.9rem;
+}
+
+.task-dependencies strong {
+    color: var(--primary);
+}

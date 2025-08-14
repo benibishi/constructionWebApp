@@ -313,7 +313,7 @@ body {
     /* Adjust based on header and footer heights */
     overflow-y: auto;
 }
-}
+
 
 /* Forms */
 .form-group {
@@ -483,4 +483,16 @@ body {
     /* Adjust based on header and footer heights */
     overflow-y: auto;
     /* Enable vertical scrolling for the body */
+}
+
+/* Add to css/styles.css */
+.form-text {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: 0.875rem;
+    color: var(--secondary);
+}
+
+#taskDependencies {
+    min-height: 100px;
 }
