@@ -280,7 +280,9 @@ function addTaskToProject(projectId) {
 
 function showProjectModal() {
     document.getElementById('projectModalTitle').textContent = 'Add New Project';
-    window.app.showModal('projectModal');
+    document.getElementById('projectId').value = '';
+    document.getElementById('projectForm').reset();
+    app.showModal('projectModal');
 }
 
 function formatDate(dateString) {

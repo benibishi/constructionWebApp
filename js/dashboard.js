@@ -186,7 +186,7 @@ function loadCurrentProjectDetails(projectId) {
     const endDate = new Date(project.endDate);
     const durationDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
 
-    // Generate task rows
+    // Update the taskRows generation in loadCurrentProjectDetails function
     let taskRows = '';
     projectTasks.forEach(function (task) {
         const assignee = team.find(function (m) { return m.id === task.assignee; });
@@ -196,21 +196,46 @@ function loadCurrentProjectDetails(projectId) {
         const statusText = task.status.replace('-', ' ').replace(/\b\w/g, function (l) { return l.toUpperCase(); });
 
         taskRows += `
-            <tr>
-                <td class="task-name-cell">${task.name}</td>
-                <td><span class="task-priority ${priorityClass}">${priorityText}</span></td>
-                <td><span class="task-status ${statusClass}">${statusText}</span></td>
-                <td>${formatDate(task.dueDate)}</td>
-                <td>${assignee ? assignee.name : 'Unassigned'}</td>
-                <td class="task-actions-cell">
-                    <button class="btn btn-outline btn-sm" onclick="editTask(${task.id})">
+        <tr id="task-row-${task.id}">
+            <td class="task-name-cell">${task.name}</td>
+            <td><span class="task-priority ${priorityClass}">${priorityText}</span></td>
+            <td><span class="task-status ${statusClass}">${statusText}</span></td>
+            <td>${formatDate(task.dueDate)}</td>
+            <td>${assignee ? assignee.name : 'Unassigned'}</td>
+            <td class="task-actions-cell">
+                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                    <!-- Edit button (pencil) -->
+                    <button class="btn btn-outline btn-sm" onclick="editTask(${task.id})" title="Edit Task" style="padding: 0.5rem;">
                         <i class="fas fa-edit"></i>
                     </button>
-                </td>
-            </tr>
-        `;
+                    <!-- Dropdown button (three dots) -->
+                    <div class="task-dropdown" style="position: relative; display: inline-block;">
+                        <button class="btn btn-outline btn-sm" onclick="toggleTaskDropdown(${task.id})" title="More Actions" style="padding: 0.5rem;" id="dropdown-toggle-${task.id}">
+                            <i class="fas fa-ellipsis-v"></i>
+                        </button>
+                        <div class="task-dropdown-menu" id="dropdown-menu-${task.id}" style="position: absolute; top: 100%; right: 0; background: white; border: 1px solid #e2e8f0; border-radius: 0.5rem; box-shadow: 0 10px 25px rgba(0,0,0,0.15); min-width: 200px; z-index: 1000; display: none; margin-top: 0.5rem;">
+                            <a href="#" onclick="event.preventDefault(); viewTaskDetails(${task.id}); toggleTaskDropdown(${task.id});" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; text-decoration: none; color: #1e293b; font-size: 0.9rem; border-bottom: 1px solid #e2e8f0;">
+                                <i class="fas fa-eye"></i> View Details
+                            </a>
+                            <a href="#" onclick="event.preventDefault(); editTask(${task.id}); toggleTaskDropdown(${task.id});" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; text-decoration: none; color: #1e293b; font-size: 0.9rem; border-bottom: 1px solid #e2e8f0;">
+                                <i class="fas fa-edit"></i> Edit Task
+                            </a>
+                            <a href="#" onclick="event.preventDefault(); startTask(${task.id}); toggleTaskDropdown(${task.id});" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; text-decoration: none; color: #1e293b; font-size: 0.9rem; border-bottom: 1px solid #e2e8f0;">
+                                <i class="fas fa-play"></i> Start Task
+                            </a>
+                            <a href="#" onclick="event.preventDefault(); completeTask(${task.id}); toggleTaskDropdown(${task.id});" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; text-decoration: none; color: #1e293b; font-size: 0.9rem; border-bottom: 1px solid #e2e8f0;">
+                                <i class="fas fa-check"></i> Mark Complete
+                            </a>
+                            <a href="#" onclick="event.preventDefault(); deleteTaskFromProject(${task.id}); toggleTaskDropdown(${task.id});" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; text-decoration: none; color: #ef4444; font-size: 0.9rem;">
+                                <i class="fas fa-trash"></i> Delete Task
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    `;
     });
-
     // Generate team member cards
     let teamMemberCards = '';
     assignedMembers.forEach(function (member) {
@@ -361,28 +386,144 @@ function goBackToProjectsList() {
     loadProjects();
 }
 
+
 function editCurrentProject() {
     if (window.currentProjectId) {
         editProject(window.currentProjectId);
     }
 }
+// Add these functions to js/dashboard.js
+function toggleTaskDropdown(taskId) {
+    const dropdownMenu = document.getElementById(`dropdown-menu-${taskId}`);
+    if (dropdownMenu) {
+        // If dropdown is currently visible, hide it
+        if (dropdownMenu.style.display === 'block') {
+            dropdownMenu.style.display = 'none';
+        } else {
+            // Hide all other dropdowns first
+            document.querySelectorAll('.task-dropdown-menu').forEach(menu => {
+                menu.style.display = 'none';
+            });
+            // Show this dropdown
+            dropdownMenu.style.display = 'block';
+        }
+    }
+}
 
+// Close dropdowns when clicking outside
+document.addEventListener('click', function (e) {
+    if (!e.target.closest('.task-dropdown')) {
+        document.querySelectorAll('.task-dropdown-menu').forEach(menu => {
+            menu.style.display = 'none';
+        });
+    }
+});
+
+// Add these helper functions
+function startTask(taskId) {
+    updateTaskStatus(taskId, 'in-progress');
+}
+
+function completeTask(taskId) {
+    updateTaskStatus(taskId, 'completed');
+}
+
+function updateTaskStatus(taskId, newStatus) {
+    let tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+    const taskIndex = tasks.findIndex(task => task.id === taskId);
+
+    if (taskIndex !== -1) {
+        tasks[taskIndex].status = newStatus;
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+
+        // Refresh the project view
+        if (window.currentProjectId && typeof loadCurrentProjectDetails === 'function') {
+            loadCurrentProjectDetails(window.currentProjectId);
+        }
+
+        // Show notification
+        if (typeof showNotification === 'function') {
+            showNotification('Task status updated successfully!', 'success');
+        }
+    }
+}
+// Close dropdowns when clicking outside
+document.addEventListener('click', function (e) {
+    if (!e.target.closest('.dropdown')) {
+        document.querySelectorAll('.dropdown-menu').forEach(menu => {
+            menu.classList.remove('show');
+        });
+    }
+});
+// Add this function to js/dashboard.js if it doesn't exist
+function deleteTaskFromProject(taskId) {
+    if (confirm('Are you sure you want to delete this task? This action cannot be undone.')) {
+        let tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+        const taskToDelete = tasks.find(task => task.id === taskId);
+        const taskName = taskToDelete ? taskToDelete.name : 'Unknown Task';
+
+        tasks = tasks.filter(task => task.id !== taskId);
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+
+        // Show notification
+        if (typeof showNotification === 'function') {
+            showNotification(`Task "${taskName}" deleted successfully!`, 'success');
+        }
+
+        // Refresh the current project view
+        if (window.currentProjectId && typeof loadCurrentProjectDetails === 'function') {
+            loadCurrentProjectDetails(window.currentProjectId);
+        }
+    }
+}
+
+// Update this function in js/dashboard.js
 function addTaskToCurrentProject() {
     if (window.currentProjectId) {
-        // Set the project in the task form and show task modal
-        document.getElementById('taskProject').value = window.currentProjectId;
+        // Set the modal title to indicate which project
+        const projects = JSON.parse(localStorage.getItem('projects') || '[]');
+        const currentProject = projects.find(p => p.id === window.currentProjectId);
+        const projectName = currentProject ? currentProject.name : 'Unknown Project';
 
-        // We need to populate dropdowns - but these functions might be in tasks.js
-        setTimeout(() => {
-            if (typeof populateProjectDropdown === 'function') {
-                populateProjectDropdown();
-            }
-            if (typeof populateAssigneeDropdown === 'function') {
-                populateAssigneeDropdown();
-            }
-            document.getElementById('taskModalTitle').textContent = 'Add New Task';
+        document.getElementById('taskModalTitle').textContent = `Add Task to ${projectName}`;
+
+        // Reset form
+        const taskForm = document.getElementById('taskForm');
+        if (taskForm) {
+            taskForm.reset();
+        }
+        document.getElementById('taskId').value = '';
+
+        // Populate dropdowns with current project selected
+        if (typeof populateProjectDropdownWithCurrent === 'function') {
+            populateProjectDropdownWithCurrent(window.currentProjectId);
+        } else {
+            // Fallback to regular populate function
+            populateProjectDropdown();
+            // Set the current project
+            setTimeout(() => {
+                const projectSelect = document.getElementById('taskProject');
+                if (projectSelect) {
+                    projectSelect.value = window.currentProjectId;
+                }
+            }, 50);
+        }
+
+        populateAssigneeDropdown();
+        populateDependenciesDropdown();
+
+        // Disable project dropdown to keep task associated with current project
+        const projectSelect = document.getElementById('taskProject');
+        if (projectSelect) {
+            projectSelect.value = window.currentProjectId;
+            projectSelect.disabled = true;
+        }
+
+        if (window.app && typeof window.app.showModal === 'function') {
             window.app.showModal('taskModal');
-        }, 100);
+        } else {
+            document.getElementById('taskModal').style.display = 'block';
+        }
     }
 }
 
@@ -475,16 +616,26 @@ function getRoleText(role) {
     return roles[role] || role;
 }
 
-// Form handling
+// Make sure this event listener exists in your JavaScript
 document.addEventListener('DOMContentLoaded', function () {
-    if (document.getElementById('projectForm')) {
-        document.getElementById('projectForm').addEventListener('submit', function (e) {
+    // Project form submission
+    const projectForm = document.getElementById('projectForm');
+    if (projectForm) {
+        projectForm.addEventListener('submit', function (e) {
             e.preventDefault();
 
             const projectId = document.getElementById('projectId').value;
+            const projectName = document.getElementById('projectName').value.trim();
+
+            // Validate project name
+            if (!projectName) {
+                alert('Please enter a project name');
+                return;
+            }
+
             const project = {
                 id: projectId ? parseInt(projectId) : Date.now(),
-                name: document.getElementById('projectName').value,
+                name: projectName,
                 description: document.getElementById('projectDescription').value,
                 startDate: document.getElementById('startDate').value,
                 endDate: document.getElementById('endDate').value,
@@ -517,19 +668,42 @@ document.addEventListener('DOMContentLoaded', function () {
             loadProjects();
             updateStats();
         });
+    }
 
-        document.getElementById('cancelProject').addEventListener('click', function () {
-            document.getElementById('projectForm').reset();
+    const cancelProjectBtn = document.getElementById('cancelProject');
+    if (cancelProjectBtn) {
+        cancelProjectBtn.addEventListener('click', function () {
+            const projectForm = document.getElementById('projectForm');
+            if (projectForm) {
+                projectForm.reset();
+            }
             document.getElementById('projectId').value = '';
             document.getElementById('projectModalTitle').textContent = 'Add New Project';
-            app.hideModal('projectModal');
+            if (window.app && typeof window.app.hideModal === 'function') {
+                window.app.hideModal('projectModal');
+            } else {
+                // Fallback
+                document.getElementById('projectModal').style.display = 'none';
+            }
         });
+    }
 
-        // Add Project Button
-        if (document.getElementById('addProjectBtn')) {
-            document.getElementById('addProjectBtn').addEventListener('click', function () {
-                app.showModal('projectModal');
-            });
-        }
+    const addProjectBtn = document.getElementById('addProjectBtn');
+    if (addProjectBtn) {
+        addProjectBtn.addEventListener('click', function () {
+            // Reset form
+            const projectForm = document.getElementById('projectForm');
+            if (projectForm) {
+                projectForm.reset();
+            }
+            document.getElementById('projectId').value = '';
+            document.getElementById('projectModalTitle').textContent = 'Add New Project';
+            if (window.app && typeof window.app.showModal === 'function') {
+                window.app.showModal('projectModal');
+            } else {
+                // Fallback if app object is not available
+                document.getElementById('projectModal').style.display = 'block';
+            }
+        });
     }
 });

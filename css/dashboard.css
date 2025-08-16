@@ -1311,3 +1311,637 @@
         width: 100%;
     }
 }
+
+/* Add these styles to css/dashboard.css */
+
+/* Calendar Controls */
+.calendar-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.calendar-controls h2 {
+    margin: 0;
+    min-width: 200px;
+    text-align: center;
+}
+
+.calendar-controls .btn {
+    padding: 0.5rem 1rem;
+}
+
+/* Calendar Filters */
+.calendar-filters {
+    display: flex;
+    gap: 1rem;
+    margin: 1.5rem 0;
+    flex-wrap: wrap;
+}
+
+.calendar-filters select {
+    padding: 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+}
+
+/* Calendar Container */
+.calendar-container {
+    background: white;
+    border-radius: 0.75rem;
+    box-shadow: var(--card-shadow);
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+/* Month Calendar View */
+.month-calendar {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.month-calendar th {
+    background: var(--light);
+    padding: 1rem;
+    text-align: center;
+    font-weight: 600;
+    border: 1px solid var(--border);
+}
+
+.month-calendar td {
+    height: 120px;
+    vertical-align: top;
+    border: 1px solid var(--border);
+    padding: 0.5rem;
+    position: relative;
+}
+
+.calendar-day {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--secondary);
+}
+
+.calendar-day.today {
+    background: var(--primary);
+    color: white;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.25rem;
+}
+
+.calendar-day.other-month {
+    color: var(--gray);
+}
+
+.calendar-tasks {
+    font-size: 0.75rem;
+}
+
+.calendar-task {
+    background: var(--primary);
+    color: white;
+    padding: 2px 4px;
+    border-radius: 3px;
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+}
+
+.calendar-task.high {
+    background: var(--warning);
+}
+
+.calendar-task.critical {
+    background: var(--danger);
+}
+
+/* Timeline View */
+.timeline-container {
+    padding: 2rem;
+    overflow-x: auto;
+}
+
+.timeline-header {
+    display: flex;
+    margin-bottom: 1rem;
+    min-width: 1000px;
+}
+
+.timeline-project-header {
+    flex: 1;
+    font-weight: 600;
+    padding: 0.5rem;
+    border: 1px solid var(--border);
+    background: var(--light);
+}
+
+.timeline-weeks {
+    display: flex;
+    min-width: 1000px;
+}
+
+.timeline-week {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid var(--border);
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--secondary);
+}
+
+.timeline-rows {
+    min-width: 1000px;
+}
+
+.timeline-row {
+    display: flex;
+    margin-bottom: 1rem;
+    min-width: 1000px;
+}
+
+.timeline-project {
+    flex: 1;
+    padding: 1rem;
+    border: 1px solid var(--border);
+    background: var(--light);
+    font-weight: 500;
+}
+
+.timeline-tasks {
+    flex: 4;
+    position: relative;
+    height: 60px;
+    border: 1px solid var(--border);
+}
+
+.timeline-bar {
+    position: absolute;
+    height: 20px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    font-size: 0.7rem;
+    color: white;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    top: 20px;
+}
+
+.timeline-bar.low {
+    background: var(--primary);
+}
+
+.timeline-bar.medium {
+    background: #60a5fa;
+}
+
+.timeline-bar.high {
+    background: var(--warning);
+}
+
+.timeline-bar.critical {
+    background: var(--danger);
+}
+
+.timeline-bar.completed {
+    background: var(--success);
+}
+
+/* Week View */
+.week-calendar {
+    display: grid;
+    grid-template-columns: 100px repeat(7, 1fr);
+    gap: 1px;
+    background: var(--border);
+}
+
+.week-header {
+    background: var(--light);
+    padding: 1rem;
+    text-align: center;
+    font-weight: 600;
+    border: 1px solid var(--border);
+}
+
+.week-day-header {
+    background: var(--light);
+    padding: 1rem;
+    text-align: center;
+    font-weight: 600;
+    border: 1px solid var(--border);
+}
+
+.week-hour {
+    background: white;
+    padding: 0.5rem;
+    border: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--secondary);
+}
+
+.week-day-cell {
+    background: white;
+    border: 1px solid var(--border);
+    min-height: 60px;
+    position: relative;
+}
+
+.week-task {
+    position: absolute;
+    left: 2px;
+    right: 2px;
+    background: var(--primary);
+    color: white;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-size: 0.7rem;
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Empty State */
+.empty-state-calendar {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--secondary);
+}
+
+.empty-state-calendar i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: var(--gray);
+}
+
+.empty-state-calendar h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--dark);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .calendar-controls {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .calendar-controls h2 {
+        min-width: auto;
+        order: -1;
+        width: 100%;
+        text-align: center;
+    }
+
+    .calendar-filters {
+        flex-direction: column;
+    }
+
+    .month-calendar td {
+        height: 80px;
+        padding: 0.25rem;
+    }
+
+    .calendar-task {
+        font-size: 0.6rem;
+        padding: 1px 2px;
+    }
+}
+
+/* Add these styles to css/dashboard.css */
+
+/* Task Action Buttons */
+.task-action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+.task-actions-cell {
+    text-align: right;
+    white-space: nowrap;
+}
+
+.btn-danger {
+    background: var(--danger);
+    color: white;
+    border: none;
+}
+
+.btn-danger:hover {
+    background: #dc2626;
+    /* Darker red on hover */
+    transform: translateY(-1px);
+}
+
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+}
+
+/* Ensure Font Awesome icons display properly */
+.fas,
+.far,
+.fab {
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+}
+
+/* Fix for icon display */
+.task-action-buttons .btn i {
+    margin: 0;
+    width: auto;
+}
+
+/* Add these styles to css/dashboard.css */
+
+/* Dropdown Styles */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-toggle {
+    background: none;
+    border: 1px solid var(--border);
+    padding: 0.5rem;
+    cursor: pointer;
+    font-size: 0.85rem;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    box-shadow: var(--modal-shadow);
+    min-width: 200px;
+    z-index: 1000;
+    display: none;
+    margin-top: 0.5rem;
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+.dropdown-menu a {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    text-decoration: none;
+    color: var(--dark);
+    font-size: 0.9rem;
+    border-bottom: 1px solid var(--border);
+    transition: background-color 0.2s;
+}
+
+.dropdown-menu a:last-child {
+    border-bottom: none;
+}
+
+.dropdown-menu a:hover {
+    background-color: var(--light);
+}
+
+.dropdown-menu a.danger:hover {
+    background-color: #fee2e2;
+    color: var(--danger);
+}
+
+.dropdown-menu a i {
+    width: 16px;
+    text-align: center;
+}
+
+/* Add these styles to css/dashboard.css */
+
+/* Dropdown Styles */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-toggle {
+    background: none;
+    border: 1px solid var(--border);
+    padding: 0.5rem;
+    cursor: pointer;
+    font-size: 0.85rem;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    box-shadow: var(--modal-shadow);
+    min-width: 200px;
+    z-index: 1000;
+    display: none;
+    margin-top: 0.5rem;
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+.dropdown-menu a {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    text-decoration: none;
+    color: var(--dark);
+    font-size: 0.9rem;
+    border-bottom: 1px solid var(--border);
+    transition: background-color 0.2s;
+}
+
+.dropdown-menu a:last-child {
+    border-bottom: none;
+}
+
+.dropdown-menu a:hover {
+    background-color: var(--light);
+}
+
+.dropdown-menu a.danger:hover {
+    background-color: #fee2e2;
+    color: var(--danger);
+}
+
+.dropdown-menu a i {
+    width: 16px;
+    text-align: center;
+}
+
+/* Add these styles to css/dashboard.css */
+.task-action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-toggle {
+    background: none;
+    border: 1px solid var(--border);
+    padding: 0.5rem;
+    cursor: pointer;
+    font-size: 0.85rem;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    box-shadow: var(--modal-shadow);
+    min-width: 200px;
+    z-index: 1000;
+    display: none;
+    margin-top: 0.5rem;
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+.dropdown-menu a {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    text-decoration: none;
+    color: var(--dark);
+    font-size: 0.9rem;
+    border-bottom: 1px solid var(--border);
+    transition: background-color 0.2s;
+}
+
+.dropdown-menu a:last-child {
+    border-bottom: none;
+}
+
+.dropdown-menu a:hover {
+    background-color: var(--light);
+}
+
+.dropdown-menu a.danger:hover {
+    background-color: #fee2e2;
+    color: var(--danger);
+}
+
+.dropdown-menu a i {
+    width: 16px;
+    text-align: center;
+}
+
+/* Dark mode support */
+[data-theme="dark"] .dropdown-menu {
+    background: var(--light);
+    border: 1px solid var(--border);
+}
+
+[data-theme="dark"] .dropdown-menu a {
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .dropdown-menu a:hover {
+    background-color: #334155;
+}
+
+/* Add this to css/dashboard.css */
+.task-actions-cell {
+    text-align: right;
+    white-space: nowrap;
+}
+
+.task-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.task-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    box-shadow: var(--modal-shadow);
+    min-width: 200px;
+    z-index: 1000;
+    display: none;
+    margin-top: 0.5rem;
+}
+
+.task-dropdown-menu.show {
+    display: block;
+}
+
+.task-dropdown-menu a {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    text-decoration: none;
+    color: var(--dark);
+    font-size: 0.9rem;
+    border-bottom: 1px solid var(--border);
+    transition: background-color 0.2s;
+}
+
+.task-dropdown-menu a:last-child {
+    border-bottom: none;
+}
+
+.task-dropdown-menu a:hover {
+    background-color: var(--light);
+}
+
+.task-dropdown-menu a.danger {
+    color: var(--danger);
+}
+
+.task-dropdown-menu a.danger:hover {
+    background-color: #fee2e2;
+    color: var(--danger);
+}
+
+/* Dark mode support */
+[data-theme="dark"] .task-dropdown-menu {
+    background: var(--light);
+    border: 1px solid var(--border);
+}
+
+[data-theme="dark"] .task-dropdown-menu a {
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .task-dropdown-menu a:hover {
+    background-color: #334155;
+}

@@ -7,48 +7,50 @@
     <title>BuildMaster - Construction Management</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-brand">
-            <i class="fas fa-hard-hat"></i>
-            <span>BuildMaster</span>
+    <!-- Update the nav-menu section in index.html -->
+    <div class="nav-menu">
+        <a href="#" class="nav-link active" data-tab="dashboard">
+            <i class="fas fa-tachometer-alt"></i>
+            <span>Dashboard</span>
+        </a>
+        <a href="#" class="nav-link" data-tab="projects">
+            <i class="fas fa-project-diagram"></i>
+            <span>Projects</span>
+        </a>
+        <a href="#" class="nav-link" data-tab="tasks">
+            <i class="fas fa-tasks"></i>
+            <span>Tasks</span>
+        </a>
+        <a href="#" class="nav-link" data-tab="calendar">
+            <i class="fas fa-calendar-alt"></i>
+            <span>Calendar</span>
+        </a>
+        <a href="#" class="nav-link" data-tab="documents">
+            <i class="fas fa-file-alt"></i>
+            <span>Documents</span>
+        </a>
+        <a href="#" class="nav-link" data-tab="team">
+            <i class="fas fa-users"></i>
+            <span>Team</span>
+        </a>
+    </div>
+    <!-- Update the nav-user section in index.html -->
+    <div class="nav-user">
+        <div class="theme-toggle" id="themeToggle">
+            <i class="fas fa-moon"></i>
         </div>
-        <!-- Update the nav-menu section in index.html -->
-        <div class="nav-menu">
-            <a href="#" class="nav-link active" data-tab="dashboard">
-                <i class="fas fa-tachometer-alt"></i>
-                <span>Dashboard</span>
-            </a>
-            <a href="#" class="nav-link" data-tab="projects">
-                <i class="fas fa-project-diagram"></i>
-                <span>Projects</span>
-            </a>
-            <a href="#" class="nav-link" data-tab="tasks">
-                <i class="fas fa-tasks"></i>
-                <span>Tasks</span>
-            </a>
-            <a href="#" class="nav-link" data-tab="documents">
-                <i class="fas fa-file-alt"></i>
-                <span>Documents</span>
-            </a>
-            <a href="#" class="nav-link" data-tab="team">
-                <i class="fas fa-users"></i>
-                <span>Team</span>
-            </a>
+        <div class="notification-bell" id="notificationBell">
+            <i class="fas fa-bell"></i>
+            <span class="notification-badge" id="notificationCount">0</span>
         </div>
-        <div class="nav-user">
-            <div class="notification-bell" id="notificationBell">
-                <i class="fas fa-bell"></i>
-                <span class="notification-badge" id="notificationCount">0</span>
-            </div>
-            <img src="https://ui-avatars.com/api/?name=Admin+User&background=random" alt="User">
-            <span>Admin User</span>
-        </div>
-    </nav>
+        <img src="https://ui-avatars.com/api/?name=Admin+User&background=random" alt="User">
+        <span>Admin User</span>
+    </div>
     <!-- Notification Dropdown -->
     <div class="notification-dropdown" id="notificationDropdown">
         <div class="notification-header">
@@ -196,6 +198,46 @@
                 <!-- Tasks will be loaded here -->
             </div>
         </section>
+        <!-- Calendar Tab -->
+        <section id="calendar" class="tab-content">
+            <div class="page-header">
+                <h1>Project Calendar</h1>
+                <div class="calendar-controls">
+                    <button class="btn btn-outline" id="prevMonth">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <h2 id="currentMonthYear">January 2024</h2>
+                    <button class="btn btn-outline" id="nextMonth">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <button class="btn btn-primary" id="todayBtn">
+                        <i class="fas fa-calendar-day"></i> Today
+                    </button>
+                </div>
+            </div>
+
+            <!-- Calendar Filters -->
+            <div class="calendar-filters">
+                <select id="calendarProjectFilter">
+                    <option value="">All Projects</option>
+                </select>
+                <select id="calendarViewFilter">
+                    <option value="month">Month View</option>
+                    <option value="week">Week View</option>
+                    <option value="timeline">Timeline View</option>
+                </select>
+            </div>
+
+            <!-- Calendar Container -->
+            <div class="calendar-container">
+                <div class="calendar-view" id="calendarView">
+                    <!-- Calendar will be loaded here -->
+                </div>
+                <div class="timeline-view" id="timelineView" style="display: none;">
+                    <!-- Timeline will be loaded here -->
+                </div>
+            </div>
+        </section>
         <!-- Documents Tab -->
         <section id="documents" class="tab-content">
             <div class="page-header">
@@ -245,7 +287,7 @@
         </section>
     </main>
 
-    <!-- Modal Templates -->
+    <!-- Project Modal - Make sure this exists in your index.html -->
     <div class="modal" id="projectModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -255,13 +297,9 @@
             <div class="modal-body">
                 <form id="projectForm">
                     <input type="hidden" id="projectId">
-                    <!-- Dependencies section in task modal -->
                     <div class="form-group">
-                        <label for="taskDependencies">Dependencies</label>
-                        <select id="taskDependencies" multiple size="4">
-                            <option value="">No dependencies</option>
-                        </select>
-                        <small class="form-text">Hold Ctrl/Cmd to select multiple tasks</small>
+                        <label for="projectName">Project Name *</label>
+                        <input type="text" id="projectName" required>
                     </div>
                     <div class="form-group">
                         <label for="projectDescription">Description</label>
@@ -269,11 +307,11 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="startDate">Start Date</label>
+                            <label for="startDate">Start Date *</label>
                             <input type="date" id="startDate" required>
                         </div>
                         <div class="form-group">
-                            <label for="endDate">End Date</label>
+                            <label for="endDate">End Date *</label>
                             <input type="date" id="endDate" required>
                         </div>
                     </div>
@@ -482,6 +520,7 @@
     <script src="js/projects.js"></script>
     <script src="js/notifications.js"></script>
     <script src="js/documents.js"></script>
+    <script src="js/calendar.js"></script>
     <div class="notification" id="notification"></div>
 </body>
 

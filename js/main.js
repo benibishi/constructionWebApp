@@ -5,10 +5,53 @@ class ConstructionManager {
         this.init();
     }
 
+    // Update the init method in ConstructionManager class
     init() {
+        this.initTheme(); // Add this line
+        this.setupThemeToggle(); // Add this line
         this.setupEventListeners();
         this.loadTab(this.currentTab);
         this.initializeData();
+    }
+    // Add these methods to your ConstructionManager class in main.js
+
+    initTheme() {
+        // Check for saved theme preference or respect OS preference
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+            this.setTheme('dark');
+        } else {
+            this.setTheme('light');
+        }
+    }
+
+
+    setTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+
+        // Update theme toggle icon
+        const themeIcon = document.querySelector('#themeToggle i');
+        if (themeIcon) {
+            themeIcon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+        }
+    }
+
+    toggleTheme() {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        this.setTheme(newTheme);
+    }
+
+    setupThemeToggle() {
+        const themeToggle = document.getElementById('themeToggle');
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                this.toggleTheme();
+            });
+        }
     }
 
     setupEventListeners() {
@@ -82,6 +125,10 @@ class ConstructionManager {
             case 'documents':
                 if (typeof loadDocuments === 'function') loadDocuments();
                 break;
+            // Add this case to the switch statement in loadTab function
+            case 'calendar':
+                if (typeof loadCalendar === 'function') loadCalendar();
+                break;
         }
     }
 
@@ -115,7 +162,17 @@ class ConstructionManager {
 
     showModal(modalId) {
         this.closeAllModals();
-        document.getElementById(modalId).style.display = 'block';
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.style.display = 'block';
+            modal.classList.add('fade-in');
+
+            // Focus first input if available
+            const firstInput = modal.querySelector('input, select, textarea');
+            if (firstInput) {
+                setTimeout(() => firstInput.focus(), 100);
+            }
+        }
     }
 
     hideModal(modalId) {
@@ -315,6 +372,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.app.hideModal('projectDetailsModal');
             }
         });
+
     }
 
     // Also add click outside to close functionality for modals
@@ -326,6 +384,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     window.app.hideModal('taskDetailsModal');
                 }
             }
+        });
+    }
+    // Project modal events
+    const cancelProjectBtn = document.getElementById('cancelProject');
+    if (cancelProjectBtn) {
+        cancelProjectBtn.addEventListener('click', function () {
+            document.getElementById('projectForm').reset();
+            document.getElementById('projectId').value = '';
+            document.getElementById('projectModalTitle').textContent = 'Add New Project';
+            app.hideModal('projectModal');
         });
     }
 
@@ -340,3 +408,18 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+// Add this helper function - Place it at the end of main.js, after the class definition
+function showLoading(elementId, message = 'Loading...') {
+    const element = document.getElementById(elementId);
+    if (element) {
+        element.innerHTML = `
+            <div style="text-align: center; padding: 2rem;">
+                <div class="loading-spinner" style="margin: 0 auto 1rem auto;"></div>
+                <p>${message}</p>
+            </div>
+        `;
+    }
+}
+
+// Export for global use
+window.showLoading = showLoading;

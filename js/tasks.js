@@ -57,6 +57,28 @@ function toggleTaskDropdown(taskId) {
         }, 10);
     }
 }
+// Add this function to js/tasks.js
+function toggleTaskDropdown(taskId) {
+    // Close all other dropdowns
+    document.querySelectorAll('.dropdown-menu').forEach(menu => {
+        menu.classList.remove('show');
+    });
+
+    // Find and show current dropdown
+    const dropdown = document.getElementById(`dropdown-${taskId}`);
+    if (dropdown) {
+        dropdown.classList.toggle('show');
+    }
+}
+
+// Add this function to handle dropdown click outside
+document.addEventListener('click', function (e) {
+    if (!e.target.closest('.dropdown')) {
+        document.querySelectorAll('.dropdown-menu').forEach(menu => {
+            menu.classList.remove('show');
+        });
+    }
+});
 
 function updateTaskStatus(taskId, newStatus) {
     let tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
@@ -228,6 +250,28 @@ function assignTask(taskId) {
     // This would open an assignment modal in a full implementation
     alert(`Assign task ${taskId} - This would open assignment interface`);
 }
+// Add this function to js/tasks.js
+function toggleTaskDropdown(taskId) {
+    // Close all other dropdowns
+    document.querySelectorAll('.dropdown-menu').forEach(menu => {
+        menu.classList.remove('show');
+    });
+
+    // Find and show current dropdown
+    const dropdown = document.getElementById(`dropdown-${taskId}`);
+    if (dropdown) {
+        dropdown.classList.toggle('show');
+    }
+}
+
+// Add this function to handle dropdown click outside
+document.addEventListener('click', function (e) {
+    if (!e.target.closest('.dropdown')) {
+        document.querySelectorAll('.dropdown-menu').forEach(menu => {
+            menu.classList.remove('show');
+        });
+    }
+});
 
 function addTaskComment(taskId) {
     // This would open a comment modal in a full implementation
@@ -350,7 +394,7 @@ function loadTaskList() {
     }).join('');
 }
 
-// Updated editTask function
+// Add this function to js/tasks.js or js/dashboard.js
 function editTask(taskId) {
     const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
     const task = tasks.find(t => t.id === taskId);
@@ -364,10 +408,8 @@ function editTask(taskId) {
         document.getElementById('taskPriority').value = task.priority;
         document.getElementById('taskAssignee').value = task.assignee || '';
 
-        // Populate dropdowns
-        populateProjectDropdown();
-        populateAssigneeDropdown();
-        safelyPopulateDependencies(taskId);
+        // Populate dependencies
+        populateDependenciesDropdown(taskId);
 
         // Set selected dependencies
         const dependenciesSelect = document.getElementById('taskDependencies');
@@ -380,7 +422,141 @@ function editTask(taskId) {
         }
 
         document.getElementById('taskModalTitle').textContent = 'Edit Task';
-        app.showModal('taskModal');
+
+        // Populate dropdowns
+        populateProjectDropdown();
+        populateAssigneeDropdown();
+
+        // If we're editing from project page, disable project dropdown
+        if (window.currentProjectId && window.currentProjectId === task.projectId) {
+            const projectSelect = document.getElementById('taskProject');
+            if (projectSelect) {
+                projectSelect.value = task.projectId;
+                projectSelect.disabled = true;
+            }
+        }
+
+        if (window.app && typeof window.app.showModal === 'function') {
+            window.app.showModal('taskModal');
+        } else {
+            document.getElementById('taskModal').style.display = 'block';
+        }
+    }
+}
+// Add these functions to js/tasks.js
+function viewTaskDetails(taskId) {
+    const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+    const task = tasks.find(t => t.id === taskId);
+    const projects = JSON.parse(localStorage.getItem('projects') || '[]');
+    const team = JSON.parse(localStorage.getItem('team') || '[]');
+
+    if (!task) return;
+
+    const project = projects.find(p => p.id === task.projectId);
+    const assignee = team.find(m => m.id === task.assignee);
+
+    // Create task details HTML
+    let detailsHTML = `
+        <div class="task-details-container">
+            <!-- Header Section -->
+            <div class="task-detail-header">
+                <h3>${task.name}</h3>
+                <span class="task-priority priority-${task.priority}">${task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}</span>
+            </div>
+
+            <!-- Main Details Grid -->
+            <div class="task-details-grid">
+                <div class="detail-card">
+                    <div class="detail-card-header">
+                        <i class="far fa-calendar"></i>
+                        <h4>Timeline</h4>
+                    </div>
+                    <div class="detail-card-body">
+                        <div class="detail-item">
+                            <span class="detail-label">Due Date</span>
+                            <span class="detail-value">${formatDate(task.dueDate)}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Created</span>
+                            <span class="detail-value">${formatDate(task.createdAt)}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-card">
+                    <div class="detail-card-header">
+                        <i class="fas fa-project-diagram"></i>
+                        <h4>Project Information</h4>
+                    </div>
+                    <div class="detail-card-body">
+                        <div class="detail-item">
+                            <span class="detail-label">Project Name</span>
+                            <span class="detail-value">${project ? project.name : 'No project assigned'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Project Status</span>
+                            <span class="detail-value">${project ? project.status.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase()) : 'N/A'}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-card">
+                    <div class="detail-card-header">
+                        <i class="fas fa-user"></i>
+                        <h4>Assignment</h4>
+                    </div>
+                    <div class="detail-card-body">
+                        <div class="detail-item">
+                            <span class="detail-label">Assignee</span>
+                            <span class="detail-value">${assignee ? assignee.name : 'Unassigned'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Role</span>
+                            <span class="detail-value">${assignee ? getRoleText(assignee.role) : 'N/A'}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    // Populate modal content
+    document.getElementById('taskDetailsBody').innerHTML = detailsHTML;
+    document.getElementById('taskDetailsTitle').textContent = 'Task Details';
+
+    // Show the modal
+    if (window.app && typeof window.app.showModal === 'function') {
+        window.app.showModal('taskDetailsModal');
+    } else {
+        document.getElementById('taskDetailsModal').style.display = 'block';
+    }
+}
+
+function assignTask(taskId) {
+    // Implementation depends on your needs
+    alert(`Assign task ${taskId}`);
+}
+
+function addTaskComment(taskId) {
+    // Implementation depends on your needs
+    alert(`Add comment to task ${taskId}`);
+}
+
+function deleteTaskFromProject(taskId) {
+    if (confirm('Are you sure you want to delete this task? This action cannot be undone.')) {
+        let tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+        tasks = tasks.filter(task => task.id !== taskId);
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+
+        // Show notification
+        if (typeof showNotification === 'function') {
+            showNotification('Task deleted successfully!', 'success');
+        }
+
+        // Refresh the current project view
+        if (window.currentProjectId && typeof loadCurrentProjectDetails === 'function') {
+            loadCurrentProjectDetails(window.currentProjectId);
+        }
     }
 }
 
@@ -451,7 +627,7 @@ function populateDependenciesDropdown(currentTaskId = null) {
     });
 }
 
-// Update the task form submit event listener with better error handling
+// Update the task form submission in js/tasks.js
 document.getElementById('taskForm').addEventListener('submit', function (e) {
     e.preventDefault();
 
@@ -466,9 +642,18 @@ document.getElementById('taskForm').addEventListener('submit', function (e) {
             .filter(value => !isNaN(value) && value !== ''); // Filter out invalid values
     }
 
+    // Get project ID - either from the form or from current project context
+    let projectId = parseInt(document.getElementById('taskProject').value);
+
+    // If project dropdown was disabled, get project ID from current context
+    const projectSelect = document.getElementById('taskProject');
+    if (projectSelect && projectSelect.disabled && window.currentProjectId) {
+        projectId = window.currentProjectId;
+    }
+
     const task = {
         id: taskId ? parseInt(taskId) : Date.now(),
-        projectId: parseInt(document.getElementById('taskProject').value),
+        projectId: projectId,
         name: document.getElementById('taskName').value,
         description: document.getElementById('taskDescription').value,
         dueDate: document.getElementById('taskDueDate').value,
@@ -497,19 +682,69 @@ document.getElementById('taskForm').addEventListener('submit', function (e) {
     this.reset();
     document.getElementById('taskId').value = '';
     document.getElementById('taskModalTitle').textContent = 'Add New Task';
-    app.hideModal('taskModal');
 
-    // Refresh task list
-    if (typeof loadTaskList === 'function') {
-        loadTaskList();
+    // Re-enable project dropdown if it was disabled
+    if (projectSelect && projectSelect.disabled) {
+        projectSelect.disabled = false;
+    }
+
+    if (window.app && typeof window.app.hideModal === 'function') {
+        window.app.hideModal('taskModal');
+    } else {
+        document.getElementById('taskModal').style.display = 'none';
+    }
+
+    // Auto-refresh the current view - this is the key fix
+    setTimeout(() => {
+        refreshCurrentView();
+    }, 100); // Small delay to ensure modal is closed
+
+    // Show success notification
+    if (typeof showNotification === 'function') {
+        showNotification(`Task "${task.name}" saved successfully!`, 'success');
     }
 });
 
-document.getElementById('cancelTask').addEventListener('click', function () {
-    document.getElementById('taskForm').reset();
-    document.getElementById('taskId').value = '';
-    document.getElementById('taskModalTitle').textContent = 'Add New Task';
-    app.hideModal('taskModal');
+// Add this new function to handle view refresh
+function refreshCurrentView() {
+    // If we're on project details page, refresh the project details
+    if (window.currentProjectId && typeof loadCurrentProjectDetails === 'function') {
+        loadCurrentProjectDetails(window.currentProjectId);
+    }
+    // If we're on the main tasks page, refresh the task list
+    else if (typeof loadTaskList === 'function' && document.getElementById('tasks')?.classList.contains('active')) {
+        loadTaskList();
+    }
+    // If we're on dashboard, update stats
+    else if (typeof updateStats === 'function' && document.getElementById('dashboard')?.classList.contains('active')) {
+        updateStats();
+    }
+}
+// Add this to your js/tasks.js
+document.addEventListener('DOMContentLoaded', function () {
+    const cancelTaskBtn = document.getElementById('cancelTask');
+    if (cancelTaskBtn) {
+        cancelTaskBtn.addEventListener('click', function () {
+            const taskForm = document.getElementById('taskForm');
+            if (taskForm) {
+                taskForm.reset();
+            }
+            document.getElementById('taskId').value = '';
+            document.getElementById('taskModalTitle').textContent = 'Add New Task';
+
+            // Re-enable project dropdown if it was disabled
+            const projectSelect = document.getElementById('taskProject');
+            if (projectSelect && projectSelect.disabled) {
+                projectSelect.disabled = false;
+            }
+
+            if (window.app && typeof window.app.hideModal === 'function') {
+                window.app.hideModal('taskModal');
+            } else {
+                document.getElementById('taskModal').style.display = 'none';
+            }
+        });
+    }
 });
 
 // Updated add task button handler
@@ -567,6 +802,29 @@ function safelyPopulateDependencies(currentTaskId = null) {
     }
 
     populateDependenciesDropdown(currentTaskId);
+}
+// Add this function to js/tasks.js
+function populateProjectDropdownWithCurrent(currentProjectId = null) {
+    const projects = JSON.parse(localStorage.getItem('projects') || '[]');
+    const select = document.getElementById('taskProject');
+
+    if (!select) return;
+
+    // Clear existing options except the first one
+    while (select.children.length > 1) {
+        select.removeChild(select.lastChild);
+    }
+
+    // Add project options
+    projects.forEach(project => {
+        const option = document.createElement('option');
+        option.value = project.id;
+        option.textContent = project.name;
+        if (currentProjectId && project.id === currentProjectId) {
+            option.selected = true;
+        }
+        select.appendChild(option);
+    });
 }
 // Add this helper function to check if dependencies are met
 function areTaskDependenciesMet(taskId) {
