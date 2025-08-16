@@ -78,9 +78,14 @@ class ConstructionManager {
             case 'projects':
                 if (typeof loadProjectsList === 'function') loadProjectsList();
                 break;
+            // Add this case to the switch statement in loadTab function
+            case 'documents':
+                if (typeof loadDocuments === 'function') loadDocuments();
+                break;
         }
     }
 
+    // Update the initializeData function
     initializeData() {
         // Initialize with sample data if none exists
         if (!localStorage.getItem('projects')) {
@@ -94,6 +99,9 @@ class ConstructionManager {
         }
         if (!localStorage.getItem('notifications')) {
             localStorage.setItem('notifications', JSON.stringify(sampleData.notifications));
+        }
+        if (!localStorage.getItem('documents')) {
+            localStorage.setItem('documents', JSON.stringify(sampleData.documents));
         }
     }
 
@@ -245,6 +253,44 @@ const sampleData = {
             priority: "high",
             read: true,
             timestamp: new Date(Date.now() - 172800000).toISOString()
+        }
+    ],
+    documents: [
+        {
+            id: 1,
+            projectId: 1,
+            name: "Foundation Plans.pdf",
+            description: "Structural foundation plans and specifications",
+            category: "drawings",
+            fileSize: "2.4 MB",
+            uploadedBy: 1,
+            uploadDate: "2024-01-20",
+            version: "1.0",
+            url: "https://example.com/documents/foundation-plans.pdf"
+        },
+        {
+            id: 2,
+            projectId: 1,
+            name: "Building Permits.pdf",
+            description: "City building permits and approvals",
+            category: "permits",
+            fileSize: "1.1 MB",
+            uploadedBy: 1,
+            uploadDate: "2024-01-18",
+            version: "1.0",
+            url: "https://example.com/documents/building-permits.pdf"
+        },
+        {
+            id: 3,
+            projectId: 2,
+            name: "Site Survey.pdf",
+            description: "Land survey and topographical data",
+            category: "surveys",
+            fileSize: "3.7 MB",
+            uploadedBy: 2,
+            uploadDate: "2024-02-05",
+            version: "1.0",
+            url: "https://example.com/documents/site-survey.pdf"
         }
     ]
 };

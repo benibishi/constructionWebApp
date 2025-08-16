@@ -31,6 +31,10 @@
                 <i class="fas fa-tasks"></i>
                 <span>Tasks</span>
             </a>
+            <a href="#" class="nav-link" data-tab="documents">
+                <i class="fas fa-file-alt"></i>
+                <span>Documents</span>
+            </a>
             <a href="#" class="nav-link" data-tab="team">
                 <i class="fas fa-users"></i>
                 <span>Team</span>
@@ -190,6 +194,38 @@
             <!-- Tasks List -->
             <div class="tasks-container" id="tasksContainer">
                 <!-- Tasks will be loaded here -->
+            </div>
+        </section>
+        <!-- Documents Tab -->
+        <section id="documents" class="tab-content">
+            <div class="page-header">
+                <h1>Document Management</h1>
+                <button class="btn btn-primary" id="uploadDocumentBtn">
+                    <i class="fas fa-upload"></i> Upload Document
+                </button>
+            </div>
+
+            <!-- Document Filters -->
+            <div class="document-filters">
+                <select id="documentProjectFilter">
+                    <option value="">All Projects</option>
+                </select>
+                <select id="documentCategoryFilter">
+                    <option value="">All Categories</option>
+                    <option value="drawings">Drawings</option>
+                    <option value="permits">Permits</option>
+                    <option value="contracts">Contracts</option>
+                    <option value="surveys">Surveys</option>
+                    <option value="photos">Photos</option>
+                    <option value="reports">Reports</option>
+                    <option value="other">Other</option>
+                </select>
+                <input type="text" id="searchDocuments" placeholder="Search documents...">
+            </div>
+
+            <!-- Documents List -->
+            <div class="documents-container" id="documentsContainer">
+                <!-- Documents will be loaded here -->
             </div>
         </section>
 
@@ -386,6 +422,58 @@
             </div>
         </div>
     </div>>
+    <!-- Document Upload Modal -->
+    <div class="modal" id="documentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="documentModalTitle">Upload Document</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="documentForm">
+                    <input type="hidden" id="documentId">
+                    <div class="form-group">
+                        <label for="documentProject">Project</label>
+                        <select id="documentProject" required>
+                            <option value="">Select Project</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="documentName">Document Name</label>
+                        <input type="text" id="documentName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="documentDescription">Description</label>
+                        <textarea id="documentDescription" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="documentCategory">Category</label>
+                        <select id="documentCategory" required>
+                            <option value="">Select Category</option>
+                            <option value="drawings">Drawings</option>
+                            <option value="permits">Permits</option>
+                            <option value="contracts">Contracts</option>
+                            <option value="surveys">Surveys</option>
+                            <option value="photos">Photos</option>
+                            <option value="reports">Reports</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="documentFile">File Upload</label>
+                        <input type="file" id="documentFile"
+                            accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.dwg,.dxf" required>
+                        <small class="form-text">Supported formats: PDF, DOC, DOCX, XLS, XLSX, JPG, PNG, DWG,
+                            DXF</small>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" id="cancelDocument">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Upload Document</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <script src="js/main.js"></script>
     <script src="js/dashboard.js"></script>
@@ -393,6 +481,7 @@
     <script src="js/team.js"></script>
     <script src="js/projects.js"></script>
     <script src="js/notifications.js"></script>
+    <script src="js/documents.js"></script>
     <div class="notification" id="notification"></div>
 </body>
 

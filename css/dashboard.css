@@ -1093,3 +1093,221 @@
 .task-dependencies strong {
     color: var(--primary);
 }
+
+/* Add these styles to css/dashboard.css */
+
+/* Document Filters */
+.document-filters {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.document-filters select,
+.document-filters input {
+    padding: 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+}
+
+/* Document Cards */
+.document-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.document-card {
+    background: white;
+    border-radius: 0.75rem;
+    box-shadow: var(--card-shadow);
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.document-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.document-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.document-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    color: white;
+}
+
+.icon-drawings {
+    background: var(--primary);
+}
+
+.icon-permits {
+    background: var(--success);
+}
+
+.icon-contracts {
+    background: var(--warning);
+}
+
+.icon-surveys {
+    background: var(--info);
+}
+
+.icon-photos {
+    background: var(--purple);
+}
+
+.icon-reports {
+    background: var(--orange);
+}
+
+.icon-other {
+    background: var(--secondary);
+}
+
+.document-header h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--dark);
+    word-break: break-word;
+}
+
+.document-header p {
+    color: var(--secondary);
+    font-size: 0.9rem;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.document-body {
+    padding: 1.5rem;
+}
+
+.document-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    font-size: 0.85rem;
+    color: var(--secondary);
+}
+
+.document-category {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+}
+
+.category-drawings {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.category-permits {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.category-contracts {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.category-surveys {
+    background: #e0e7ff;
+    color: #312e81;
+}
+
+.category-photos {
+    background: #fce7f3;
+    color: #be185d;
+}
+
+.category-reports {
+    background: #f0f9ff;
+    color: #0369a1;
+}
+
+.category-other {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+.document-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.document-actions .btn {
+    flex: 1;
+    min-width: 100px;
+    justify-content: center;
+}
+
+/* Empty State */
+.empty-state-documents {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--secondary);
+}
+
+.empty-state-documents i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: var(--gray);
+}
+
+.empty-state-documents h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--dark);
+}
+
+/* File Input Styling */
+#documentFile {
+    padding: 1rem;
+    border: 2px dashed var(--border);
+    border-radius: 0.5rem;
+    background: var(--light);
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+#documentFile:hover {
+    border-color: var(--primary);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .document-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .document-filters {
+        flex-direction: column;
+    }
+
+    .document-actions {
+        flex-direction: column;
+    }
+
+    .document-actions .btn {
+        width: 100%;
+    }
+}
