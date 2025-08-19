@@ -1,13 +1,24 @@
 // Projects Management Module
 
-// Load all projects for the projects list page
-function loadProjectsList() {
+// --- Add/Replace this function ---
+/*
+ * Renders the list of projects into the specified container.
+ * @param {string} containerId - The ID of the HTML element to render the projects into.
+ */
+function renderProjectList(containerId) {
     const projects = JSON.parse(localStorage.getItem('projects') || '[]');
-    const container = document.getElementById('projectsListContainer');
+    const container = document.getElementById(containerId); // Use the passed ID
+
+    if (!container) {
+        console.warn(`Container with ID '${containerId}' not found for project list rendering.`);
+        return; // Exit if container not found
+    }
 
     if (projects.length === 0) {
+        // Use a generic empty state that can be used in both contexts or customize based on containerId if needed
+        // For simplicity, using a generic one here. You might differentiate if UI needs differ significantly.
         container.innerHTML = `
-            <div class="empty-state-full">
+            <div class="empty-state-full"> <!-- Using empty-state-full for consistency -->
                 <i class="fas fa-project-diagram"></i>
                 <h3>No Projects Found</h3>
                 <p>Get started by creating your first project.</p>
@@ -19,15 +30,18 @@ function loadProjectsList() {
         return;
     }
 
-    container.innerHTML = projects.map(project => {
+    // Generate project cards HTML
+    const projectCardsHtml = projects.map(project => {
         const statusClass = `status-${project.status}`;
-        const statusText = project.status.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase());
-        // In both loadProjects() and loadProjectsList() functions
+        // Capitalize status text consistently
+        const statusText = project.status.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+
+        // Use consistent HTML structure for project cards
         return `
             <div class="project-card" onclick="showProjectDetails(${project.id})" style="cursor: pointer;">
                 <div class="project-header">
-                    <h3>${project.name}</h3>
-                    <p>${project.description}</p>
+                    <h3>${escapeHtml(project.name)}</h3> <!-- Escape HTML for safety -->
+                    <p>${escapeHtml(project.description)}</p>
                 </div>
                 <div class="project-body">
                     <div class="project-meta">
@@ -53,6 +67,18 @@ function loadProjectsList() {
             </div>
         `;
     }).join('');
+
+    container.innerHTML = projectCardsHtml;
+}
+// --- Add a simple HTML escaping helper (good practice) ---
+function escapeHtml(unsafe) {
+    if (typeof unsafe !== 'string') return unsafe;
+    return unsafe
+         .replace(/&/g, "&amp;")
+         .replace(/</g, "<")
+         .replace(/>/g, ">")
+         .replace(/"/g, "&quot;")
+         .replace(/'/g, "&#039;");
 }
 
 // Show project details page

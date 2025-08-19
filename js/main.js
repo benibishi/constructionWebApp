@@ -62,38 +62,55 @@ class ConstructionManager {
     }
 
     loadTab(tabName) {
-        // Load the appropriate content for each tab
-        switch (tabName) {
-            case 'dashboard':
-                if (typeof loadDashboard === 'function') loadDashboard();
-                break;
-            case 'projects':
-                if (typeof loadProjectsList === 'function') loadProjectsList();
-                break;
-            case 'tasks':
-                if (typeof loadTasks === 'function') loadTasks();
-                break;
-            case 'calendar':
-                if (typeof loadCalendar === 'function') loadCalendar();
-                break;
-            case 'documents':
-                if (typeof loadDocuments === 'function') loadDocuments();
-                break;
-            case 'team':
-                if (typeof loadTeam === 'function') loadTeam();
-                break;
-            case 'daily-reports':  // Add this new case
-                if (typeof loadDailyReports === 'function') loadDailyReports();
-                break;
-            case 'weekly-reports':  // Add this new case
-                if (typeof loadWeeklyReports === 'function') loadWeeklyReports();
-                break;
-            case 'visual-analytics':  // Add this new case
-                if (typeof loadVisualAnalytics === 'function') loadVisualAnalytics();
-                break;
-        }
+    // Load the appropriate content for each tab
+    switch (tabName) {
+        case 'dashboard':
+            // Dashboard loads its own stats and project list view
+            if (typeof loadDashboard === 'function') loadDashboard();
+            break;
+        case 'projects':
+            // Projects tab uses the unified project list renderer for its specific container
+            // loadProjectsList function in projects.js now handles this via renderProjectList
+            if (typeof loadProjectsList === 'function') loadProjectsList();
+            break;
+        case 'project-details':
+            // Project details view is loaded dynamically by showProjectDetails function
+            // when a project is clicked. No specific loading needed here as it replaces
+            // the content of the 'projects' or 'project-details' tab.
+            // Ensure the container is clear or has a loading state if needed.
+            const projectDetailsContent = document.getElementById('projectDetailsContent');
+            if (projectDetailsContent) {
+                projectDetailsContent.innerHTML = '<div class="loading">Loading project details...</div>';
+            }
+            // Actual content loading happens in showProjectDetails -> loadProjectDetails
+            break;
+        case 'tasks':
+            if (typeof loadTasks === 'function') loadTasks();
+            break;
+        case 'calendar':
+            if (typeof loadCalendar === 'function') loadCalendar();
+            break;
+        case 'documents':
+            if (typeof loadDocuments === 'function') loadDocuments();
+            break;
+        case 'team':
+            if (typeof loadTeam === 'function') loadTeam();
+            break;
+        case 'daily-reports':
+            if (typeof loadDailyReports === 'function') loadDailyReports();
+            break;
+        case 'weekly-reports':
+            if (typeof loadWeeklyReports === 'function') loadWeeklyReports();
+            break;
+        case 'visual-analytics':
+            if (typeof loadVisualAnalytics === 'function') loadVisualAnalytics();
+            break;
+        default:
+            console.warn(`Unknown tab requested: ${tabName}`);
+            // Optionally load a default tab or show an error message
+            // e.g., this.loadTab('dashboard');
     }
-
+}
     initializeData() {
         // Initialize with sample data if none exists
         if (!localStorage.getItem('projects')) {
