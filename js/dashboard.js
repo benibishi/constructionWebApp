@@ -723,61 +723,8 @@ document.addEventListener('DOMContentLoaded', function () {
     // --- End of other potential logic ---
 });
 
-// Add the loadProjectsList function
-function loadProjectsList() {
-    const projects = JSON.parse(localStorage.getItem('projects') || '[]');
-    const container = document.getElementById('projectsContainer');
-
-    if (projects.length === 0) {
-        container.innerHTML = `
-            <div class="empty-state-full">
-                <i class="fas fa-project-diagram"></i>
-                <h3>No Projects Found</h3>
-                <p>Get started by creating your first project.</p>
-                <button class="btn btn-primary" onclick="app.showModal('projectModal')">
-                    <i class="fas fa-plus"></i> Create Project
-                </button>
-            </div>
-        `;
-        return;
-    }
-
-    container.innerHTML = projects.map(project => {
-        const statusClass = `status-${project.status}`;
-        const statusText = project.status.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase());
-
-        // In both loadProjects() and loadProjectsList() functions
-        return `
-    <div class="project-card" onclick="showProjectDetails(${project.id})" style="cursor: pointer;">
-        <div class="project-header">
-            <h3>${project.name}</h3>
-            <p>${project.description}</p>
-        </div>
-        <div class="project-body">
-            <div class="project-meta">
-                <span><i class="far fa-calendar"></i> ${formatDate(project.startDate)}</span>
-                <span><i class="far fa-calendar-check"></i> ${formatDate(project.endDate)}</span>
-            </div>
-            <div class="project-progress">
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: ${project.progress}%; background: ${getProgressColor(project.progress)}"></div>
-                </div>
-                <div class="progress-info">
-                    <span>${project.progress}% Complete</span>
-                    <span>${statusText}</span>
-                </div>
-            </div>
-            <span class="project-status ${statusClass}">${statusText}</span>
-        </div>
-        <div class="project-actions">
-            <button class="btn btn-outline" onclick="editProject(${project.id}); event.stopPropagation();">
-                <i class="fas fa-edit"></i> Edit
-            </button>
-        </div>
-    </div>
-`;
-    }).join('');
-}
+// The incorrect loadProjectsList function has been removed from this file.
+// The correct version is now in js/projects.js and will be used instead.
 
 // Add fallback notification function
 function showNotification(message, type = 'info') {
