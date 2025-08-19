@@ -1,14 +1,4 @@
-// daily-reports.js - Daily Progress Reports Module
-// Utility function for date formatting
-function formatDate(dateString) {
-    if (!dateString) return 'No date set';
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric'
-    });
-}
+
 // Daily Progress Report System
 class DailyProgressReport {
     constructor() {
