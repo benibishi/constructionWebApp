@@ -1,16 +1,5 @@
 // Task Management Module
 
-// Add the formatDate function here at the top:
-function formatDate(dateString) {
-    if (!dateString) return 'No date set';
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric'
-    });
-}
-
 function loadTasks() {
     loadTaskFilters();
     loadTaskList();

@@ -363,33 +363,6 @@ function deleteProject(projectId) {
     }
 }
 
-function formatDate(dateString) {
-    if (!dateString) return 'No date set';
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric'
-    });
-}
-
-function getProgressColor(progress) {
-    if (progress < 30) return '#ef4444'; // red
-    if (progress < 70) return '#f59e0b'; // orange
-    return '#10b981'; // green
-}
-
-function getRoleText(role) {
-    const roles = {
-        'project-manager': 'Project Manager',
-        'site-supervisor': 'Site Supervisor',
-        'engineer': 'Engineer',
-        'foreman': 'Foreman',
-        'worker': 'Worker'
-    };
-    return roles[role] || role;
-}
-
 // Dropdown functionality
 function toggleProjectDropdown(projectId) {
     // Close all other dropdowns

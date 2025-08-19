@@ -556,23 +556,6 @@ function updateChartSafely(chart, newData, newLabels = []) {
         console.error('Error updating chart:', error);
     }
 }
-function formatDate(dateString, format = 'full') {
-    if (!dateString) return 'No date';
-    const date = new Date(dateString);
-
-    if (format === 'short') {
-        return date.toLocaleDateString('en-US', {
-            month: 'short',
-            day: 'numeric'
-        });
-    }
-
-    return date.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric'
-    });
-}
 
 // Event Listeners
 document.addEventListener('DOMContentLoaded', function () {
