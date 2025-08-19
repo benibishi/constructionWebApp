@@ -573,12 +573,19 @@ function updateTaskStatus(taskId, newStatus) {
     }
 }
 
-// Form handling
+// js/dashboard.js
+
 document.addEventListener('DOMContentLoaded', function () {
-    if (document.getElementById('projectForm')) {
-        document.getElementById('projectForm').addEventListener('submit', function (e) {
+    console.log("Dashboard.js DOMContentLoaded executing..."); // Debug log
+
+    // --- Project Form Submission (Handles Add/Edit) ---
+    const projectForm = document.getElementById('projectForm');
+    if (projectForm) {
+        projectForm.addEventListener('submit', function (e) {
+            console.log("Project form submit triggered..."); // Debug log
             e.preventDefault();
 
+            // --- Existing logic for saving project ---
             const projectId = document.getElementById('projectId').value;
             const project = {
                 id: projectId ? parseInt(projectId) : Date.now(),
@@ -587,7 +594,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 startDate: document.getElementById('startDate').value,
                 endDate: document.getElementById('endDate').value,
                 status: document.getElementById('projectStatus').value,
-                progress: 0
+                progress: 0 // Or calculate based on tasks if needed elsewhere
             };
 
             let projects = JSON.parse(localStorage.getItem('projects') || '[]');
@@ -597,39 +604,123 @@ document.addEventListener('DOMContentLoaded', function () {
                 const index = projects.findIndex(p => p.id === parseInt(projectId));
                 if (index !== -1) {
                     projects[index] = project;
+                    console.log(`Project ${projectId} updated.`); // Debug log
+                } else {
+                    console.warn(`Project with ID ${projectId} not found for update.`);
                 }
             } else {
                 // Add new project
                 projects.push(project);
+                console.log(`New project added with ID ${project.id}.`); // Debug log
             }
 
             localStorage.setItem('projects', JSON.stringify(projects));
+            console.log("Projects saved to localStorage."); // Debug log
+            // --- End of existing saving logic ---
 
-            // Reset form and close modal
+            // --- Reset form and close modal (existing logic) ---
             this.reset();
             document.getElementById('projectId').value = '';
             document.getElementById('projectModalTitle').textContent = 'Add New Project';
-            app.hideModal('projectModal');
+            if (window.app && typeof window.app.hideModal === 'function') {
+                window.app.hideModal('projectModal');
+                console.log("Project modal hidden via app controller."); // Debug log
+            } else {
+                document.getElementById('projectModal').style.display = 'none';
+                console.log("Project modal hidden via direct style."); // Debug log
+            }
+            // --- End of reset/close logic ---
 
-            // Refresh dashboard
-            loadProjects();
-            updateStats();
+            // --- CRITICAL: Refresh ALL relevant views ---
+            console.log("Refreshing views..."); // Debug log
+
+            // 1. Refresh dashboard stats (if function exists)
+            if (typeof updateStats === 'function') {
+                console.log("Calling updateStats()..."); // Debug log
+                updateStats(); // Update dashboard stats
+            } else {
+                console.warn("updateStats function not found.");
+            }
+
+            // 2. Refresh project list on the DASHBOARD view (uses #projectsContainer)
+            // The loadProjects function in dashboard.js now calls renderProjectList('projectsContainer')
+            if (typeof loadProjects === 'function') {
+                console.log("Calling loadProjects() for dashboard..."); // Debug log
+                loadProjects(); // Refresh project list on the DASHBOARD
+            } else {
+                console.warn("loadProjects function not found.");
+            }
+
+            // 3. ALSO refresh the project list on the MAIN PROJECTS PAGE (uses #projectsListContainer)
+            // This calls the loadProjectsList function in projects.js, which now calls renderProjectList('projectsListContainer')
+            if (typeof loadProjectsList === 'function') {
+                console.log("Calling loadProjectsList() for projects page..."); // Debug log
+                loadProjectsList(); // Refresh project list on the PROJECTS PAGE
+            } else {
+                console.warn("loadProjectsList function not found. Make sure projects.js is loaded correctly.");
+            }
+            console.log("View refresh attempts completed."); // Debug log
+            // --- END OF CRITICAL REFRESH ---
         });
+    } else {
+        console.warn("Project form element (#projectForm) not found in dashboard.js DOMContentLoaded.");
+    }
 
-        document.getElementById('cancelProject').addEventListener('click', function () {
-            document.getElementById('projectForm').reset();
+    // --- Cancel Project Button ---
+    const cancelProjectBtn = document.getElementById('cancelProject');
+    if (cancelProjectBtn) {
+        cancelProjectBtn.addEventListener('click', function () {
+            console.log("Cancel project button clicked."); // Debug log
+            const form = document.getElementById('projectForm');
+            if (form) form.reset();
             document.getElementById('projectId').value = '';
             document.getElementById('projectModalTitle').textContent = 'Add New Project';
-            app.hideModal('projectModal');
+            // Use app controller if available, otherwise fallback
+            if (window.app && typeof window.app.hideModal === 'function') {
+                window.app.hideModal('projectModal');
+            } else {
+                document.getElementById('projectModal').style.display = 'none';
+            }
         });
-
-        // Add Project Button
-        if (document.getElementById('addProjectBtn')) {
-            document.getElementById('addProjectBtn').addEventListener('click', function () {
-                app.showModal('projectModal');
-            });
-        }
+    } else {
+        console.warn("Cancel project button (#cancelProject) not found.");
     }
+
+    // --- Add Project Button on Dashboard ---
+    const addProjectBtn = document.getElementById('addProjectBtn');
+    if (addProjectBtn) {
+        addProjectBtn.addEventListener('click', function () {
+            console.log("Add project button (dashboard) clicked."); // Debug log
+            // Ensure modal title and form are reset for a new project
+            document.getElementById('projectModalTitle').textContent = 'Add New Project';
+            const form = document.getElementById('projectForm');
+            if (form) {
+                form.reset();
+            }
+            document.getElementById('projectId').value = ''; // Clear ID for new project
+
+            // Show the modal using the app controller
+            if (window.app && typeof window.app.showModal === 'function') {
+                window.app.showModal('projectModal');
+                console.log("Project modal shown via app controller.");
+            } else {
+                // Fallback if app.showModal is not available
+                const modal = document.getElementById('projectModal');
+                if (modal) {
+                    modal.style.display = 'block';
+                    console.log("Project modal shown via direct style.");
+                } else {
+                    console.error("Project modal element (#projectModal) not found.");
+                }
+            }
+        });
+    } else {
+        console.warn("Add project button (#addProjectBtn) not found on dashboard.");
+    }
+
+    // --- You might have other DOMContentLoaded logic for dashboard here ---
+    // e.g., loading initial dashboard data if not handled by loadDashboard()
+    // --- End of other potential logic ---
 });
 
 // Add the loadProjectsList function
