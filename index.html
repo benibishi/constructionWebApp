@@ -15,10 +15,10 @@
             <span>BuildMaster</span>
         </div>
         <div class="nav-menu">
-            <a href="#" class="nav-link" data-tab="dashboard">
-                <i class="fas fa-tachometer-alt"></i>
-                <span>Dashboard</span>
-            </a>
+         <a href="#" class="nav-link active" data-tab="dashboard"> 
+    <i class="fas fa-tachometer-alt"></i>
+    <span>Dashboard</span>
+</a>
             <a href="#" class="nav-link" data-tab="projects">
                 <i class="fas fa-project-diagram"></i>
                 <span>Projects</span>
@@ -44,10 +44,10 @@
                 <i class="fas fa-chart-bar"></i>
                 <span>Visual Analytics</span>
             </a>
-            <a href="#" class="nav-link active" data-tab="documents">
-                <i class="fas fa-file-alt"></i>
-                <span>Documents</span>
-            </a>
+       <a href="#" class="nav-link" data-tab="documents"> 
+    <i class="fas fa-file-alt"></i>
+    <span>Documents</span>
+</a>
             <a href="#" class="nav-link" data-tab="team">
                 <i class="fas fa-users"></i>
                 <span>Team</span>
@@ -126,7 +126,7 @@
     <!-- Main Content -->
     <main class="main-content">
         <!-- Dashboard Tab -->
-        <section id="dashboard" class="tab-content">
+        <section id="dashboard" class="tab-content active">
             <div class="page-header">
                 <h1>Project Dashboard</h1>
                 <button class="btn btn-primary" id="addProjectBtn">
@@ -558,7 +558,22 @@
                 </select>
                 <input type="text" id="searchTasks" placeholder="Search tasks...">
             </div>
-
+  <!-- Bulk Actions Bar (Initially Hidden) -->
+    <div id="bulkActionsBar" class="bulk-actions-bar" style="display: none; margin-bottom: 1rem; padding: 1rem; background-color: var(--light); border: 1px solid var(--border); border-radius: 0.5rem;">
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <input type="checkbox" id="selectAllCheckbox">
+            <label for="selectAllCheckbox" style="margin-right: 1rem;">Select All</label>
+            <button id="bulkMarkCompleteBtn" class="btn btn-success btn-sm">
+                <i class="fas fa-check"></i> Mark Complete
+            </button>
+            <button id="bulkDeleteBtn" class="btn btn-danger btn-sm">
+                <i class="fas fa-trash"></i> Delete Selected
+            </button>
+            <!-- Add more bulk action buttons here if needed -->
+            <span id="selectedCount" style="margin-left: auto; font-weight: 500;"></span>
+        </div>
+    </div>
+    <!-- End Bulk Actions Bar -->
             <!-- Tasks List -->
             <div class="tasks-container" id="tasksContainer">
         <div class="task-card high" id="task-1">
@@ -2068,7 +2083,7 @@
             </div>
         </section>
         <!-- Documents Tab -->
-        <section id="documents" class="tab-content active">
+        <section id="documents" class="tab-content">
             <div class="page-header">
                 <h1>Document Management</h1>
                 <button class="btn btn-primary" id="uploadDocumentBtn">

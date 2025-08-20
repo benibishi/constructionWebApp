@@ -1,11 +1,5 @@
 // Projects Management Module
 
-// --- This is the primary function for loading the projects page list ---
-function loadProjectsList() {
-    // This function specifically targets the container for the main projects page
-    renderProjectList('projectsListContainer');
-}
-
 // --- Add/Replace this function ---
 /*
  * Renders the list of projects into the specified container.
@@ -76,16 +70,15 @@ function renderProjectList(containerId) {
 
     container.innerHTML = projectCardsHtml;
 }
-
 // --- Add a simple HTML escaping helper (good practice) ---
 function escapeHtml(unsafe) {
     if (typeof unsafe !== 'string') return unsafe;
     return unsafe
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "<")
-        .replace(/>/g, ">")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+         .replace(/&/g, "&amp;")
+         .replace(/</g, "<")
+         .replace(/>/g, ">")
+         .replace(/"/g, "&quot;")
+         .replace(/'/g, "&#039;");
 }
 
 // Show project details page
@@ -116,7 +109,14 @@ function showProjectDetails(projectId) {
         document.body.classList.remove('loading');
     }, 100);
 }
-
+/**
+ * Loads the project list for the main projects page.
+ * This is the entry point called by main.js for the 'projects' tab.
+ */
+function loadProjectsList() {
+    // Delegate to the unified renderer, specifying the container for the projects list page
+    renderProjectList('projectsListContainer');
+}
 // Load detailed project information
 function loadProjectDetails(projectId) {
     const projects = JSON.parse(localStorage.getItem('projects') || '[]');
@@ -431,73 +431,3 @@ document.addEventListener('click', function (e) {
         });
     }
 });
-// js/projects.js
-
-// Ensure this entire block is present and correctly structured
-document.addEventListener('DOMContentLoaded', function () {
-    console.log("Projects.js DOMContentLoaded executing..."); // Debug
-
-    // --- Add Project Button on the Main Projects Page ---
-    const addProjectBtnMain = document.getElementById('addProjectBtnMain');
-    if (addProjectBtnMain) {
-        console.log("Found #addProjectBtnMain, attaching event listener..."); // Debug
-        addProjectBtnMain.addEventListener('click', function () {
-            console.log("#addProjectBtnMain clicked!"); // Debug
-
-            // 1. Reset the project form to its initial state for a new project
-            const projectForm = document.getElementById('projectForm');
-            if (projectForm) {
-                console.log("Resetting project form..."); // Debug
-                projectForm.reset();
-            } else {
-                console.warn("Project form (#projectForm) not found when resetting for new project.");
-            }
-
-            // 2. Clear the hidden project ID field (essential for "new" vs "edit")
-            const projectIdField = document.getElementById('projectId');
-            if (projectIdField) {
-                console.log("Clearing project ID field..."); // Debug
-                projectIdField.value = '';
-            } else {
-                console.warn("Project ID field (#projectId) not found.");
-            }
-
-            // 3. Set the modal title for a new project
-            const modalTitle = document.getElementById('projectModalTitle');
-            if (modalTitle) {
-                console.log("Setting modal title to 'Add New Project'..."); // Debug
-                modalTitle.textContent = 'Add New Project';
-            } else {
-                console.warn("Project modal title (#projectModalTitle) not found.");
-            }
-
-            // 4. Show the modal using the centralized app controller (preferred method)
-            console.log("Attempting to show project modal via app controller..."); // Debug
-            if (window.app && typeof window.app.showModal === 'function') {
-                console.log("Calling app.showModal('projectModal')..."); // Debug
-                window.app.showModal('projectModal'); // This should work based on main.js
-                console.log("app.showModal('projectModal') called successfully."); // Debug
-            } else {
-                // Fallback: Try to show the modal directly if app controller fails
-                console.warn("app.showModal not available, trying direct DOM manipulation...");
-                const projectModal = document.getElementById('projectModal');
-                if (projectModal) {
-                    console.log("Setting project modal display to 'block' (fallback)..."); // Debug
-                    projectModal.style.display = 'block';
-                } else {
-                    console.error("Project modal element (#projectModal) not found for fallback.");
-                }
-            }
-        });
-    } else {
-        // This is critical - if the button isn't found, the listener won't attach.
-        console.error("Add Project button (#addProjectBtnMain) NOT found in the DOM when projects.js loaded.");
-        // Double-check the ID in index.html matches exactly: id="addProjectBtnMain"
-    }
-
-    // --- You might have other DOMContentLoaded logic for projects here ---
-    // e.g., initial loading of the projects list (though loadProjectsList is called by main.js)
-    // --- End of other potential logic ---
-});
-
-console.log("Projects.js file loaded."); // This runs when the script file is parsed

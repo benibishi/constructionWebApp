@@ -151,6 +151,8 @@ function updateTaskStatus(taskId, newStatus) {
     }
 }
 
+// js/tasks.js
+
 function loadTaskList() {
     const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
     const team = JSON.parse(localStorage.getItem('team') || '[]');
@@ -194,7 +196,9 @@ function loadTaskList() {
         return;
     }
 
-    container.innerHTML = filteredTasks.map(task => {
+    // --- Generate task rows HTML ---
+    let taskRows = '';
+    filteredTasks.forEach(task => {
         const project = projects.find(p => p.id === task.projectId);
         const assignee = team.find(m => m.id === task.assignee);
         const priorityClass = `priority-${task.priority}`;
@@ -214,7 +218,7 @@ function loadTaskList() {
         `;
         }
 
-        return `
+        taskRows += `
         <div class="task-card ${task.priority}" id="task-${task.id}">
             <div class="task-header">
                 <h3 class="task-title">${task.name}</h3>
@@ -251,9 +255,88 @@ function loadTaskList() {
             </div>
         </div>
     `;
-    }).join('');
-}
+    });
+    // --- End of task rows generation ---
 
+    // --- Update container.innerHTML to include the table structure with sorting ---
+    container.innerHTML = `
+        <div class="table-responsive">
+            <!-- Give the table a specific ID for sorting -->
+            <table class="tasks-table" id="mainTasksTable">
+                <thead>
+                    <tr>
+                        <!-- Add 'sortable' class to headers you want to sort -->
+                        <th class="sortable">Task Name</th>
+                        <th class="sortable">Priority</th>
+                        <th class="sortable">Status</th>
+                        <th class="sortable">Due Date</th>
+                        <th class="sortable">Assignee</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${filteredTasks.map(task => {
+        const project = projects.find(p => p.id === task.projectId);
+        const assignee = team.find(m => m.id === task.assignee);
+        const priorityClass = `priority-${task.priority}`;
+        const priorityText = task.priority.charAt(0).toUpperCase() + task.priority.slice(1);
+        const statusClass = `status-${task.status.replace(' ', '-')}`;
+        const statusText = task.status.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase());
+
+        // For sorting, we can add data-sort attributes if needed for more complex sorting
+        // e.g., use timestamp for date sorting, numeric ID for priority/status if mapped
+        // For now, text content sorting is sufficient for most columns.
+        // Due Date sorting example (using ISO date string for accurate sorting):
+        const isoDueDate = task.dueDate || '9999-99-99'; // Put empty dates last
+
+        return `
+                        <tr>
+                            <td class="task-name-cell">${task.name}</td>
+                            <td class="priority-cell" data-sort="${task.priority}"><span class="task-priority ${priorityClass}">${priorityText}</span></td>
+                            <td class="status-cell" data-sort="${task.status}"><span class="task-status ${statusClass}">${statusText}</span></td>
+                            <td class="date-cell" data-sort="${isoDueDate}">${formatDate(task.dueDate)}</td>
+                            <td>${assignee ? assignee.name : 'Unassigned'}</td>
+                            <td class="task-actions-cell">
+                                <div class="task-action-buttons">
+                                    <button class="btn btn-outline btn-sm" onclick="editTask(${task.id})">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <div class="dropdown">
+                                        <button class="btn btn-outline btn-sm dropdown-toggle" data-task-id="${task.id}">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                        <div class="dropdown-menu" id="dropdown-${task.id}">
+                                            <a href="#" onclick="event.preventDefault(); viewTaskDetails(${task.id})"><i class="fas fa-eye"></i> View Details</a>
+                                            <a href="#" onclick="event.preventDefault(); editTask(${task.id})"><i class="fas fa-edit"></i> Edit Task</a>
+                                            <a href="#" onclick="event.preventDefault(); startTask(${task.id})"><i class="fas fa-play"></i> Start Task</a>
+                                            <a href="#" onclick="event.preventDefault(); completeTask(${task.id})"><i class="fas fa-check"></i> Mark Complete</a>
+                                            <a href="#" onclick="event.preventDefault(); assignTask(${task.id})"><i class="fas fa-user-plus"></i> Assign</a>
+                                            <a href="#" onclick="event.preventDefault(); addTaskComment(${task.id})"><i class="fas fa-comment"></i> Add Comment</a>
+                                            <a href="#" onclick="event.preventDefault(); deleteTask(${task.id})" class="danger"><i class="fas fa-trash"></i> Delete</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+    }).join('')}
+                </tbody>
+            </table>
+        </div>
+    `;
+    // --- End of updated container.innerHTML ---
+
+    // --- Add this code block immediately AFTER the container.innerHTML = `...`; line ---
+    // This makes the table we just created sortable
+    if (typeof makeTableSortable === 'function') {
+        // Use the ID we assigned to the table
+        makeTableSortable('mainTasksTable');
+        console.log("Main tasks table (#mainTasksTable) made sortable.");
+    } else {
+        console.warn("makeTableSortable function not found. Table sorting might not work. Check if utils.js is loaded correctly.");
+    }
+    // --- End of addition ---
+}
 // Helper functions
 function populateProjectDropdown() {
     const projects = JSON.parse(localStorage.getItem('projects') || '[]');

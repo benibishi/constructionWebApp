@@ -62,55 +62,55 @@ class ConstructionManager {
     }
 
     loadTab(tabName) {
-    // Load the appropriate content for each tab
-    switch (tabName) {
-        case 'dashboard':
-            // Dashboard loads its own stats and project list view
-            if (typeof loadDashboard === 'function') loadDashboard();
-            break;
-        case 'projects':
-            // Projects tab uses the unified project list renderer for its specific container
-            // loadProjectsList function in projects.js now handles this via renderProjectList
-            if (typeof loadProjectsList === 'function') loadProjectsList();
-            break;
-        case 'project-details':
-            // Project details view is loaded dynamically by showProjectDetails function
-            // when a project is clicked. No specific loading needed here as it replaces
-            // the content of the 'projects' or 'project-details' tab.
-            // Ensure the container is clear or has a loading state if needed.
-            const projectDetailsContent = document.getElementById('projectDetailsContent');
-            if (projectDetailsContent) {
-                projectDetailsContent.innerHTML = '<div class="loading">Loading project details...</div>';
-            }
-            // Actual content loading happens in showProjectDetails -> loadProjectDetails
-            break;
-        case 'tasks':
-            if (typeof loadTasks === 'function') loadTasks();
-            break;
-        case 'calendar':
-            if (typeof loadCalendar === 'function') loadCalendar();
-            break;
-        case 'documents':
-            if (typeof loadDocuments === 'function') loadDocuments();
-            break;
-        case 'team':
-            if (typeof loadTeam === 'function') loadTeam();
-            break;
-        case 'daily-reports':
-            if (typeof loadDailyReports === 'function') loadDailyReports();
-            break;
-        case 'weekly-reports':
-            if (typeof loadWeeklyReports === 'function') loadWeeklyReports();
-            break;
-        case 'visual-analytics':
-            if (typeof loadVisualAnalytics === 'function') loadVisualAnalytics();
-            break;
-        default:
-            console.warn(`Unknown tab requested: ${tabName}`);
+        // Load the appropriate content for each tab
+        switch (tabName) {
+            case 'dashboard':
+                // Dashboard loads its own stats and project list view
+                if (typeof loadDashboard === 'function') loadDashboard();
+                break;
+            case 'projects':
+                // Projects tab uses the unified project list renderer for its specific container
+                // loadProjectsList function in projects.js now handles this via renderProjectList
+                if (typeof loadProjectsList === 'function') loadProjectsList();
+                break;
+            case 'project-details':
+                // Project details view is loaded dynamically by showProjectDetails function
+                // when a project is clicked. No specific loading needed here as it replaces
+                // the content of the 'projects' or 'project-details' tab.
+                // Ensure the container is clear or has a loading state if needed.
+                const projectDetailsContent = document.getElementById('projectDetailsContent');
+                if (projectDetailsContent) {
+                    projectDetailsContent.innerHTML = '<div class="loading">Loading project details...</div>';
+                }
+                // Actual content loading happens in showProjectDetails -> loadProjectDetails
+                break;
+            case 'tasks':
+                if (typeof loadTasks === 'function') loadTasks();
+                break;
+            case 'calendar':
+                if (typeof loadCalendar === 'function') loadCalendar();
+                break;
+            case 'documents':
+                if (typeof loadDocuments === 'function') loadDocuments();
+                break;
+            case 'team':
+                if (typeof loadTeam === 'function') loadTeam();
+                break;
+            case 'daily-reports':
+                if (typeof loadDailyReports === 'function') loadDailyReports();
+                break;
+            case 'weekly-reports':
+                if (typeof loadWeeklyReports === 'function') loadWeeklyReports();
+                break;
+            case 'visual-analytics':
+                if (typeof loadVisualAnalytics === 'function') loadVisualAnalytics();
+                break;
+            default:
+                console.warn(`Unknown tab requested: ${tabName}`);
             // Optionally load a default tab or show an error message
             // e.g., this.loadTab('dashboard');
+        }
     }
-}
     initializeData() {
         // Initialize with sample data if none exists
         if (!localStorage.getItem('projects')) {
@@ -132,6 +132,16 @@ class ConstructionManager {
         const modal = document.getElementById(modalId);
         if (modal) {
             modal.style.display = 'block';
+
+            // --- Enhancement 1: Focus Management ---
+            // Try to focus the first input, select, or textarea within the modal
+            const focusableElements = modal.querySelectorAll('input, select, textarea, button');
+            const firstFocusable = Array.from(focusableElements).find(el => el.offsetParent !== null); // offsetParent checks if visible
+            if (firstFocusable) {
+                // Small delay to ensure modal is fully rendered
+                setTimeout(() => firstFocusable.focus(), 10);
+            }
+            // --- End Enhancement 1 ---
         }
     }
 
@@ -146,6 +156,49 @@ class ConstructionManager {
         document.querySelectorAll('.modal').forEach(modal => {
             modal.style.display = 'none';
         });
+    }
+
+    // --- Enhancement 2: Loading State Helper ---
+    // Call this when starting a process in a modal
+    setModalLoading(modalId, isLoading) {
+        const modal = document.getElementById(modalId);
+        if (!modal) return;
+
+        const submitButton = modal.querySelector('button[type="submit"]');
+        const cancelButton = modal.querySelector('#cancelProject, #cancelTask, #cancelMember, #cancelReport, #cancelDocument'); // Add IDs for other modals
+
+        if (isLoading) {
+            // Disable buttons and show loading text/spinner
+            if (submitButton) {
+                submitButton.disabled = true;
+                submitButton.dataset.originalText = submitButton.innerHTML;
+                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...'; // Requires FontAwesome spinner
+            }
+            if (cancelButton) cancelButton.disabled = true;
+
+            // Optional: Add a general overlay or dim the form content
+            const form = modal.querySelector('form');
+            if (form) {
+                form.style.pointerEvents = 'none'; // Prevent interaction
+                form.style.opacity = '0.7';
+            }
+
+        } else {
+            // Re-enable buttons and restore text
+            if (submitButton) {
+                submitButton.disabled = false;
+                submitButton.innerHTML = submitButton.dataset.originalText || 'Save'; // Fallback if data attribute missing
+                delete submitButton.dataset.originalText;
+            }
+            if (cancelButton) cancelButton.disabled = false;
+
+            // Re-enable form
+            const form = modal.querySelector('form');
+            if (form) {
+                form.style.pointerEvents = '';
+                form.style.opacity = '';
+            }
+        }
     }
 }
 
