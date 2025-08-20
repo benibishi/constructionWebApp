@@ -838,9 +838,6 @@ th.sortable:hover .sort-indicator {
     font-size: 0.85rem;
 }
 
-.task-card {
-    z-index: 1;
-}
 
 .dropdown-menu {
     position: absolute;
