@@ -28,27 +28,6 @@
     --orange: #f97316;
 }
 
-[data-theme="dark"] {
-    --primary: #3b82f6;
-    --primary-dark: #2563eb;
-    --secondary: #94a3b8;
-    --success: #10b981;
-    --warning: #f59e0b;
-    --danger: #ef4444;
-    --info: #60a5fa;
-    --light: #1e293b;
-    --dark: #f8fafc;
-    --gray: #647488;
-    --border: #334155;
-    --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-    --modal-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-    --sidebar-bg: #0f172a;
-    --header-bg: #1e293b;
-    --text-primary: #f8fafc;
-    --text-secondary: #cbd5e1;
-    --background: #0f172a;
-}
-
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: var(--background);
@@ -369,10 +348,6 @@ body {
 
 .notification-item.unread {
     background: #f0f9ff;
-}
-
-[data-theme="dark"] .notification-item.unread {
-    background: #1e3a8a;
 }
 
 .notification-content {
