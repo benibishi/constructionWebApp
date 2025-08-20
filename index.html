@@ -34,18 +34,20 @@
                 <span>Calendar</span>
             </a>
             <!-- Add to the navigation menu -->
-            <a href="#" class="nav-link" data-tab="daily-reports">
-                <i class="fas fa-clipboard-list"></i>
-                <span>Daily Reports</span>
-            </a>
-            <a href="#" class="nav-link" data-tab="weekly-reports">
-                <i class="fas fa-chart-line"></i>
-                <span>Weekly Reports</span>
-            </a>
-            <a href="#" class="nav-link" data-tab="visual-analytics">
-                <i class="fas fa-chart-bar"></i>
-                <span>Visual Analytics</span>
-            </a>
+            <!-- New Combined Reports Tab with Dropdown -->
+            <div class="nav-dropdown">
+                <a href="#" class="nav-link" data-tab="reports">
+                    <i class="fas fa-file-alt"></i> <!-- You can choose a suitable icon -->
+                    <span>Reports</span>
+                    <i class="fas fa-caret-down" style="margin-left: auto;"></i> <!-- Dropdown indicator -->
+                </a>
+                <div class="nav-dropdown-menu">
+                    <a href="#" class="nav-dropdown-item" data-subtab="daily-reports">Daily Reports</a>
+                    <a href="#" class="nav-dropdown-item" data-subtab="weekly-reports">Weekly Reports</a>
+                    <a href="#" class="nav-dropdown-item" data-subtab="visual-analytics">Visual Analytics</a>
+                </div>
+            </div>
+            <!-- End Combined Reports Tab -->
             <a href="#" class="nav-link" data-tab="documents">
                 <i class="fas fa-file-alt"></i>
                 <span>Documents</span>

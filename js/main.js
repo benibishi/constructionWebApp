@@ -2,9 +2,9 @@
 class ConstructionManager {
     constructor() {
         this.currentTab = 'dashboard';
+        this.currentSubTab = 'daily-reports'; // Default subtab for reports
         this.init();
     }
-
     init() {
         this.setupEventListeners();
         this.loadTab(this.currentTab);
@@ -12,23 +12,52 @@ class ConstructionManager {
     }
 
     setupEventListeners() {
-        // Navigation tab switching
-        document.querySelectorAll('.nav-link').forEach(link => {
+        // Navigation tab switching (Main Tabs)
+        document.querySelectorAll('.nav-link[data-tab]').forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
+                // Close any open dropdowns first
+                document.querySelectorAll('.nav-dropdown-menu.show').forEach(menu => menu.classList.remove('show'));
                 const tab = e.currentTarget.dataset.tab;
                 this.switchTab(tab);
             });
         });
+        // --- NEW: Handle clicks on Report Sub-tabs ---
+        document.querySelectorAll('.nav-dropdown-item[data-subtab]').forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation(); // Prevent triggering parent link
+                const subTab = e.currentTarget.dataset.subtab;
+                this.switchSubTab(subTab);
+                // Close the dropdown menu after selection
+                document.querySelectorAll('.nav-dropdown-menu.show').forEach(menu => menu.classList.remove('show'));
+            });
+        });
 
-        // Modal close buttons
+        // --- NEW: Toggle Report Dropdown ---
+        document.querySelectorAll('.nav-link[data-tab="reports"]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                // Toggle the dropdown menu visibility
+                const dropdownMenu = e.currentTarget.nextElementSibling; // Assumes menu is the next sibling
+                if (dropdownMenu && dropdownMenu.classList.contains('nav-dropdown-menu')) {
+                    dropdownMenu.classList.toggle('show');
+                    e.preventDefault(); // Prevent default link behavior only for toggle
+                }
+            });
+        });
+        // Modal close buttons (existing logic)
         document.addEventListener('click', (e) => {
             if (e.target.classList.contains('close') || e.target.classList.contains('btn-secondary')) {
                 this.closeAllModals();
             }
+            // --- NEW: Close dropdowns when clicking outside ---
+            if (!e.target.closest('.nav-dropdown')) {
+                document.querySelectorAll('.nav-dropdown-menu.show').forEach(menu => menu.classList.remove('show'));
+            }
+            // --- END NEW ---
         });
 
-        // Click outside modal to close
+        // Click outside modal to close (existing logic)
         document.querySelectorAll('.modal').forEach(modal => {
             modal.addEventListener('click', (e) => {
                 if (e.target === modal) {
@@ -38,27 +67,96 @@ class ConstructionManager {
         });
     }
 
+    // js/main.js (inside ConstructionManager class)
+
     switchTab(tabName) {
-        // Update navigation
-        document.querySelectorAll('.nav-link').forEach(link => {
+        console.log(`Main.js: switchTab called with tabName: ${tabName}`); // Debug log
+
+        // Update navigation for main tabs - Remove 'active' from all main tab links
+        document.querySelectorAll('.nav-link[data-tab]').forEach(link => {
             link.classList.remove('active');
         });
-        const activeLink = document.querySelector(`[data-tab="${tabName}"]`);
-        if (activeLink) {
-            activeLink.classList.add('active');
+
+        // Remove 'active' from all dropdown items when switching main tabs
+        document.querySelectorAll('.nav-dropdown-item').forEach(item => {
+            item.classList.remove('active');
+        });
+
+        // --- Handle activating the correct main tab link in the UI ---
+        let activeMainTabLink = null;
+        if (tabName !== 'reports') {
+            // For non-report tabs, find and activate the link directly
+            activeMainTabLink = document.querySelector(`.nav-link[data-tab="${tabName}"]`);
+        } else {
+            // For the 'reports' tab, find the main parent link
+            activeMainTabLink = document.querySelector(`.nav-link[data-tab="reports"]`);
         }
 
-        // Update content
+        if (activeMainTabLink) {
+            activeMainTabLink.classList.add('active');
+            console.log(`Main.js: Activated main tab link for ${tabName}`); // Debug log
+
+            // If it's the reports tab, also ensure the current subtab link is marked active
+            if (tabName === 'reports') {
+                const activeSubLink = document.querySelector(`.nav-dropdown-item[data-subtab="${this.currentSubTab}"]`);
+                if (activeSubLink) {
+                    activeSubLink.classList.add('active');
+                    console.log(`Main.js: Also activated subtab link for ${this.currentSubTab}`); // Debug log
+                }
+            }
+        }
+        // --- End of UI activation ---
+
+        // --- Handle Content Visibility ---
+        // Hide ALL main tab content sections first
         document.querySelectorAll('.tab-content').forEach(tab => {
             tab.classList.remove('active');
         });
-        const activeTab = document.getElementById(tabName);
-        if (activeTab) {
-            activeTab.classList.add('active');
-        }
 
+        // Specific logic based on which main tab was selected
+        if (tabName !== 'reports') {
+            // For non-report tabs, show their corresponding content section
+            const activeTabContent = document.getElementById(tabName);
+            if (activeTabContent) {
+                activeTabContent.classList.add('active');
+                console.log(`Main.js: Showed content for main tab ${tabName}`); // Debug log
+            }
+
+            // Explicitly hide the report sub-tab sections when NOT on the reports main tab
+            document.getElementById('daily-reports')?.classList.remove('active');
+            document.getElementById('weekly-reports')?.classList.remove('active');
+            document.getElementById('visual-analytics')?.classList.remove('active');
+
+        } else {
+            // For the 'reports' tab:
+            // 1. Do NOT automatically load or show content here.
+            // 2. The dropdown click handler (switchSubTab) will handle showing the correct sub-tab content.
+            // 3. However, ensure the dropdown menu itself is handled (though this is usually done by the click listener)
+            console.log("Main.js: 'reports' tab selected. Content will be shown by sub-tab handler.");
+            // We can optionally ensure the default/current sub-tab content is visible
+            // But it's safer to let switchSubTab control it.
+            // this.showReportSubTab(this.currentSubTab); // Optional: uncomment if needed for initial display
+        }
+        // --- End of Content Visibility ---
+
+        // Update the current tab state
         this.currentTab = tabName;
-        this.loadTab(tabName);
+        console.log(`Main.js: this.currentTab updated to ${this.currentTab}`); // Debug log
+
+        // --- CRITICAL CHANGE: Only call loadTab for non-report main tabs ---
+        // The loadTab function should NOT be called for 'reports' itself,
+        // because 'reports' is just a container/dropdown, not a content view.
+        // Content loading for report sub-tabs is handled by switchSubTab.
+        if (tabName !== 'reports') {
+            console.log(`Main.js: Calling loadTab for ${tabName}`); // Debug log
+            this.loadTab(tabName); // Load content for the main tab (Dashboard, Projects, etc.)
+        } else {
+            console.log("Main.js: Skipping loadTab call for 'reports' main tab."); // Debug log
+            // If needed, you could trigger loading for the *current* subtab here,
+            // but it's better handled by switchSubTab to avoid race conditions.
+            // this.loadTab(this.currentSubTab);
+        }
+        // --- END CRITICAL CHANGE ---
     }
 
     loadTab(tabName) {
@@ -96,6 +194,7 @@ class ConstructionManager {
             case 'team':
                 if (typeof loadTeam === 'function') loadTeam();
                 break;
+            case 'reports': // This might be called initially if 'reports' is the default
             case 'daily-reports':
                 if (typeof loadDailyReports === 'function') loadDailyReports();
                 break;

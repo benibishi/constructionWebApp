@@ -947,6 +947,84 @@
     color: #92400e;
 }
 
+/* --- NEW: Navigation Dropdown Styles --- */
+.nav-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.nav-dropdown .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: var(--text-secondary);
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s;
+    width: 100%;
+    /* Make sure it takes full width if needed */
+    box-sizing: border-box;
+}
+
+.nav-dropdown .nav-link:hover,
+.nav-dropdown .nav-link.active {
+    background: var(--primary);
+    color: white;
+}
+
+.nav-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: var(--header-bg);
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    box-shadow: var(--modal-shadow);
+    min-width: 200px;
+    z-index: 1000;
+    display: none;
+    /* Hidden by default */
+    margin-top: 0.25rem;
+    padding: 0.5rem 0;
+}
+
+.nav-dropdown-menu.show {
+    display: block;
+}
+
+.nav-dropdown-item {
+    display: block;
+    padding: 0.75rem 1rem;
+    text-decoration: none;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    transition: background-color 0.2s;
+    border-radius: 0;
+    /* Override default link border-radius */
+}
+
+.nav-dropdown-item:hover {
+    background-color: var(--light);
+}
+
+.nav-dropdown-item.active {
+    background-color: var(--primary);
+    color: white;
+}
+
+#daily-reports,
+#weekly-reports,
+#visual-analytics {
+    display: none;
+}
+
+#daily-reports.active,
+#weekly-reports.active,
+#visual-analytics.active {
+    display: block;
+}
+
 .trend-comparison {
     margin: 2rem 0;
     padding: 1.5rem;
