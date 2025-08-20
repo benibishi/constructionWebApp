@@ -1,5 +1,11 @@
 // Projects Management Module
 
+// --- This is the primary function for loading the projects page list ---
+function loadProjectsList() {
+    // This function specifically targets the container for the main projects page
+    renderProjectList('projectsListContainer');
+}
+
 // --- Add/Replace this function ---
 /*
  * Renders the list of projects into the specified container.
