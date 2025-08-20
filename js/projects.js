@@ -1,53 +1,83 @@
-// Projects Management Module
+// js/projects.js - Projects Management Module
 
-// --- This is the primary function for loading the projects page list ---
+// --- Assume formatDate, getRoleText, getProgressColor, escapeHtml, debounce are available from utils.js ---
+
+// --- Selection State for Projects ---
+let selectedProjectIds = new Set();
+
+// --- Main Load Function for Projects List Page ---
 function loadProjectsList() {
-    // This function specifically targets the container for the main projects page
+    // Delegate to the unified renderer, specifying the container for the projects list page
     renderProjectList('projectsListContainer');
 }
 
-// --- Add/Replace this function ---
-/*
+// --- Unified Project List Renderer ---
+/**
  * Renders the list of projects into the specified container.
  * @param {string} containerId - The ID of the HTML element to render the projects into.
  */
 function renderProjectList(containerId) {
     const projects = JSON.parse(localStorage.getItem('projects') || '[]');
-    const container = document.getElementById(containerId); // Use the passed ID
+    const container = document.getElementById(containerId);
+
+    // --- Get Search Term (if filter exists) ---
+    const searchFilter = document.getElementById('searchProjects')?.value.toLowerCase().trim() || '';
+    console.log(`Projects.js: Rendering list in #${containerId}, search term: '${searchFilter}'`);
+
+    // --- Apply Search Filter ---
+    let filteredProjects = projects;
+    if (searchFilter) {
+        filteredProjects = projects.filter(project =>
+            (project.name && project.name.toLowerCase().includes(searchFilter)) ||
+            (project.description && project.description.toLowerCase().includes(searchFilter))
+        );
+    }
+    // --- End Apply Search Filter ---
 
     if (!container) {
-        console.warn(`Container with ID '${containerId}' not found for project list rendering.`);
-        return; // Exit if container not found
+        console.warn(`Projects.js: Container with ID '${containerId}' not found for project list rendering.`);
+        return;
     }
 
-    if (projects.length === 0) {
-        // Use a generic empty state that can be used in both contexts or customize based on containerId if needed
-        // For simplicity, using a generic one here. You might differentiate if UI needs differ significantly.
+    if (filteredProjects.length === 0) {
+        // Use a generic empty state
         container.innerHTML = `
-            <div class="empty-state-full"> <!-- Using empty-state-full for consistency -->
+            <div class="empty-state-full">
                 <i class="fas fa-project-diagram"></i>
                 <h3>No Projects Found</h3>
-                <p>Get started by creating your first project.</p>
+                <p>Try adjusting your search or get started by creating your first project.</p>
                 <button class="btn btn-primary" onclick="showProjectModal()">
                     <i class="fas fa-plus"></i> Create Project
                 </button>
             </div>
         `;
+        // Hide bulk actions bar if no projects
+        const bulkActionsBarProjects = document.getElementById('bulkActionsBarProjects');
+        if (bulkActionsBarProjects) {
+            bulkActionsBarProjects.style.display = 'none';
+            selectedProjectIds.clear();
+        }
         return;
     }
 
     // Generate project cards HTML
-    const projectCardsHtml = projects.map(project => {
+    const projectCardsHtml = filteredProjects.map(project => {
         const statusClass = `status-${project.status}`;
-        // Capitalize status text consistently
         const statusText = project.status.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+
+        // Check if this project is selected
+        const isSelected = selectedProjectIds.has(project.id);
 
         // Use consistent HTML structure for project cards
         return `
-            <div class="project-card" onclick="showProjectDetails(${project.id})" style="cursor: pointer;">
+            <div class="project-card" onclick="showProjectDetails(${project.id})" style="cursor: pointer; position: relative; padding-top: 2rem;">
+                 <!-- Checkbox for selection -->
+                <div style="position: absolute; top: 0.5rem; left: 0.5rem;">
+                    <input type="checkbox" class="project-checkbox" data-project-id="${project.id}" id="select-project-${project.id}" ${isSelected ? 'checked' : ''}>
+                </div>
                 <div class="project-header">
-                    <h3>${escapeHtml(project.name)}</h3> <!-- Escape HTML for safety -->
-                    <p>${escapeHtml(project.description)}</p>
+                    <h3>${escapeHtml(project.name)}</h3>
+                    <p>${escapeHtml(project.description || '')}</p>
                 </div>
                 <div class="project-body">
                     <div class="project-meta">
@@ -75,62 +105,84 @@ function renderProjectList(containerId) {
     }).join('');
 
     container.innerHTML = projectCardsHtml;
-}
-// --- Add a simple HTML escaping helper (good practice) ---
-function escapeHtml(unsafe) {
-    if (typeof unsafe !== 'string') return unsafe;
-    return unsafe
-         .replace(/&/g, "&amp;")
-         .replace(/</g, "<")
-         .replace(/>/g, ">")
-         .replace(/"/g, "&quot;")
-         .replace(/'/g, "&#039;");
-}
 
-// Show project details page
-function showProjectDetails(projectId) {
-    // Prevent multiple clicks from causing recursion
-    if (document.body.classList.contains('loading')) {
-        return;
+    // --- Add Selection and Bulk Action Logic AFTER rendering ---
+    const bulkActionsBarProjects = document.getElementById('bulkActionsBarProjects');
+    const selectAllProjectsCheckbox = document.getElementById('selectAllProjectsCheckbox');
+    const selectedProjectsCount = document.getElementById('selectedProjectsCount');
+
+    if (selectAllProjectsCheckbox) {
+        updateSelectAllProjectsCheckboxState();
+        // Remove old listener to prevent duplicates
+        selectAllProjectsCheckbox.removeEventListener('change', handleSelectAllProjectsChange);
+        selectAllProjectsCheckbox.addEventListener('change', handleSelectAllProjectsChange);
     }
 
-    // Add loading state to prevent multiple calls
-    document.body.classList.add('loading');
+    const projectCheckboxes = container.querySelectorAll('.project-checkbox');
+    projectCheckboxes.forEach(checkbox => {
+        const projectId = parseInt(checkbox.dataset.projectId);
+        // Ensure checkbox state matches selection state
+        checkbox.checked = selectedProjectIds.has(projectId);
+        // Remove old listener to prevent duplicates
+        checkbox.removeEventListener('change', handleProjectCheckboxChange);
+        checkbox.addEventListener('change', handleProjectCheckboxChange);
+    });
 
-    const projects = JSON.parse(localStorage.getItem('projects') || '[]');
-    const project = projects.find(p => p.id === projectId);
-
-    if (!project) {
-        console.error('Project not found:', projectId);
-        document.body.classList.remove('loading');
-        return;
+    const bulkDeleteProjectsBtn = document.getElementById('bulkDeleteProjectsBtn');
+    if (bulkDeleteProjectsBtn) {
+        // Remove old listener to prevent duplicates
+        bulkDeleteProjectsBtn.removeEventListener('click', handleBulkDeleteProjects);
+        bulkDeleteProjectsBtn.addEventListener('click', handleBulkDeleteProjects);
     }
 
-    // Switch to project details tab
-    window.app.switchTab('project-details');
+    updateSelectedProjectsCountDisplay();
+    updateBulkProjectsActionBarVisibility();
+    // --- End of Selection and Bulk Action Logic ---
+}
 
-    // Load project details after a small delay
-    setTimeout(() => {
-        loadProjectDetails(projectId);
-        document.body.classList.remove('loading');
-    }, 100);
+// --- Project Action Functions ---
+
+function showProjectModal() {
+    document.getElementById('projectModalTitle').textContent = 'Add New Project';
+    document.getElementById('projectId').value = '';
+    const projectForm = document.getElementById('projectForm');
+    if (projectForm) {
+        projectForm.reset();
+    }
+    if (window.app && typeof window.app.showModal === 'function') {
+        window.app.showModal('projectModal');
+    } else {
+        const modal = document.getElementById('projectModal');
+        if (modal) modal.style.display = 'block';
+    }
 }
-/**
- * Loads the project list for the main projects page.
- * This is the entry point called by main.js for the 'projects' tab.
- */
-function loadProjectsList() {
-    // Delegate to the unified renderer, specifying the container for the projects list page
-    renderProjectList('projectsListContainer');
-}
-// Load detailed project information
+// js/projects.js
+
 function loadProjectDetails(projectId) {
+    console.log(`Projects.js: loadProjectDetails called for project ID ${projectId}`);
+
     const projects = JSON.parse(localStorage.getItem('projects') || '[]');
-    const project = projects.find(p => p.id === projectId);
     const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
     const team = JSON.parse(localStorage.getItem('team') || '[]');
 
-    if (!project) return;
+    const project = projects.find(p => p.id === projectId);
+    if (!project) {
+        console.error('Projects.js: Project not found:', projectId);
+        const content = document.getElementById('projectDetailsContent');
+        if (content) {
+            content.innerHTML = `
+                <div class="empty-state-full">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>Project Not Found</h3>
+                    <p>The requested project could not be found.</p>
+                    <button class="btn btn-primary" onclick="goBackToProjects()">
+                        <i class="fas fa-arrow-left"></i> Back to Projects
+                    </button>
+                </div>
+            `;
+        }
+        return;
+    }
 
     // Get project-specific data
     const projectTasks = tasks.filter(task => task.projectId === projectId);
@@ -165,78 +217,65 @@ function loadProjectDetails(projectId) {
     const content = document.getElementById('projectDetailsContent');
     content.innerHTML = `
         <!-- Project Overview Section -->
-        <div class="project-detail-section">
-            <h2><i class="fas fa-info-circle"></i> Project Overview</h2>
-            <div class="project-overview-grid">
-                <div class="overview-card">
-                    <h4><i class="far fa-calendar"></i> Timeline</h4>
-                    <div class="overview-stats">
-                        <div class="stat-item">
-                            <span class="stat-label">Start Date</span>
-                            <span class="stat-value">${formatDate(project.startDate)}</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-label">End Date</span>
-                            <span class="stat-value">${formatDate(project.endDate)}</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-label">Duration</span>
-                            <span class="stat-value">${durationDays} days</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-label">Status</span>
-                            <span class="stat-value">
-                                <span class="project-status status-${project.status}">${project.status.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}</span>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="overview-card">
-                    <h4><i class="fas fa-chart-line"></i> Progress</h4>
-                    <div class="overview-stats">
-                        <div class="stat-item">
-                            <span class="stat-label">Overall Progress</span>
-                            <span class="stat-value">${project.progress}%</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-label">Progress Bar</span>
-                            <span class="stat-value">
-                                <div class="progress-bar" style="height: 10px;">
-                                    <div class="progress-fill" style="width: ${project.progress}%; background: ${getProgressColor(project.progress)}; height: 100%;"></div>
-                                </div>
-                            </span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-label">Completion Rate</span>
-                            <span class="stat-value">${projectTasks.length > 0 ? Math.round((completedTasks / projectTasks.length) * 100) : 0}%</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="overview-card">
-                    <h4><i class="fas fa-tasks"></i> Task Statistics</h4>
-                    <div class="overview-stats">
-                        <div class="stat-item">
-                            <span class="stat-label">Total Tasks</span>
-                            <span class="stat-value">${projectTasks.length}</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-label">Completed</span>
-                            <span class="stat-value">${completedTasks}</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-label">In Progress</span>
-                            <span class="stat-value">${inProgressTasks}</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-label">Pending</span>
-                            <span class="stat-value">${pendingTasks}</span>
-                        </div>
-                    </div>
-                </div>
+    <!-- Updated HTML -->
+<div class="project-overview">
+    <div class="overview-card timeline">
+        <h4><i class="fas fa-calendar"></i> Timeline</h4>
+        <div class="timeline-item">
+            <span class="label">Start:</span>
+            <span class="value">Jan 31, 2024</span>
+        </div>
+        <div class="timeline-item">
+            <span class="label">End:</span>
+            <span class="value">Nov 29, 2024</span>
+        </div>
+        <div class="timeline-item">
+            <span class="label">Dur:</span>
+            <span class="value">303 days</span>
+        </div>
+        <div class="timeline-item">
+            <span class="label">Stat:</span>
+            <span class="value"><span class="status-active">Active</span></span>
+        </div>
+    </div>
+
+    <div class="overview-card progress">
+        <h4><i class="fas fa-chart-line"></i> Progress</h4>
+        <div class="progress-bar-container">
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 45%; background: #f59e0b;"></div>
+            </div>
+            <div class="progress-info">
+                <span class="label">Overall:</span>
+                <span class="value">45%</span>
+            </div>
+            <div class="progress-info">
+                <span class="label">Rate:</span>
+                <span class="value">50%</span>
             </div>
         </div>
+    </div>
+
+    <div class="overview-card stats">
+        <h4><i class="fas fa-tasks"></i> Tasks</h4>
+        <div class="stats-item">
+            <span class="label">Total:</span>
+            <span class="value">2</span>
+        </div>
+        <div class="stats-item">
+            <span class="label">Completed:</span>
+            <span class="value">1</span>
+        </div>
+        <div class="stats-item">
+            <span class="label">In Progress:</span>
+            <span class="value">0</span>
+        </div>
+        <div class="stats-item">
+            <span class="label">Pending:</span>
+            <span class="value">1</span>
+        </div>
+    </div>
+</div>
 
         <!-- Tasks Section -->
         <div class="project-detail-section">
@@ -335,105 +374,524 @@ function loadProjectDetails(projectId) {
         </div>
     `;
 }
+/*
+ * Navigates to the project details view for a given project ID.
+ * @param {number} projectId - The ID of the project to display.
+ */
+// js/projects.js
 
-// Helper functions
-function goBackToProjects() {
-    window.app.switchTab('projects');
-}
+function showProjectDetails(projectId) {
+    console.log(`Projects.js: showProjectDetails called for project ID ${projectId}`);
 
-function addTaskToProject(projectId) {
-    // Set the project in the task form and show task modal
-    document.getElementById('taskProject').value = projectId;
+    // Store the project ID globally so other functions can access it
+    window.currentProjectId = projectId;
 
-    // Try to populate dropdowns
-    if (typeof populateProjectDropdown === 'function') {
-        populateProjectDropdown();
-    }
-    if (typeof populateAssigneeDropdown === 'function') {
-        populateAssigneeDropdown();
-    }
-
-    document.getElementById('taskModalTitle').textContent = 'Add New Task';
-
-    // Show modal
-    if (window.app && typeof window.app.showModal === 'function') {
-        window.app.showModal('taskModal');
+    // Use the main app controller to switch to the 'project-details' tab
+    if (window.app && typeof window.app.switchTab === 'function') {
+        console.log("Projects.js: Switching to 'project-details' tab using app controller.");
+        window.app.switchTab('project-details');
     } else {
-        document.getElementById('taskModal').style.display = 'block';
-    }
-}
-
-function showProjectModal() {
-    document.getElementById('projectModalTitle').textContent = 'Add New Project';
-    document.getElementById('projectId').value = '';
-
-    // Reset form if it exists
-    const projectForm = document.getElementById('projectForm');
-    if (projectForm) {
-        projectForm.reset();
+        console.error("Projects.js: Could not switch tab. window.app.switchTab is not available.");
+        alert("Navigation error: Could not switch to project details view.");
+        return;
     }
 
-    // Show modal
-    if (window.app && typeof window.app.showModal === 'function') {
-        window.app.showModal('projectModal');
-    } else {
-        document.getElementById('projectModal').style.display = 'block';
-    }
+    // Load the detailed project information
+    // We need to wait a tiny bit to ensure the tab switching is complete
+    // before trying to manipulate the content inside the 'project-details' tab.
+    setTimeout(() => {
+        console.log("Projects.js: Calling loadProjectDetails after tab switch delay.");
+        // Check if loadProjectDetails function exists (it should be in this file or loaded)
+        if (typeof loadProjectDetails === 'function') {
+            loadProjectDetails(projectId);
+        } else {
+            console.error("Projects.js: loadProjectDetails function is not defined.");
+            // Fallback: Try to find it on the window object if exported differently
+            if (window.loadProjectDetails && typeof window.loadProjectDetails === 'function') {
+                window.loadProjectDetails(projectId);
+            } else {
+                // Final fallback: Show an error in the target area
+                const detailsContent = document.getElementById('projectDetailsContent');
+                if (detailsContent) {
+                    detailsContent.innerHTML = `
+                        <div class="empty-state-full">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <h3>Error Loading Project</h3>
+                            <p>Could not find the function to load project details.</p>
+                            <button class="btn btn-primary" onclick="goBackToProjects()">
+                                <i class="fas fa-arrow-left"></i> Back to Projects
+                            </button>
+                        </div>
+                    `;
+                }
+            }
+        }
+    }, 100); // 100ms delay
 }
 
-function viewProjectDetails(projectId) {
-    // This would open a project details modal
-    alert(`Viewing details for project ID: ${projectId}`);
-}
+function editProject(projectId) {
+    const projects = JSON.parse(localStorage.getItem('projects') || '[]');
+    const project = projects.find(p => p.id === projectId);
 
-function deleteProject(projectId) {
-    if (confirm('Are you sure you want to delete this project? This action cannot be undone.')) {
-        let projects = JSON.parse(localStorage.getItem('projects') || '[]');
-        projects = projects.filter(project => project.id !== projectId);
-        localStorage.setItem('projects', JSON.stringify(projects));
+    if (project) {
+        document.getElementById('projectId').value = project.id;
+        document.getElementById('projectName').value = project.name;
+        document.getElementById('projectDescription').value = project.description || '';
+        document.getElementById('startDate').value = project.startDate;
+        document.getElementById('endDate').value = project.endDate;
+        document.getElementById('projectStatus').value = project.status;
 
-        // Refresh the projects list
-        loadProjectsList();
-
-        // Show notification
-        if (typeof showNotification === 'function') {
-            showNotification('Project deleted successfully!', 'success');
+        document.getElementById('projectModalTitle').textContent = 'Edit Project';
+        if (window.app && typeof window.app.showModal === 'function') {
+            window.app.showModal('projectModal');
+        } else {
+            const modal = document.getElementById('projectModal');
+            if (modal) modal.style.display = 'block';
         }
     }
 }
 
-// Dropdown functionality
-function toggleProjectDropdown(projectId) {
-    // Close all other dropdowns
-    document.querySelectorAll('.dropdown-menu').forEach(menu => {
-        menu.classList.remove('show');
-    });
+// --- Selection and Bulk Action Helper Functions for Projects ---
+function goBackToProjects() {
+    console.log("Projects.js: goBackToProjects called.");
+    if (window.app && typeof window.app.switchTab === 'function') {
+        window.app.switchTab('projects'); // Switch back to the 'projects' tab
+    } else {
+        console.error("Projects.js: Could not switch tab back to projects. window.app.switchTab is not available.");
+        // Fallback: Reload the page or find another way to navigate
+        window.location.reload(); // Or handle differently if needed
+    }
+}
+function updateSelectAllProjectsCheckboxState() {
+    const selectAllCheckbox = document.getElementById('selectAllProjectsCheckbox');
+    const allProjectCheckboxes = document.querySelectorAll('#projectsListContainer .project-checkbox');
+    const totalVisibleProjects = allProjectCheckboxes.length;
+    const totalSelectedVisibleProjects = Array.from(allProjectCheckboxes).filter(cb => cb.checked).length;
 
-    // Find and show current dropdown
-    const dropdown = document.getElementById(`project-dropdown-${projectId}`);
-    if (dropdown) {
-        dropdown.classList.toggle('show');
+    if (selectAllCheckbox) {
+        if (totalVisibleProjects > 0 && totalSelectedVisibleProjects === totalVisibleProjects) {
+            selectAllCheckbox.checked = true;
+            selectAllCheckbox.indeterminate = false;
+        } else if (totalSelectedVisibleProjects > 0) {
+            selectAllCheckbox.checked = false;
+            selectAllCheckbox.indeterminate = true;
+        } else {
+            selectAllCheckbox.checked = false;
+            selectAllCheckbox.indeterminate = false;
+        }
     }
 }
 
-function toggleTaskDropdown(taskId) {
-    // Close all other dropdowns
-    document.querySelectorAll('.dropdown-menu').forEach(menu => {
-        menu.classList.remove('show');
-    });
-
-    // Find and show current dropdown
-    const dropdown = document.getElementById(`task-dropdown-${taskId}`);
-    if (dropdown) {
-        dropdown.classList.toggle('show');
+function updateSelectedProjectsCountDisplay() {
+    const selectedCount = document.getElementById('selectedProjectsCount');
+    if (selectedCount) {
+        const count = selectedProjectIds.size;
+        selectedCount.textContent = count > 0 ? `${count} selected` : '';
     }
 }
 
-// Close dropdowns when clicking outside
-document.addEventListener('click', function (e) {
-    if (!e.target.closest('.dropdown')) {
-        document.querySelectorAll('.dropdown-menu').forEach(menu => {
-            menu.classList.remove('show');
+function updateBulkProjectsActionBarVisibility() {
+    const bulkActionsBar = document.getElementById('bulkActionsBarProjects');
+    if (bulkActionsBar) {
+        if (selectedProjectIds.size > 0) {
+            bulkActionsBar.style.display = 'block';
+        } else {
+            bulkActionsBar.style.display = 'none';
+        }
+    }
+}
+
+function handleSelectAllProjectsChange(event) {
+    const isChecked = event.target.checked;
+    const projectCheckboxes = document.querySelectorAll('#projectsListContainer .project-checkbox');
+
+    projectCheckboxes.forEach(checkbox => {
+        const projectId = parseInt(checkbox.dataset.projectId);
+        checkbox.checked = isChecked;
+        if (isChecked) {
+            selectedProjectIds.add(projectId);
+        } else {
+            selectedProjectIds.delete(projectId);
+        }
+    });
+
+    updateSelectedProjectsCountDisplay();
+    updateBulkProjectsActionBarVisibility();
+}
+
+function handleProjectCheckboxChange(event) {
+    const checkbox = event.target;
+    const projectId = parseInt(checkbox.dataset.projectId);
+    const isChecked = checkbox.checked;
+
+    if (isChecked) {
+        selectedProjectIds.add(projectId);
+    } else {
+        selectedProjectIds.delete(projectId);
+    }
+
+    updateSelectAllProjectsCheckboxState();
+    updateSelectedProjectsCountDisplay();
+    updateBulkProjectsActionBarVisibility();
+}
+
+// Example Bulk Action: Delete Projects
+function handleBulkDeleteProjects() {
+    if (selectedProjectIds.size === 0) {
+        alert("Please select at least one project to delete.");
+        return;
+    }
+
+    if (!confirm(`Are you sure you want to delete ${selectedProjectIds.size} project(s)? This action cannot be undone and will also delete associated tasks and documents.`)) {
+        return;
+    }
+
+    try {
+        let projects = JSON.parse(localStorage.getItem('projects') || '[]');
+        const initialCount = projects.length;
+        projects = projects.filter(project => !selectedProjectIds.has(project.id));
+        const deletedCount = initialCount - projects.length;
+
+        localStorage.setItem('projects', JSON.stringify(projects));
+
+        // Also delete associated tasks
+        let tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+        tasks = tasks.filter(task => !selectedProjectIds.has(task.projectId));
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+
+        // Also delete associated documents
+        let documents = JSON.parse(localStorage.getItem('documents') || '[]');
+        documents = documents.filter(doc => !selectedProjectIds.has(doc.projectId));
+        localStorage.setItem('documents', JSON.stringify(documents));
+
+        // Also delete associated daily reports
+        let dailyReports = JSON.parse(localStorage.getItem('dailyReports') || '[]');
+        dailyReports = dailyReports.filter(report => !selectedProjectIds.has(report.projectId));
+        localStorage.setItem('dailyReports', JSON.stringify(dailyReports));
+
+        console.log(`Projects.js: Bulk Delete Projects: Removed ${deletedCount} projects and associated data.`);
+
+        selectedProjectIds.clear();
+
+        // Refresh the project list
+        loadProjectsList(); // This calls renderProjectList
+
+        // Show notification
+        if (typeof showNotification === 'function') {
+            showNotification(`${deletedCount} project(s) and associated data deleted.`, 'success');
+        } else {
+            alert(`${deletedCount} project(s) and associated data deleted.`);
+        }
+
+        // Optionally, refresh dashboard stats if on dashboard
+        if (typeof updateStats === 'function' && document.getElementById('dashboard')?.classList.contains('active')) {
+            updateStats();
+        }
+
+    } catch (error) {
+        console.error("Projects.js: Error during bulk project delete:", error);
+        alert("An error occurred while deleting projects.");
+    }
+}
+// --- End of Selection and Bulk Action Helper Functions for Projects ---
+
+
+// --- Event Listeners ---
+document.addEventListener('DOMContentLoaded', function () {
+    console.log("Projects.js: DOMContentLoaded executing...");
+
+    // --- Add Project Button on the Main Projects Page ---
+    const addProjectBtnMain = document.getElementById('addProjectBtnMain');
+    if (addProjectBtnMain) {
+        console.log("Projects.js: #addProjectBtnMain found, attaching event listener.");
+        addProjectBtnMain.addEventListener('click', function () {
+            console.log("Projects.js: #addProjectBtnMain clicked!");
+            // Ensure modal title and form are reset for a new project
+            document.getElementById('projectModalTitle').textContent = 'Add New Project';
+            const projectForm = document.getElementById('projectForm');
+            if (projectForm) {
+                projectForm.reset();
+            }
+            document.getElementById('projectId').value = ''; // Clear ID for new project
+
+            // Show the modal using the app controller
+            if (window.app && typeof window.app.showModal === 'function') {
+                window.app.showModal('projectModal');
+                console.log("Projects.js: Project modal shown via app controller.");
+            } else {
+                // Fallback if app.showModal is not available
+                const projectModal = document.getElementById('projectModal');
+                if (projectModal) {
+                    projectModal.style.display = 'block';
+                    console.log("Projects.js: Project modal shown via direct style.");
+                } else {
+                    console.error("Projects.js: Project modal element (#projectModal) not found.");
+                }
+            }
         });
+    } else {
+        console.warn("Projects.js: Add Project button (#addProjectBtnMain) NOT found.");
     }
+
+    // --- Debounced Search for Projects ---
+    const searchProjectsInput = document.getElementById('searchProjects');
+    if (searchProjectsInput) {
+        console.log("Projects.js: #searchProjects input found, attaching debounced event listener.");
+
+        function performProjectSearch() {
+            console.log("Projects.js: performProjectSearch called.");
+            // Re-render the list which now incorporates the search term
+            renderProjectList('projectsListContainer');
+        }
+
+        const debouncedPerformProjectSearch = debounce(performProjectSearch, 300);
+
+        searchProjectsInput.addEventListener('input', function (event) {
+            console.log("Projects.js: Project search input event triggered.");
+            debouncedPerformProjectSearch();
+        });
+
+        console.log("Projects.js: Debounced project search event listener attached.");
+    } else {
+        console.warn("Projects.js: Search input (#searchProjects) not found. Search-as-you-type will not work for projects.");
+    }
+    // --- End of Debounced Search ---
+
+    // --- Project Form Submission with Validation and Loading ---
+    const projectForm = document.getElementById('projectForm');
+    if (projectForm) {
+        projectForm.addEventListener('submit', function (e) {
+            console.log("Projects.js: Project form submit triggered...");
+            // --- Enhancement: Client-Side Validation ---
+            e.preventDefault();
+
+            // Clear previous errors for this form
+            clearFormErrors('projectForm');
+
+            let isValid = true;
+            const errors = {};
+
+            // Get form values
+            const projectName = document.getElementById('projectName').value.trim();
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            const status = document.getElementById('projectStatus').value;
+
+            // Validation rules
+            if (!projectName) {
+                isValid = false;
+                errors.projectName = 'Project name is required.';
+            }
+
+            if (!startDate) {
+                isValid = false;
+                errors.startDate = 'Start date is required.';
+            }
+
+            if (!endDate) {
+                isValid = false;
+                errors.endDate = 'End date is required.';
+            }
+
+            // Check if end date is after start date
+            if (startDate && endDate && new Date(endDate) < new Date(startDate)) {
+                isValid = false;
+                errors.endDate = 'End date must be after the start date.';
+            }
+
+            if (!status) {
+                isValid = false;
+                errors.projectStatus = 'Project status is required.';
+            }
+
+            // If validation fails, display errors and stop submission
+            if (!isValid) {
+                displayFormErrors('projectForm', errors);
+                return; // Stop the function here
+            }
+            // --- End Enhancement ---
+
+            // --- Enhancement: Loading State ---
+            // Indicate that processing has started
+            if (window.app && typeof window.app.setModalLoading === 'function') {
+                window.app.setModalLoading('projectModal', true);
+            }
+            // --- End Enhancement ---
+
+            // --- Existing Saving Logic (Wrapped in setTimeout for demo of loading) ---
+            // In a real app, this would be synchronous or use promises/async
+            setTimeout(() => { // Simulate potential async processing
+                try {
+                    // --- Existing logic for saving project ---
+                    const projectId = document.getElementById('projectId').value;
+                    const project = {
+                        id: projectId ? parseInt(projectId) : Date.now(),
+                        name: projectName, // Use validated/trimmed value
+                        description: document.getElementById('projectDescription').value.trim(),
+                        startDate: startDate, // Use validated value
+                        endDate: endDate,      // Use validated value
+                        status: status,        // Use validated value
+                        progress: 0
+                    };
+
+                    let projects = JSON.parse(localStorage.getItem('projects') || '[]');
+
+                    if (projectId) {
+                        // Update existing project
+                        const index = projects.findIndex(p => p.id === parseInt(projectId));
+                        if (index !== -1) {
+                            projects[index] = project;
+                            console.log(`Projects.js: Project ${projectId} updated.`); // Debug log
+                        } else {
+                            console.warn(`Projects.js: Project with ID ${projectId} not found for update.`);
+                        }
+                    } else {
+                        // Add new project
+                        projects.push(project);
+                        console.log(`Projects.js: New project added with ID ${project.id}.`); // Debug log
+                    }
+
+                    localStorage.setItem('projects', JSON.stringify(projects));
+                    console.log("Projects.js: Projects saved to localStorage."); // Debug log
+                    // --- End of existing saving logic ---
+
+                    // --- Reset form and close modal (existing logic) ---
+                    this.reset();
+                    document.getElementById('projectId').value = '';
+                    document.getElementById('projectModalTitle').textContent = 'Add New Project';
+                    if (window.app && typeof window.app.hideModal === 'function') {
+                        window.app.hideModal('projectModal');
+                        console.log("Projects.js: Project modal hidden via app controller."); // Debug log
+                    } else {
+                        document.getElementById('projectModal').style.display = 'none';
+                        console.log("Projects.js: Project modal hidden via direct style."); // Debug log
+                    }
+                    // --- End of reset/close logic ---
+
+                    // --- Refresh views (existing logic) ---
+                    console.log("Projects.js: Refreshing views..."); // Debug log
+
+                    // 1. Refresh dashboard stats (if function exists)
+                    if (typeof updateStats === 'function') {
+                        console.log("Projects.js: Calling updateStats()..."); // Debug log
+                        updateStats(); // Update dashboard stats
+                    } else {
+                        console.warn("Projects.js: updateStats function not found.");
+                    }
+
+                    // 2. Refresh project list on the DASHBOARD view (uses #projectsContainer)
+                    // The loadProjects function in dashboard.js now calls renderProjectList('projectsContainer')
+                    if (typeof loadProjects === 'function') {
+                        console.log("Projects.js: Calling loadProjects() for dashboard..."); // Debug log
+                        loadProjects(); // Refresh project list on the DASHBOARD
+                    } else {
+                        console.warn("Projects.js: loadProjects function not found.");
+                    }
+
+                    // 3. ALSO refresh the project list on the MAIN PROJECTS PAGE (uses #projectsListContainer)
+                    // This calls the loadProjectsList function in projects.js, which now calls renderProjectList('projectsListContainer')
+                    if (typeof loadProjectsList === 'function') {
+                        console.log("Projects.js: Calling loadProjectsList() for projects page..."); // Debug log
+                        loadProjectsList(); // Refresh project list on the PROJECTS PAGE
+                    } else {
+                        console.warn("Projects.js: loadProjectsList function not found. Make sure projects.js is loaded correctly.");
+                    }
+                    console.log("Projects.js: View refresh attempts completed."); // Debug log
+                    // --- End of refresh views ---
+
+                    // Show success notification
+                    if (typeof showNotification === 'function') {
+                        showNotification(`Project "${project.name}" saved successfully!`, 'success');
+                    } else {
+                        alert(`Project "${project.name}" saved successfully!`);
+                    }
+
+                } catch (saveError) {
+                    console.error("Projects.js: Error saving project:", saveError);
+                    // Optionally display an error message to the user inside the modal
+                    alert("An error occurred while saving the project. Please try again.");
+                } finally {
+                    // Always turn off the loading state when done (success or error)
+                    if (window.app && typeof window.app.setModalLoading === 'function') {
+                        window.app.setModalLoading('projectModal', false);
+                    }
+                }
+            }, 300); // End of setTimeout
+            // --- End of Wrapped Saving Logic ---
+        });
+    } else {
+        console.warn("Projects.js: Project form element (#projectForm) not found in DOMContentLoaded.");
+    }
+
+    // --- Cancel Project Button ---
+    const cancelProjectBtn = document.getElementById('cancelProject');
+    if (cancelProjectBtn) {
+        cancelProjectBtn.addEventListener('click', function () {
+            console.log("Projects.js: Cancel project button clicked."); // Debug log
+            const form = document.getElementById('projectForm');
+            if (form) form.reset();
+            document.getElementById('projectId').value = '';
+            document.getElementById('projectModalTitle').textContent = 'Add New Project';
+            // Use app controller if available, otherwise fallback
+            if (window.app && typeof window.app.hideModal === 'function') {
+                window.app.hideModal('projectModal');
+            } else {
+                const modal = document.getElementById('projectModal');
+                if (modal) modal.style.display = 'none';
+            }
+        });
+    } else {
+        console.warn("Projects.js: Cancel project button (#cancelProject) not found.");
+    }
+
 });
+// --- End of Event Listeners ---
+
+// --- Form Validation Helper Functions (Assumed to be in utils.js, included here if needed) ---
+// These should ideally be in utils.js to avoid duplication
+function clearFormErrors(formId) {
+    const form = document.getElementById(formId);
+    if (!form) return;
+    // Remove error messages
+    form.querySelectorAll('.error-message').forEach(el => el.remove());
+    // Remove error styling
+    form.querySelectorAll('.form-group.has-error').forEach(group => group.classList.remove('has-error'));
+}
+
+function displayFormErrors(formId, errors) {
+    const form = document.getElementById(formId);
+    if (!form) return;
+
+    for (const [fieldName, message] of Object.entries(errors)) {
+        const field = document.getElementById(fieldName);
+        const formGroup = field?.closest('.form-group');
+        if (formGroup) {
+            formGroup.classList.add('has-error');
+            // Create error message element
+            const errorElement = document.createElement('div');
+            errorElement.className = 'error-message';
+            errorElement.style.color = 'var(--danger)'; // Use your danger color
+            errorElement.style.fontSize = '0.85rem';
+            errorElement.style.marginTop = '0.25rem';
+            errorElement.textContent = message;
+            // Insert error message after the input/select/textarea
+            field.parentNode.insertBefore(errorElement, field.nextSibling);
+        }
+    }
+}
+// --- End of Form Validation Helpers ---
+
+// --- Notification Helper (Assumed to be global, included if needed) ---
+function showNotification(message, type = 'info') {
+    // Simple alert fallback or integrate with your existing notification system
+    alert(`[${type.toUpperCase()}] ${message}`);
+    // If you have a specific notification element, use that instead
+    // const notification = document.getElementById('notification'); // From index.html
+    // if (notification) {
+    //     notification.textContent = message;
+    //     notification.className = `notification ${type}`;
+    //     notification.classList.add('show');
+    //     setTimeout(() => notification.classList.remove('show'), 3000);
+    // }
+}
+// --- End of Notification Helper ---

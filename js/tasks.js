@@ -1,10 +1,37 @@
-// Task Management Module
+// js/tasks.js - Task Management Module
 
+// --- Utility function for date formatting (if not in utils.js) ---
+function formatDate(dateString) {
+    if (!dateString) return 'No date set';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+    });
+}
+
+// --- Utility function for HTML escaping (if not in utils.js) ---
+function escapeHtml(unsafe) {
+    if (typeof unsafe !== 'string') return unsafe;
+    return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "<")
+        .replace(/>/g, ">")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+// --- Selection State ---
+let selectedTaskIds = new Set(); // Use a Set for efficient lookups
+
+// --- Main Load Function ---
 function loadTasks() {
     loadTaskFilters();
     loadTaskList();
 }
 
+// --- Filter Loading ---
 function loadTaskFilters() {
     const projects = JSON.parse(localStorage.getItem('projects') || '[]');
     const projectFilter = document.getElementById('projectFilter');
@@ -23,7 +50,7 @@ function loadTaskFilters() {
     }
 }
 
-// Dropdown functionality for tasks
+// --- Dropdown functionality for tasks ---
 function toggleTaskPageDropdown(taskId) {
     const currentDropdown = document.getElementById(`dropdown-${taskId}`);
     if (!currentDropdown) return;
@@ -53,7 +80,7 @@ document.addEventListener('click', function (e) {
     }
 });
 
-// Task action functions
+// --- Task action functions ---
 function viewTaskDetails(taskId) {
     // Implementation depends on your needs
     console.log(`View task details for task ID: ${taskId}`);
@@ -151,36 +178,35 @@ function updateTaskStatus(taskId, newStatus) {
     }
 }
 
-// js/tasks.js
-
+// --- Main Task List Loading and Rendering ---
 function loadTaskList() {
+    console.log("Tasks.js: loadTaskList called (full refresh).");
     const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
     const team = JSON.parse(localStorage.getItem('team') || '[]');
     const projects = JSON.parse(localStorage.getItem('projects') || '[]');
 
     const projectFilter = document.getElementById('projectFilter')?.value || '';
     const statusFilter = document.getElementById('statusFilter')?.value || '';
-    const searchFilter = document.getElementById('searchTasks')?.value.toLowerCase() || '';
+    const searchFilter = document.getElementById('searchTasks')?.value.toLowerCase().trim() || '';
+
+    console.log("Tasks.js (loadTaskList): Applying filters - Project:", projectFilter, "Status:", statusFilter, "Search:", searchFilter);
 
     // Apply filters
     let filteredTasks = tasks.filter(task => {
-        // Project filter
         if (projectFilter && task.projectId != projectFilter) return false;
-
-        // Status filter
         if (statusFilter && task.status !== statusFilter) return false;
-
-        // Search filter
         if (searchFilter) {
             const taskName = task.name.toLowerCase();
-            const taskDesc = task.description.toLowerCase();
+            const taskDesc = (task.description || '').toLowerCase();
             return taskName.includes(searchFilter) || taskDesc.includes(searchFilter);
         }
-
         return true;
     });
 
     const container = document.getElementById('tasksContainer');
+    const bulkActionsBar = document.getElementById('bulkActionsBar');
+    const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+    const selectedCount = document.getElementById('selectedCount');
 
     if (filteredTasks.length === 0) {
         container.innerHTML = `
@@ -193,12 +219,16 @@ function loadTaskList() {
                 </button>
             </div>
         `;
+        // Hide bulk actions bar if no tasks
+        if (bulkActionsBar) {
+            bulkActionsBar.style.display = 'none';
+            selectedTaskIds.clear(); // Clear selection
+        }
         return;
     }
 
-    // --- Generate task rows HTML ---
-    let taskRows = '';
-    filteredTasks.forEach(task => {
+    // --- Modify the HTML generation to include checkboxes ---
+    container.innerHTML = filteredTasks.map(task => {
         const project = projects.find(p => p.id === task.projectId);
         const assignee = team.find(m => m.id === task.assignee);
         const priorityClass = `priority-${task.priority}`;
@@ -206,7 +236,6 @@ function loadTaskList() {
         const statusClass = `status-${task.status.replace(' ', '-')}`;
         const statusText = task.status.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase());
 
-        // Get dependency task names
         let dependencyInfo = '';
         if (task.dependencies && task.dependencies.length > 0) {
             const dependencyTasks = tasks.filter(t => task.dependencies.includes(t.id));
@@ -218,18 +247,25 @@ function loadTaskList() {
         `;
         }
 
-        taskRows += `
-        <div class="task-card ${task.priority}" id="task-${task.id}">
+        // Determine if this task is currently selected
+        const isSelected = selectedTaskIds.has(task.id);
+
+        return `
+        <div class="task-card ${task.priority}" id="task-${task.id}" style="position: relative; padding-top: 2rem;"> <!-- Add padding for checkbox -->
+            <!-- Checkbox for selection -->
+            <div style="position: absolute; top: 0.5rem; left: 0.5rem;">
+                <input type="checkbox" class="task-checkbox" data-task-id="${task.id}" id="select-task-${task.id}" ${isSelected ? 'checked' : ''}>
+            </div>
             <div class="task-header">
-                <h3 class="task-title">${task.name}</h3>
+                <h3 class="task-title">${escapeHtml(task.name)}</h3>
                 <span class="task-priority ${priorityClass}">${priorityText}</span>
             </div>
-            <p class="task-description">${task.description}</p>
+            <p class="task-description">${escapeHtml(task.description || '')}</p>
             ${dependencyInfo}
             <div class="task-meta">
-                <span><i class="fas fa-project-diagram"></i> ${project ? project.name : 'Unknown Project'}</span>
+                <span><i class="fas fa-project-diagram"></i> ${project ? escapeHtml(project.name) : 'Unknown Project'}</span>
                 <span><i class="far fa-calendar"></i> Due: ${formatDate(task.dueDate)}</span>
-                ${assignee ? `<span><i class="fas fa-user"></i> ${assignee.name}</span>` : ''}
+                ${assignee ? `<span><i class="fas fa-user"></i> ${escapeHtml(assignee.name)}</span>` : ''}
             </div>
             <div class="task-footer">
                 <span class="task-status ${statusClass}">${statusText}</span>
@@ -255,89 +291,56 @@ function loadTaskList() {
             </div>
         </div>
     `;
-    });
-    // --- End of task rows generation ---
+    }).join('');
+    // --- End of HTML generation modification ---
 
-    // --- Update container.innerHTML to include the table structure with sorting ---
-    container.innerHTML = `
-        <div class="table-responsive">
-            <!-- Give the table a specific ID for sorting -->
-            <table class="tasks-table" id="mainTasksTable">
-                <thead>
-                    <tr>
-                        <!-- Add 'sortable' class to headers you want to sort -->
-                        <th class="sortable">Task Name</th>
-                        <th class="sortable">Priority</th>
-                        <th class="sortable">Status</th>
-                        <th class="sortable">Due Date</th>
-                        <th class="sortable">Assignee</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${filteredTasks.map(task => {
-        const project = projects.find(p => p.id === task.projectId);
-        const assignee = team.find(m => m.id === task.assignee);
-        const priorityClass = `priority-${task.priority}`;
-        const priorityText = task.priority.charAt(0).toUpperCase() + task.priority.slice(1);
-        const statusClass = `status-${task.status.replace(' ', '-')}`;
-        const statusText = task.status.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase());
+    // --- Add Selection and Bulk Action Logic AFTER rendering ---
+    // Re-attach event listeners for checkboxes, select all, and bulk buttons
+    // as they are recreated on every loadTaskList call.
 
-        // For sorting, we can add data-sort attributes if needed for more complex sorting
-        // e.g., use timestamp for date sorting, numeric ID for priority/status if mapped
-        // For now, text content sorting is sufficient for most columns.
-        // Due Date sorting example (using ISO date string for accurate sorting):
-        const isoDueDate = task.dueDate || '9999-99-99'; // Put empty dates last
+    // 1. Select All Checkbox Logic
+    if (selectAllCheckbox) {
+        // Update "Select All" checkbox state based on current selections
+        updateSelectAllCheckboxState();
 
-        return `
-                        <tr>
-                            <td class="task-name-cell">${task.name}</td>
-                            <td class="priority-cell" data-sort="${task.priority}"><span class="task-priority ${priorityClass}">${priorityText}</span></td>
-                            <td class="status-cell" data-sort="${task.status}"><span class="task-status ${statusClass}">${statusText}</span></td>
-                            <td class="date-cell" data-sort="${isoDueDate}">${formatDate(task.dueDate)}</td>
-                            <td>${assignee ? assignee.name : 'Unassigned'}</td>
-                            <td class="task-actions-cell">
-                                <div class="task-action-buttons">
-                                    <button class="btn btn-outline btn-sm" onclick="editTask(${task.id})">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <div class="dropdown">
-                                        <button class="btn btn-outline btn-sm dropdown-toggle" data-task-id="${task.id}">
-                                            <i class="fas fa-ellipsis-v"></i>
-                                        </button>
-                                        <div class="dropdown-menu" id="dropdown-${task.id}">
-                                            <a href="#" onclick="event.preventDefault(); viewTaskDetails(${task.id})"><i class="fas fa-eye"></i> View Details</a>
-                                            <a href="#" onclick="event.preventDefault(); editTask(${task.id})"><i class="fas fa-edit"></i> Edit Task</a>
-                                            <a href="#" onclick="event.preventDefault(); startTask(${task.id})"><i class="fas fa-play"></i> Start Task</a>
-                                            <a href="#" onclick="event.preventDefault(); completeTask(${task.id})"><i class="fas fa-check"></i> Mark Complete</a>
-                                            <a href="#" onclick="event.preventDefault(); assignTask(${task.id})"><i class="fas fa-user-plus"></i> Assign</a>
-                                            <a href="#" onclick="event.preventDefault(); addTaskComment(${task.id})"><i class="fas fa-comment"></i> Add Comment</a>
-                                            <a href="#" onclick="event.preventDefault(); deleteTask(${task.id})" class="danger"><i class="fas fa-trash"></i> Delete</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    `;
-    }).join('')}
-                </tbody>
-            </table>
-        </div>
-    `;
-    // --- End of updated container.innerHTML ---
-
-    // --- Add this code block immediately AFTER the container.innerHTML = `...`; line ---
-    // This makes the table we just created sortable
-    if (typeof makeTableSortable === 'function') {
-        // Use the ID we assigned to the table
-        makeTableSortable('mainTasksTable');
-        console.log("Main tasks table (#mainTasksTable) made sortable.");
-    } else {
-        console.warn("makeTableSortable function not found. Table sorting might not work. Check if utils.js is loaded correctly.");
+        selectAllCheckbox.removeEventListener('change', handleSelectAllChange); // Remove old listener
+        selectAllCheckbox.addEventListener('change', handleSelectAllChange);
     }
-    // --- End of addition ---
+
+    // 2. Individual Task Checkbox Logic
+    const taskCheckboxes = container.querySelectorAll('.task-checkbox');
+    taskCheckboxes.forEach(checkbox => {
+        const taskId = parseInt(checkbox.dataset.taskId);
+        // Ensure checkbox state matches selection state (important after re-render)
+        checkbox.checked = selectedTaskIds.has(taskId);
+
+        checkbox.removeEventListener('change', handleTaskCheckboxChange); // Remove old listener
+        checkbox.addEventListener('change', handleTaskCheckboxChange);
+    });
+
+    // 3. Bulk Action Button Logic
+    const bulkMarkCompleteBtn = document.getElementById('bulkMarkCompleteBtn');
+    const bulkDeleteBtn = document.getElementById('bulkDeleteBtn');
+
+    if (bulkMarkCompleteBtn) {
+        bulkMarkCompleteBtn.removeEventListener('click', handleBulkMarkComplete);
+        bulkMarkCompleteBtn.addEventListener('click', handleBulkMarkComplete);
+    }
+    if (bulkDeleteBtn) {
+        bulkDeleteBtn.removeEventListener('click', handleBulkDelete);
+        bulkDeleteBtn.addEventListener('click', handleBulkDelete);
+    }
+
+    // 4. Update selected count display
+    updateSelectedCountDisplay();
+
+    // 5. Show/Hide bulk actions bar based on selections
+    updateBulkActionBarVisibility();
+    // --- End of Selection and Bulk Action Logic ---
 }
-// Helper functions
+
+
+// --- Helper functions for Dropdowns ---
 function populateProjectDropdown() {
     const projects = JSON.parse(localStorage.getItem('projects') || '[]');
     const select = document.getElementById('taskProject');
@@ -399,7 +402,7 @@ function populateDependenciesDropdown(currentTaskId = null) {
     });
 }
 
-// Enhanced notification function
+// --- Enhanced notification function ---
 function showNotification(message, type = 'info') {
     const notification = document.getElementById('notification');
     if (notification) {
@@ -415,90 +418,346 @@ function showNotification(message, type = 'info') {
     }
 }
 
-// Event listeners
+// --- Selection and Bulk Action Helper Functions ---
+
+// Helper to update the "Select All" checkbox state
+function updateSelectAllCheckboxState() {
+    const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+    const allTaskCheckboxes = document.querySelectorAll('#tasksContainer .task-checkbox');
+    const totalVisibleTasks = allTaskCheckboxes.length;
+    const totalSelectedVisibleTasks = Array.from(allTaskCheckboxes).filter(cb => cb.checked).length;
+
+    if (selectAllCheckbox) {
+        if (totalVisibleTasks > 0 && totalSelectedVisibleTasks === totalVisibleTasks) {
+            selectAllCheckbox.checked = true;
+            selectAllCheckbox.indeterminate = false;
+        } else if (totalSelectedVisibleTasks > 0) {
+            selectAllCheckbox.checked = false;
+            selectAllCheckbox.indeterminate = true; // Partially selected
+        } else {
+            selectAllCheckbox.checked = false;
+            selectAllCheckbox.indeterminate = false;
+        }
+    }
+}
+
+// Helper to update the selected count display
+function updateSelectedCountDisplay() {
+    const selectedCount = document.getElementById('selectedCount');
+    if (selectedCount) {
+        const count = selectedTaskIds.size;
+        selectedCount.textContent = count > 0 ? `${count} selected` : '';
+    }
+}
+
+// Helper to show/hide the bulk action bar
+function updateBulkActionBarVisibility() {
+    const bulkActionsBar = document.getElementById('bulkActionsBar');
+    if (bulkActionsBar) {
+        if (selectedTaskIds.size > 0) {
+            bulkActionsBar.style.display = 'block'; // Or add 'show' class if using CSS
+        } else {
+            bulkActionsBar.style.display = 'none'; // Or remove 'show' class
+        }
+    }
+}
+
+// Event handler for "Select All" checkbox
+function handleSelectAllChange(event) {
+    const isChecked = event.target.checked;
+    const taskCheckboxes = document.querySelectorAll('#tasksContainer .task-checkbox');
+
+    taskCheckboxes.forEach(checkbox => {
+        const taskId = parseInt(checkbox.dataset.taskId);
+        checkbox.checked = isChecked;
+        if (isChecked) {
+            selectedTaskIds.add(taskId);
+        } else {
+            selectedTaskIds.delete(taskId);
+        }
+    });
+
+    updateSelectedCountDisplay();
+    updateBulkActionBarVisibility();
+    // No need to update selectAll state here as it triggered the change
+}
+
+// Event handler for individual task checkboxes
+function handleTaskCheckboxChange(event) {
+    const checkbox = event.target;
+    const taskId = parseInt(checkbox.dataset.taskId);
+    const isChecked = checkbox.checked;
+
+    if (isChecked) {
+        selectedTaskIds.add(taskId);
+    } else {
+        selectedTaskIds.delete(taskId);
+    }
+
+    updateSelectAllCheckboxState(); // Update "Select All" based on individual changes
+    updateSelectedCountDisplay();
+    updateBulkActionBarVisibility();
+}
+
+// Event handler for Bulk Mark Complete
+function handleBulkMarkComplete() {
+    if (selectedTaskIds.size === 0) {
+        alert("Please select at least one task to mark complete.");
+        return;
+    }
+
+    if (!confirm(`Are you sure you want to mark ${selectedTaskIds.size} task(s) as completed?`)) {
+        return;
+    }
+
+    try {
+        let tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+        let updatedCount = 0;
+
+        tasks = tasks.map(task => {
+            if (selectedTaskIds.has(task.id)) {
+                if (task.status !== 'completed') {
+                    task.status = 'completed';
+                    updatedCount++;
+                }
+            }
+            return task;
+        });
+
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+        console.log(`Bulk Mark Complete: Updated ${updatedCount} tasks.`);
+
+        // Clear selections
+        selectedTaskIds.clear();
+
+        // Refresh the task list
+        loadTaskList();
+
+        // Show notification (if you have a showNotification function)
+        if (typeof showNotification === 'function') {
+            showNotification(`${updatedCount} task(s) marked as completed.`, 'success');
+        } else {
+            alert(`${updatedCount} task(s) marked as completed.`);
+        }
+
+    } catch (error) {
+        console.error("Error during bulk mark complete:", error);
+        alert("An error occurred while marking tasks complete.");
+    }
+}
+
+// Event handler for Bulk Delete
+function handleBulkDelete() {
+    if (selectedTaskIds.size === 0) {
+        alert("Please select at least one task to delete.");
+        return;
+    }
+
+    if (!confirm(`Are you sure you want to delete ${selectedTaskIds.size} task(s)? This action cannot be undone.`)) {
+        return;
+    }
+
+    try {
+        let tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+        const initialCount = tasks.length;
+        // Filter out tasks whose IDs are in the selectedTaskIds set
+        tasks = tasks.filter(task => !selectedTaskIds.has(task.id));
+        const deletedCount = initialCount - tasks.length;
+
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+        console.log(`Bulk Delete: Removed ${deletedCount} tasks.`);
+
+        // Clear selections
+        selectedTaskIds.clear();
+
+        // Refresh the task list
+        loadTaskList();
+
+        // Show notification
+        if (typeof showNotification === 'function') {
+            showNotification(`${deletedCount} task(s) deleted.`, 'success');
+        } else {
+            alert(`${deletedCount} task(s) deleted.`);
+        }
+
+    } catch (error) {
+        console.error("Error during bulk delete:", error);
+        alert("An error occurred while deleting tasks.");
+    }
+}
+// --- End of Selection and Bulk Action Helper Functions ---
+
+// --- Debounce Utility (if not in utils.js) ---
+function debounce(func, delay) {
+    let timeoutId;
+    return function (...args) {
+        // Clear the previous timeout to restart the delay
+        clearTimeout(timeoutId);
+        // Set a new timeout to execute the function after the delay
+        timeoutId = setTimeout(() => func.apply(this, args), delay);
+    };
+}
+// --- End of Debounce Utility ---
+
+// --- Event Listeners ---
 document.addEventListener('DOMContentLoaded', function () {
-    // Task form submission
+    console.log("Tasks.js: DOMContentLoaded fired.");
+
+    // --- Task Form Submission with Validation and Loading ---
     const taskForm = document.getElementById('taskForm');
     if (taskForm) {
         taskForm.addEventListener('submit', function (e) {
-            e.preventDefault();
+            console.log("Tasks.js: Task form submit triggered...");
+            // --- Enhancement 1: Client-Side Validation ---
+            e.preventDefault(); // Prevent default submission to perform validation first
 
-            const taskId = document.getElementById('taskId').value;
-            const dependenciesSelect = document.getElementById('taskDependencies');
+            // Clear previous errors for this form
+            clearFormErrors('taskForm');
 
-            // Get selected dependencies safely
-            let selectedDependencies = [];
-            if (dependenciesSelect) {
-                selectedDependencies = Array.from(dependenciesSelect.selectedOptions || [])
-                    .map(option => parseInt(option.value))
-                    .filter(value => !isNaN(value) && value !== ''); // Filter out invalid values
+            let isValid = true;
+            const errors = {};
+
+            // Get form values
+            const taskName = document.getElementById('taskName').value.trim();
+            const taskProject = document.getElementById('taskProject').value;
+            const taskDueDate = document.getElementById('taskDueDate').value;
+            const taskPriority = document.getElementById('taskPriority').value;
+            // Status is handled automatically for new tasks or comes from edit
+
+            // Validation rules
+            if (!taskName) {
+                isValid = false;
+                errors.taskName = 'Task name is required.';
             }
 
-            // Get project ID - either from the form or from current project context
-            let projectId = parseInt(document.getElementById('taskProject').value);
-
-            // If project dropdown was disabled, get project ID from current context
-            const projectSelect = document.getElementById('taskProject');
-            if (projectSelect && projectSelect.disabled && window.currentProjectId) {
-                projectId = window.currentProjectId;
+            if (!taskProject) {
+                isValid = false;
+                errors.taskProject = 'Project is required.';
             }
 
-            const task = {
-                id: taskId ? parseInt(taskId) : Date.now(),
-                projectId: projectId,
-                name: document.getElementById('taskName').value,
-                description: document.getElementById('taskDescription').value,
-                dueDate: document.getElementById('taskDueDate').value,
-                priority: document.getElementById('taskPriority').value,
-                status: taskId ? document.getElementById('taskStatus')?.value || 'pending' : 'pending',
-                assignee: document.getElementById('taskAssignee').value ? parseInt(document.getElementById('taskAssignee').value) : null,
-                dependencies: selectedDependencies
-            };
+            if (!taskDueDate) {
+                isValid = false;
+                errors.taskDueDate = 'Due date is required.';
+            }
 
-            let tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+            // Check if due date is in the past (optional check)
+            // if (taskDueDate && new Date(taskDueDate) < new Date().setHours(0,0,0,0)) {
+            //     isValid = false;
+            //     errors.taskDueDate = 'Due date cannot be in the past.';
+            // }
 
-            if (taskId) {
-                // Update existing task
-                const index = tasks.findIndex(t => t.id === parseInt(taskId));
-                if (index !== -1) {
-                    tasks[index] = task;
+            if (!taskPriority) {
+                isValid = false;
+                errors.taskPriority = 'Priority is required.';
+            }
+
+            // If validation fails, display errors and stop submission
+            if (!isValid) {
+                displayFormErrors('taskForm', errors);
+                return; // Stop the function here
+            }
+            // --- End Enhancement 1 ---
+
+            // --- Enhancement 2: Loading State ---
+            // Indicate that processing has started
+            if (window.app && typeof window.app.setModalLoading === 'function') {
+                window.app.setModalLoading('taskModal', true);
+            }
+            // --- End Enhancement 2 ---
+
+            // --- Existing Saving Logic (Wrapped in setTimeout for demo of loading) ---
+            // In a real app, this would be synchronous or use promises/async
+            setTimeout(() => { // Simulate potential async processing
+                try {
+                    const taskId = document.getElementById('taskId').value;
+                    const dependenciesSelect = document.getElementById('taskDependencies');
+
+                    // Get selected dependencies safely
+                    let selectedDependencies = [];
+                    if (dependenciesSelect) {
+                        selectedDependencies = Array.from(dependenciesSelect.selectedOptions || [])
+                            .map(option => parseInt(option.value))
+                            .filter(value => !isNaN(value) && value !== ''); // Filter out invalid values
+                    }
+
+                    // Get project ID - either from the form or from current project context
+                    let projectId = parseInt(document.getElementById('taskProject').value);
+
+                    // If project dropdown was disabled, get project ID from current context
+                    const projectSelect = document.getElementById('taskProject');
+                    if (projectSelect && projectSelect.disabled && window.currentProjectId) {
+                        projectId = window.currentProjectId;
+                    }
+
+                    const task = {
+                        id: taskId ? parseInt(taskId) : Date.now(),
+                        projectId: projectId,
+                        name: taskName, // Use validated/trimmed value
+                        description: document.getElementById('taskDescription').value.trim(),
+                        dueDate: taskDueDate, // Use validated value
+                        priority: taskPriority, // Use validated value
+                        status: taskId ? document.getElementById('taskStatus')?.value || 'pending' : 'pending',
+                        assignee: document.getElementById('taskAssignee').value ? parseInt(document.getElementById('taskAssignee').value) : null,
+                        dependencies: selectedDependencies
+                    };
+
+                    let tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+
+                    if (taskId) {
+                        // Update existing task
+                        const index = tasks.findIndex(t => t.id === parseInt(taskId));
+                        if (index !== -1) {
+                            tasks[index] = task;
+                        }
+                    } else {
+                        // Add new task
+                        tasks.push(task);
+                    }
+
+                    localStorage.setItem('tasks', JSON.stringify(tasks));
+
+                    // Reset form and close modal
+                    this.reset();
+                    document.getElementById('taskId').value = '';
+                    document.getElementById('taskModalTitle').textContent = 'Add New Task';
+
+                    // Re-enable project dropdown if it was disabled
+                    if (projectSelect && projectSelect.disabled) {
+                        projectSelect.disabled = false;
+                    }
+
+                    if (window.app && typeof window.app.hideModal === 'function') {
+                        window.app.hideModal('taskModal');
+                    } else {
+                        document.getElementById('taskModal').style.display = 'none';
+                    }
+
+                    // Auto-refresh the current view
+                    setTimeout(() => {
+                        refreshCurrentView();
+                    }, 100); // Small delay to ensure modal is closed
+
+                    // Show success notification
+                    if (typeof showNotification === 'function') {
+                        showNotification(`Task "${task.name}" saved successfully!`, 'success');
+                    }
+
+                } catch (saveError) {
+                    console.error("Error saving task:", saveError);
+                    // Optionally display an error message to the user inside the modal
+                    alert("An error occurred while saving the task. Please try again.");
+                } finally {
+                    // Always turn off the loading state when done (success or error)
+                    if (window.app && typeof window.app.setModalLoading === 'function') {
+                        window.app.setModalLoading('taskModal', false);
+                    }
                 }
-            } else {
-                // Add new task
-                tasks.push(task);
-            }
-
-            localStorage.setItem('tasks', JSON.stringify(tasks));
-
-            // Reset form and close modal
-            this.reset();
-            document.getElementById('taskId').value = '';
-            document.getElementById('taskModalTitle').textContent = 'Add New Task';
-
-            // Re-enable project dropdown if it was disabled
-            if (projectSelect && projectSelect.disabled) {
-                projectSelect.disabled = false;
-            }
-
-            if (window.app && typeof window.app.hideModal === 'function') {
-                window.app.hideModal('taskModal');
-            } else {
-                document.getElementById('taskModal').style.display = 'none';
-            }
-
-            // Auto-refresh the current view
-            setTimeout(() => {
-                refreshCurrentView();
-            }, 100); // Small delay to ensure modal is closed
-
-            // Show success notification
-            if (typeof showNotification === 'function') {
-                showNotification(`Task "${task.name}" saved successfully!`, 'success');
-            }
+            }, 300); // End of setTimeout
+            // --- End of Wrapped Saving Logic ---
         });
     }
 
-    // Cancel task button
+    // --- Cancel task button ---
     const cancelTaskBtn = document.getElementById('cancelTask');
     if (cancelTaskBtn) {
         cancelTaskBtn.addEventListener('click', function () {
@@ -523,7 +782,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Add task button
+    // --- Add task button ---
     const addTaskBtn = document.getElementById('addTaskBtn');
     if (addTaskBtn) {
         addTaskBtn.addEventListener('click', function () {
@@ -541,6 +800,10 @@ document.addEventListener('DOMContentLoaded', function () {
             populateAssigneeDropdown();
             populateDependenciesDropdown(); // No current task ID for new tasks
 
+            // --- Enhancement 3: Focus Management ---
+            // Focus will be handled by the app's showModal function
+            // --- End Enhancement 3 ---
+
             if (window.app && typeof window.app.showModal === 'function') {
                 window.app.showModal('taskModal');
             } else {
@@ -549,16 +812,41 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Filter event listeners
+    // --- Filter event listeners ---
     const projectFilter = document.getElementById('projectFilter');
     const statusFilter = document.getElementById('statusFilter');
     const searchTasks = document.getElementById('searchTasks');
 
     if (projectFilter) projectFilter.addEventListener('change', loadTaskList);
     if (statusFilter) statusFilter.addEventListener('change', loadTaskList);
-    if (searchTasks) searchTasks.addEventListener('input', loadTaskList);
+    // if (searchTasks) searchTasks.addEventListener('input', loadTaskList); // Removed direct listener
 
-    // Event delegation for task dropdowns
+    // --- NEW: Debounced Search Implementation ---
+    if (searchTasks) {
+        console.log("Tasks.js: #searchTasks input found, attaching debounced event listener.");
+
+        // 1. Define the search function
+        function performSearch() {
+            console.log("Tasks.js: performSearch called.");
+            loadTaskList(); // Re-run loadTaskList which now incorporates the search term
+        }
+
+        // 2. Create a debounced version of the search function
+        const debouncedPerformSearch = debounce(performSearch, 300);
+
+        // 3. Attach the INPUT event listener to the search box
+        searchTasks.addEventListener('input', function (event) {
+            console.log("Tasks.js: Search input event triggered.");
+            debouncedPerformSearch();
+        });
+
+        console.log("Tasks.js: Debounced search event listener attached.");
+    } else {
+        console.warn("Tasks.js: Search input (#searchTasks) not found.");
+    }
+    // --- END OF NEW SEARCH IMPLEMENTATION ---
+
+    // --- Event delegation for task dropdowns ---
     const tasksContainer = document.getElementById('tasksContainer');
     if (tasksContainer) {
         tasksContainer.addEventListener('click', function (e) {
@@ -569,8 +857,42 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
+// --- End of Event Listeners ---
 
-// Add this new function to handle view refresh
+// --- Form Validation Helper Functions ---
+function clearFormErrors(formId) {
+    const form = document.getElementById(formId);
+    if (!form) return;
+    // Remove error messages
+    form.querySelectorAll('.error-message').forEach(el => el.remove());
+    // Remove error styling
+    form.querySelectorAll('.form-group').forEach(group => group.classList.remove('has-error'));
+}
+
+function displayFormErrors(formId, errors) {
+    const form = document.getElementById(formId);
+    if (!form) return;
+
+    for (const [fieldName, message] of Object.entries(errors)) {
+        const field = document.getElementById(fieldName);
+        const formGroup = field?.closest('.form-group');
+        if (formGroup) {
+            formGroup.classList.add('has-error');
+            // Create error message element
+            const errorElement = document.createElement('div');
+            errorElement.className = 'error-message';
+            errorElement.style.color = 'var(--danger)'; // Use your danger color
+            errorElement.style.fontSize = '0.85rem';
+            errorElement.style.marginTop = '0.25rem';
+            errorElement.textContent = message;
+            // Insert error message after the input/select/textarea
+            field.parentNode.insertBefore(errorElement, field.nextSibling);
+        }
+    }
+}
+// --- End of Form Validation Helper Functions ---
+
+// --- Add this new function to handle view refresh ---
 function refreshCurrentView() {
     // If we're on project details page, refresh the project details
     if (window.currentProjectId && typeof loadCurrentProjectDetails === 'function') {
@@ -585,3 +907,4 @@ function refreshCurrentView() {
         updateStats();
     }
 }
+// --- End of refresh function ---

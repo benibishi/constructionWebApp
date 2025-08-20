@@ -1,4 +1,6 @@
-<html lang="en"><head>
+<html lang="en">
+
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BuildMaster - Construction Management</title>
@@ -15,10 +17,10 @@
             <span>BuildMaster</span>
         </div>
         <div class="nav-menu">
-         <a href="#" class="nav-link active" data-tab="dashboard"> 
-    <i class="fas fa-tachometer-alt"></i>
-    <span>Dashboard</span>
-</a>
+            <a href="#" class="nav-link active" data-tab="dashboard">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </a>
             <a href="#" class="nav-link" data-tab="projects">
                 <i class="fas fa-project-diagram"></i>
                 <span>Projects</span>
@@ -44,10 +46,10 @@
                 <i class="fas fa-chart-bar"></i>
                 <span>Visual Analytics</span>
             </a>
-       <a href="#" class="nav-link" data-tab="documents"> 
-    <i class="fas fa-file-alt"></i>
-    <span>Documents</span>
-</a>
+            <a href="#" class="nav-link" data-tab="documents">
+                <i class="fas fa-file-alt"></i>
+                <span>Documents</span>
+            </a>
             <a href="#" class="nav-link" data-tab="team">
                 <i class="fas fa-users"></i>
                 <span>Team</span>
@@ -87,7 +89,7 @@
                     </div>
                 </div>
             </div>
-        
+
             <div class="notification-item unread" onclick="handleNotificationClick(1, 1)">
                 <div class="notification-content">
                     <div class="notification-icon icon-task-due">
@@ -102,7 +104,7 @@
                     </div>
                 </div>
             </div>
-        
+
             <div class="notification-item unread" onclick="handleNotificationClick(2, 3)">
                 <div class="notification-content">
                     <div class="notification-icon icon-task-completed">
@@ -179,185 +181,185 @@
                 <h2>Active Projects</h2>
             </div>
             <div class="projects-grid" id="projectsContainer">
-            <div class="project-card" onclick="showProjectDetails(1)" style="cursor: pointer;">
-                <div class="project-header">
-                    <h3>Downtown Office Complex</h3>
-                    <p>15-story commercial office building in downtown area</p>
-                </div>
-                <div class="project-body">
-                    <div class="project-meta">
-                        <span><i class="far fa-calendar"></i> Jan 14, 2024</span>
-                        <span><i class="far fa-calendar-check"></i> Dec 30, 2024</span>
+                <div class="project-card" onclick="showProjectDetails(1)" style="cursor: pointer;">
+                    <div class="project-header">
+                        <h3>Downtown Office Complex</h3>
+                        <p>15-story commercial office building in downtown area</p>
                     </div>
-                    <div class="project-progress">
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 65%; background: #f59e0b"></div>
+                    <div class="project-body">
+                        <div class="project-meta">
+                            <span><i class="far fa-calendar"></i> Jan 14, 2024</span>
+                            <span><i class="far fa-calendar-check"></i> Dec 30, 2024</span>
                         </div>
-                        <div class="progress-info">
-                            <span>65% Complete</span>
-                            <span>Active</span>
+                        <div class="project-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 65%; background: #f59e0b"></div>
+                            </div>
+                            <div class="progress-info">
+                                <span>65% Complete</span>
+                                <span>Active</span>
+                            </div>
                         </div>
+                        <span class="project-status status-active">Active</span>
                     </div>
-                    <span class="project-status status-active">Active</span>
+                    <div class="project-actions">
+                        <button class="btn btn-outline" onclick="editProject(1); event.stopPropagation();">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                    </div>
                 </div>
-                <div class="project-actions">
-                    <button class="btn btn-outline" onclick="editProject(1); event.stopPropagation();">
-                        <i class="fas fa-edit"></i> Edit
-                    </button>
+
+                <div class="project-card" onclick="showProjectDetails(2)" style="cursor: pointer;">
+                    <div class="project-header">
+                        <h3>Residential Housing Development</h3>
+                        <p>40-unit apartment complex with underground parking</p>
+                    </div>
+                    <div class="project-body">
+                        <div class="project-meta">
+                            <span><i class="far fa-calendar"></i> Jan 31, 2024</span>
+                            <span><i class="far fa-calendar-check"></i> Nov 29, 2024</span>
+                        </div>
+                        <div class="project-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 45%; background: #f59e0b"></div>
+                            </div>
+                            <div class="progress-info">
+                                <span>45% Complete</span>
+                                <span>Active</span>
+                            </div>
+                        </div>
+                        <span class="project-status status-active">Active</span>
+                    </div>
+                    <div class="project-actions">
+                        <button class="btn btn-outline" onclick="editProject(2); event.stopPropagation();">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                    </div>
+                </div>
+
+                <div class="project-card" onclick="showProjectDetails(3)" style="cursor: pointer;">
+                    <div class="project-header">
+                        <h3>Highway Infrastructure Upgrade</h3>
+                        <p>Major highway expansion and bridge construction</p>
+                    </div>
+                    <div class="project-body">
+                        <div class="project-meta">
+                            <span><i class="far fa-calendar"></i> Sep 30, 2023</span>
+                            <span><i class="far fa-calendar-check"></i> Aug 30, 2024</span>
+                        </div>
+                        <div class="project-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 0%; background: #ef4444"></div>
+                            </div>
+                            <div class="progress-info">
+                                <span>0% Complete</span>
+                                <span>Active</span>
+                            </div>
+                        </div>
+                        <span class="project-status status-active">Active</span>
+                    </div>
+                    <div class="project-actions">
+                        <button class="btn btn-outline" onclick="editProject(3); event.stopPropagation();">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                    </div>
+                </div>
+
+                <div class="project-card" onclick="showProjectDetails(1755445560544)" style="cursor: pointer;">
+                    <div class="project-header">
+                        <h3>Building 5 livingston north</h3>
+                        <p>kimi k2. the best building services and thebuilder in the whole world</p>
+                    </div>
+                    <div class="project-body">
+                        <div class="project-meta">
+                            <span><i class="far fa-calendar"></i> Sep 30, 2025</span>
+                            <span><i class="far fa-calendar-check"></i> Dec 30, 2025</span>
+                        </div>
+                        <div class="project-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 0%; background: #ef4444"></div>
+                            </div>
+                            <div class="progress-info">
+                                <span>0% Complete</span>
+                                <span>Active</span>
+                            </div>
+                        </div>
+                        <span class="project-status status-active">Active</span>
+                    </div>
+                    <div class="project-actions">
+                        <button class="btn btn-outline" onclick="editProject(1755445560544); event.stopPropagation();">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                    </div>
+                </div>
+
+                <div class="project-card" onclick="showProjectDetails(1755445578915)" style="cursor: pointer;">
+                    <div class="project-header">
+                        <h3>ertwert</h3>
+                        <p>sadfgasdfasdfd</p>
+                    </div>
+                    <div class="project-body">
+                        <div class="project-meta">
+                            <span><i class="far fa-calendar"></i> Sep 14, 2025</span>
+                            <span><i class="far fa-calendar-check"></i> Mar 16, 2026</span>
+                        </div>
+                        <div class="project-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 0%; background: #ef4444"></div>
+                            </div>
+                            <div class="progress-info">
+                                <span>0% Complete</span>
+                                <span>Active</span>
+                            </div>
+                        </div>
+                        <span class="project-status status-active">Active</span>
+                    </div>
+                    <div class="project-actions">
+                        <button class="btn btn-outline" onclick="editProject(1755445578915); event.stopPropagation();">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                    </div>
                 </div>
             </div>
-        
-            <div class="project-card" onclick="showProjectDetails(2)" style="cursor: pointer;">
-                <div class="project-header">
-                    <h3>Residential Housing Development</h3>
-                    <p>40-unit apartment complex with underground parking</p>
-                </div>
-                <div class="project-body">
-                    <div class="project-meta">
-                        <span><i class="far fa-calendar"></i> Jan 31, 2024</span>
-                        <span><i class="far fa-calendar-check"></i> Nov 29, 2024</span>
-                    </div>
-                    <div class="project-progress">
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 45%; background: #f59e0b"></div>
-                        </div>
-                        <div class="progress-info">
-                            <span>45% Complete</span>
-                            <span>Active</span>
-                        </div>
-                    </div>
-                    <span class="project-status status-active">Active</span>
-                </div>
-                <div class="project-actions">
-                    <button class="btn btn-outline" onclick="editProject(2); event.stopPropagation();">
-                        <i class="fas fa-edit"></i> Edit
-                    </button>
-                </div>
-            </div>
-        
-            <div class="project-card" onclick="showProjectDetails(3)" style="cursor: pointer;">
-                <div class="project-header">
-                    <h3>Highway Infrastructure Upgrade</h3>
-                    <p>Major highway expansion and bridge construction</p>
-                </div>
-                <div class="project-body">
-                    <div class="project-meta">
-                        <span><i class="far fa-calendar"></i> Sep 30, 2023</span>
-                        <span><i class="far fa-calendar-check"></i> Aug 30, 2024</span>
-                    </div>
-                    <div class="project-progress">
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 0%; background: #ef4444"></div>
-                        </div>
-                        <div class="progress-info">
-                            <span>0% Complete</span>
-                            <span>Active</span>
-                        </div>
-                    </div>
-                    <span class="project-status status-active">Active</span>
-                </div>
-                <div class="project-actions">
-                    <button class="btn btn-outline" onclick="editProject(3); event.stopPropagation();">
-                        <i class="fas fa-edit"></i> Edit
-                    </button>
-                </div>
-            </div>
-        
-            <div class="project-card" onclick="showProjectDetails(1755445560544)" style="cursor: pointer;">
-                <div class="project-header">
-                    <h3>Building 5 livingston north</h3>
-                    <p>kimi k2. the best building services and thebuilder in the whole world</p>
-                </div>
-                <div class="project-body">
-                    <div class="project-meta">
-                        <span><i class="far fa-calendar"></i> Sep 30, 2025</span>
-                        <span><i class="far fa-calendar-check"></i> Dec 30, 2025</span>
-                    </div>
-                    <div class="project-progress">
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 0%; background: #ef4444"></div>
-                        </div>
-                        <div class="progress-info">
-                            <span>0% Complete</span>
-                            <span>Active</span>
-                        </div>
-                    </div>
-                    <span class="project-status status-active">Active</span>
-                </div>
-                <div class="project-actions">
-                    <button class="btn btn-outline" onclick="editProject(1755445560544); event.stopPropagation();">
-                        <i class="fas fa-edit"></i> Edit
-                    </button>
-                </div>
-            </div>
-        
-            <div class="project-card" onclick="showProjectDetails(1755445578915)" style="cursor: pointer;">
-                <div class="project-header">
-                    <h3>ertwert</h3>
-                    <p>sadfgasdfasdfd</p>
-                </div>
-                <div class="project-body">
-                    <div class="project-meta">
-                        <span><i class="far fa-calendar"></i> Sep 14, 2025</span>
-                        <span><i class="far fa-calendar-check"></i> Mar 16, 2026</span>
-                    </div>
-                    <div class="project-progress">
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 0%; background: #ef4444"></div>
-                        </div>
-                        <div class="progress-info">
-                            <span>0% Complete</span>
-                            <span>Active</span>
-                        </div>
-                    </div>
-                    <span class="project-status status-active">Active</span>
-                </div>
-                <div class="project-actions">
-                    <button class="btn btn-outline" onclick="editProject(1755445578915); event.stopPropagation();">
-                        <i class="fas fa-edit"></i> Edit
-                    </button>
-                </div>
-            </div>
-        </div>
 
             <!-- Recent Activity -->
             <div class="section-header">
                 <h2>Recent Activity</h2>
             </div>
             <div class="activity-feed" id="activityFeed">
-        <div class="activity-item">
-            <div class="activity-icon">
-                <i class="fas fa-check-circle"></i>
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="activity-content">
+                        <h4>Foundation Excavation completed</h4>
+                        <p>System notification</p>
+                    </div>
+                    <div class="activity-time">2 hours ago</div>
+                </div>
+
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <div class="activity-content">
+                        <h4>Steel Framework Installation assigned to Maria Garcia</h4>
+                        <p>System notification</p>
+                    </div>
+                    <div class="activity-time">1 day ago</div>
+                </div>
+
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-project-diagram"></i>
+                    </div>
+                    <div class="activity-content">
+                        <h4>Downtown Office Complex project created</h4>
+                        <p>System notification</p>
+                    </div>
+                    <div class="activity-time">2 days ago</div>
+                </div>
             </div>
-            <div class="activity-content">
-                <h4>Foundation Excavation completed</h4>
-                <p>System notification</p>
-            </div>
-            <div class="activity-time">2 hours ago</div>
-        </div>
-    
-        <div class="activity-item">
-            <div class="activity-icon">
-                <i class="fas fa-user-plus"></i>
-            </div>
-            <div class="activity-content">
-                <h4>Steel Framework Installation assigned to Maria Garcia</h4>
-                <p>System notification</p>
-            </div>
-            <div class="activity-time">1 day ago</div>
-        </div>
-    
-        <div class="activity-item">
-            <div class="activity-icon">
-                <i class="fas fa-project-diagram"></i>
-            </div>
-            <div class="activity-content">
-                <h4>Downtown Office Complex project created</h4>
-                <p>System notification</p>
-            </div>
-            <div class="activity-time">2 days ago</div>
-        </div>
-    </div>
         </section>
 
         <!-- Projects Tab -->
@@ -368,149 +370,178 @@
                     <i class="fas fa-plus"></i> New Project
                 </button>
             </div>
-
+            <!-- Add Project Filters if needed, including Search -->
+            <div class="project-filters"> <!-- You might already have a filter div -->
+                <!-- Example Search Input (ensure this ID exists or add it) -->
+                <input type="text" id="searchProjects" placeholder="Search projects..."
+                    style="padding: 0.5rem; border: 1px solid var(--border); border-radius: 0.5rem;">
+                <!-- Add other filters (Status, etc.) here if desired -->
+            </div>
+            <!-- End Project Filters -->
+            <!-- Bulk Actions Bar for Projects (Initially Hidden) -->
+            <div id="bulkActionsBarProjects" class="bulk-actions-bar"
+                style="display: none; margin-bottom: 1rem; padding: 1rem; background-color: var(--light); border: 1px solid var(--border); border-radius: 0.5rem;">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <input type="checkbox" id="selectAllProjectsCheckbox">
+                    <label for="selectAllProjectsCheckbox" style="margin-right: 1rem;">Select All</label>
+                    <!-- Example bulk action: Change Status -->
+                    <select id="bulkChangeStatusSelect">
+                        <option value="">Change Status To...</option>
+                        <option value="planning">Planning</option>
+                        <option value="active">Active</option>
+                        <option value="on-hold">On Hold</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                    <button id="bulkChangeStatusBtn" class="btn btn-outline btn-sm">Apply</button>
+                    <button id="bulkDeleteProjectsBtn" class="btn btn-danger btn-sm">
+                        <i class="fas fa-trash"></i> Delete Selected
+                    </button>
+                    <span id="selectedProjectsCount" style="margin-left: auto; font-weight: 500;"></span>
+                </div>
+            </div>
+            <!-- End Bulk Actions Bar for Projects -->
             <!-- Projects List -->
             <div class="projects-container" id="projectsListContainer">
-            <div class="project-card" onclick="showProjectDetails(1)" style="cursor: pointer;">
-                <div class="project-header">
-                    <h3>Downtown Office Complex</h3>
-                    <p>15-story commercial office building in downtown area</p>
-                </div>
-                <div class="project-body">
-                    <div class="project-meta">
-                        <span><i class="far fa-calendar"></i> Jan 14, 2024</span>
-                        <span><i class="far fa-calendar-check"></i> Dec 30, 2024</span>
+                <div class="project-card" onclick="showProjectDetails(1)" style="cursor: pointer;">
+                    <div class="project-header">
+                        <h3>Downtown Office Complex</h3>
+                        <p>15-story commercial office building in downtown area</p>
                     </div>
-                    <div class="project-progress">
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 65%; background: #f59e0b"></div>
+                    <div class="project-body">
+                        <div class="project-meta">
+                            <span><i class="far fa-calendar"></i> Jan 14, 2024</span>
+                            <span><i class="far fa-calendar-check"></i> Dec 30, 2024</span>
                         </div>
-                        <div class="progress-info">
-                            <span>65% Complete</span>
-                            <span>Active</span>
+                        <div class="project-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 65%; background: #f59e0b"></div>
+                            </div>
+                            <div class="progress-info">
+                                <span>65% Complete</span>
+                                <span>Active</span>
+                            </div>
                         </div>
+                        <span class="project-status status-active">Active</span>
                     </div>
-                    <span class="project-status status-active">Active</span>
+                    <div class="project-actions">
+                        <button class="btn btn-outline" onclick="editProject(1); event.stopPropagation();">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                    </div>
                 </div>
-                <div class="project-actions">
-                    <button class="btn btn-outline" onclick="editProject(1); event.stopPropagation();">
-                        <i class="fas fa-edit"></i> Edit
-                    </button>
+
+                <div class="project-card" onclick="showProjectDetails(2)" style="cursor: pointer;">
+                    <div class="project-header">
+                        <h3>Residential Housing Development</h3>
+                        <p>40-unit apartment complex with underground parking</p>
+                    </div>
+                    <div class="project-body">
+                        <div class="project-meta">
+                            <span><i class="far fa-calendar"></i> Jan 31, 2024</span>
+                            <span><i class="far fa-calendar-check"></i> Nov 29, 2024</span>
+                        </div>
+                        <div class="project-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 45%; background: #f59e0b"></div>
+                            </div>
+                            <div class="progress-info">
+                                <span>45% Complete</span>
+                                <span>Active</span>
+                            </div>
+                        </div>
+                        <span class="project-status status-active">Active</span>
+                    </div>
+                    <div class="project-actions">
+                        <button class="btn btn-outline" onclick="editProject(2); event.stopPropagation();">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                    </div>
+                </div>
+
+                <div class="project-card" onclick="showProjectDetails(3)" style="cursor: pointer;">
+                    <div class="project-header">
+                        <h3>Highway Infrastructure Upgrade</h3>
+                        <p>Major highway expansion and bridge construction</p>
+                    </div>
+                    <div class="project-body">
+                        <div class="project-meta">
+                            <span><i class="far fa-calendar"></i> Sep 30, 2023</span>
+                            <span><i class="far fa-calendar-check"></i> Aug 30, 2024</span>
+                        </div>
+                        <div class="project-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 0%; background: #ef4444"></div>
+                            </div>
+                            <div class="progress-info">
+                                <span>0% Complete</span>
+                                <span>Active</span>
+                            </div>
+                        </div>
+                        <span class="project-status status-active">Active</span>
+                    </div>
+                    <div class="project-actions">
+                        <button class="btn btn-outline" onclick="editProject(3); event.stopPropagation();">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                    </div>
+                </div>
+
+                <div class="project-card" onclick="showProjectDetails(1755445560544)" style="cursor: pointer;">
+                    <div class="project-header">
+                        <h3>Building 5 livingston north</h3>
+                        <p>kimi k2. the best building services and thebuilder in the whole world</p>
+                    </div>
+                    <div class="project-body">
+                        <div class="project-meta">
+                            <span><i class="far fa-calendar"></i> Sep 30, 2025</span>
+                            <span><i class="far fa-calendar-check"></i> Dec 30, 2025</span>
+                        </div>
+                        <div class="project-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 0%; background: #ef4444"></div>
+                            </div>
+                            <div class="progress-info">
+                                <span>0% Complete</span>
+                                <span>Active</span>
+                            </div>
+                        </div>
+                        <span class="project-status status-active">Active</span>
+                    </div>
+                    <div class="project-actions">
+                        <button class="btn btn-outline" onclick="editProject(1755445560544); event.stopPropagation();">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                    </div>
+                </div>
+
+                <div class="project-card" onclick="showProjectDetails(1755445578915)" style="cursor: pointer;">
+                    <div class="project-header">
+                        <h3>ertwert</h3>
+                        <p>sadfgasdfasdfd</p>
+                    </div>
+                    <div class="project-body">
+                        <div class="project-meta">
+                            <span><i class="far fa-calendar"></i> Sep 14, 2025</span>
+                            <span><i class="far fa-calendar-check"></i> Mar 16, 2026</span>
+                        </div>
+                        <div class="project-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 0%; background: #ef4444"></div>
+                            </div>
+                            <div class="progress-info">
+                                <span>0% Complete</span>
+                                <span>Active</span>
+                            </div>
+                        </div>
+                        <span class="project-status status-active">Active</span>
+                    </div>
+                    <div class="project-actions">
+                        <button class="btn btn-outline" onclick="editProject(1755445578915); event.stopPropagation();">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                    </div>
                 </div>
             </div>
-        
-            <div class="project-card" onclick="showProjectDetails(2)" style="cursor: pointer;">
-                <div class="project-header">
-                    <h3>Residential Housing Development</h3>
-                    <p>40-unit apartment complex with underground parking</p>
-                </div>
-                <div class="project-body">
-                    <div class="project-meta">
-                        <span><i class="far fa-calendar"></i> Jan 31, 2024</span>
-                        <span><i class="far fa-calendar-check"></i> Nov 29, 2024</span>
-                    </div>
-                    <div class="project-progress">
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 45%; background: #f59e0b"></div>
-                        </div>
-                        <div class="progress-info">
-                            <span>45% Complete</span>
-                            <span>Active</span>
-                        </div>
-                    </div>
-                    <span class="project-status status-active">Active</span>
-                </div>
-                <div class="project-actions">
-                    <button class="btn btn-outline" onclick="editProject(2); event.stopPropagation();">
-                        <i class="fas fa-edit"></i> Edit
-                    </button>
-                </div>
-            </div>
-        
-            <div class="project-card" onclick="showProjectDetails(3)" style="cursor: pointer;">
-                <div class="project-header">
-                    <h3>Highway Infrastructure Upgrade</h3>
-                    <p>Major highway expansion and bridge construction</p>
-                </div>
-                <div class="project-body">
-                    <div class="project-meta">
-                        <span><i class="far fa-calendar"></i> Sep 30, 2023</span>
-                        <span><i class="far fa-calendar-check"></i> Aug 30, 2024</span>
-                    </div>
-                    <div class="project-progress">
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 0%; background: #ef4444"></div>
-                        </div>
-                        <div class="progress-info">
-                            <span>0% Complete</span>
-                            <span>Active</span>
-                        </div>
-                    </div>
-                    <span class="project-status status-active">Active</span>
-                </div>
-                <div class="project-actions">
-                    <button class="btn btn-outline" onclick="editProject(3); event.stopPropagation();">
-                        <i class="fas fa-edit"></i> Edit
-                    </button>
-                </div>
-            </div>
-        
-            <div class="project-card" onclick="showProjectDetails(1755445560544)" style="cursor: pointer;">
-                <div class="project-header">
-                    <h3>Building 5 livingston north</h3>
-                    <p>kimi k2. the best building services and thebuilder in the whole world</p>
-                </div>
-                <div class="project-body">
-                    <div class="project-meta">
-                        <span><i class="far fa-calendar"></i> Sep 30, 2025</span>
-                        <span><i class="far fa-calendar-check"></i> Dec 30, 2025</span>
-                    </div>
-                    <div class="project-progress">
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 0%; background: #ef4444"></div>
-                        </div>
-                        <div class="progress-info">
-                            <span>0% Complete</span>
-                            <span>Active</span>
-                        </div>
-                    </div>
-                    <span class="project-status status-active">Active</span>
-                </div>
-                <div class="project-actions">
-                    <button class="btn btn-outline" onclick="editProject(1755445560544); event.stopPropagation();">
-                        <i class="fas fa-edit"></i> Edit
-                    </button>
-                </div>
-            </div>
-        
-            <div class="project-card" onclick="showProjectDetails(1755445578915)" style="cursor: pointer;">
-                <div class="project-header">
-                    <h3>ertwert</h3>
-                    <p>sadfgasdfasdfd</p>
-                </div>
-                <div class="project-body">
-                    <div class="project-meta">
-                        <span><i class="far fa-calendar"></i> Sep 14, 2025</span>
-                        <span><i class="far fa-calendar-check"></i> Mar 16, 2026</span>
-                    </div>
-                    <div class="project-progress">
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 0%; background: #ef4444"></div>
-                        </div>
-                        <div class="progress-info">
-                            <span>0% Complete</span>
-                            <span>Active</span>
-                        </div>
-                    </div>
-                    <span class="project-status status-active">Active</span>
-                </div>
-                <div class="project-actions">
-                    <button class="btn btn-outline" onclick="editProject(1755445578915); event.stopPropagation();">
-                        <i class="fas fa-edit"></i> Edit
-                    </button>
-                </div>
-            </div>
-        </div>
         </section>
 
         <!-- Project Details Tab -->
@@ -549,7 +580,14 @@
 
             <!-- Task Filters -->
             <div class="task-filters">
-                <select id="projectFilter"><option value="">All Projects</option><option value="1">Downtown Office Complex</option><option value="2">Residential Housing Development</option><option value="3">Highway Infrastructure Upgrade</option><option value="1755445560544">Building 5 livingston north</option><option value="1755445578915">ertwert</option></select>
+                <select id="projectFilter">
+                    <option value="">All Projects</option>
+                    <option value="1">Downtown Office Complex</option>
+                    <option value="2">Residential Housing Development</option>
+                    <option value="3">Highway Infrastructure Upgrade</option>
+                    <option value="1755445560544">Building 5 livingston north</option>
+                    <option value="1755445578915">ertwert</option>
+                </select>
                 <select id="statusFilter">
                     <option value="">All Statuses</option>
                     <option value="pending">Pending</option>
@@ -558,328 +596,386 @@
                 </select>
                 <input type="text" id="searchTasks" placeholder="Search tasks...">
             </div>
-  <!-- Bulk Actions Bar (Initially Hidden) -->
-    <div id="bulkActionsBar" class="bulk-actions-bar" style="display: none; margin-bottom: 1rem; padding: 1rem; background-color: var(--light); border: 1px solid var(--border); border-radius: 0.5rem;">
-        <div style="display: flex; align-items: center; gap: 1rem;">
-            <input type="checkbox" id="selectAllCheckbox">
-            <label for="selectAllCheckbox" style="margin-right: 1rem;">Select All</label>
-            <button id="bulkMarkCompleteBtn" class="btn btn-success btn-sm">
-                <i class="fas fa-check"></i> Mark Complete
-            </button>
-            <button id="bulkDeleteBtn" class="btn btn-danger btn-sm">
-                <i class="fas fa-trash"></i> Delete Selected
-            </button>
-            <!-- Add more bulk action buttons here if needed -->
-            <span id="selectedCount" style="margin-left: auto; font-weight: 500;"></span>
-        </div>
-    </div>
-    <!-- End Bulk Actions Bar -->
+            <!-- Bulk Actions Bar (Initially Hidden) -->
+            <div id="bulkActionsBar" class="bulk-actions-bar"
+                style="display: none; margin-bottom: 1rem; padding: 1rem; background-color: var(--light); border: 1px solid var(--border); border-radius: 0.5rem;">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <input type="checkbox" id="selectAllCheckbox">
+                    <label for="selectAllCheckbox" style="margin-right: 1rem;">Select All</label>
+                    <button id="bulkMarkCompleteBtn" class="btn btn-success btn-sm">
+                        <i class="fas fa-check"></i> Mark Complete
+                    </button>
+                    <button id="bulkDeleteBtn" class="btn btn-danger btn-sm">
+                        <i class="fas fa-trash"></i> Delete Selected
+                    </button>
+                    <!-- Add more bulk action buttons here if needed -->
+                    <span id="selectedCount" style="margin-left: auto; font-weight: 500;"></span>
+                </div>
+            </div>
+            <!-- End Bulk Actions Bar -->
             <!-- Tasks List -->
             <div class="tasks-container" id="tasksContainer">
-        <div class="task-card high" id="task-1">
-            <div class="task-header">
-                <h3 class="task-title">Foundation Excavation</h3>
-                <span class="task-priority priority-high">High</span>
-            </div>
-            <p class="task-description">Excavate foundation for main building structure</p>
-            
-            <div class="task-meta">
-                <span><i class="fas fa-project-diagram"></i> Downtown Office Complex</span>
-                <span><i class="far fa-calendar"></i> Due: Feb 14, 2024</span>
-                <span><i class="fas fa-user"></i> John Smith</span>
-            </div>
-            <div class="task-footer">
-                <span class="task-status status-completed">Completed</span>
-                <div class="task-actions">
-                    <button class="btn btn-outline btn-sm" onclick="editTask(1)">
-                        <i class="fas fa-edit"></i> Edit
-                    </button>
-                    <div class="dropdown">
-                        <button class="btn btn-outline btn-sm dropdown-toggle" data-task-id="1">
-                            <i class="fas fa-ellipsis-v"></i>
-                        </button>
-                        <div class="dropdown-menu" id="dropdown-1">
-                            <a href="#" onclick="event.preventDefault(); viewTaskDetails(1)"><i class="fas fa-eye"></i> View Details</a>
-                            <a href="#" onclick="event.preventDefault(); editTask(1)"><i class="fas fa-edit"></i> Edit Task</a>
-                            <a href="#" onclick="event.preventDefault(); startTask(1)"><i class="fas fa-play"></i> Start Task</a>
-                            <a href="#" onclick="event.preventDefault(); completeTask(1)"><i class="fas fa-check"></i> Mark Complete</a>
-                            <a href="#" onclick="event.preventDefault(); assignTask(1)"><i class="fas fa-user-plus"></i> Assign</a>
-                            <a href="#" onclick="event.preventDefault(); addTaskComment(1)"><i class="fas fa-comment"></i> Add Comment</a>
-                            <a href="#" onclick="event.preventDefault(); deleteTask(1)" class="danger"><i class="fas fa-trash"></i> Delete</a>
+                <div class="task-card high" id="task-1">
+                    <div class="task-header">
+                        <h3 class="task-title">Foundation Excavation</h3>
+                        <span class="task-priority priority-high">High</span>
+                    </div>
+                    <p class="task-description">Excavate foundation for main building structure</p>
+
+                    <div class="task-meta">
+                        <span><i class="fas fa-project-diagram"></i> Downtown Office Complex</span>
+                        <span><i class="far fa-calendar"></i> Due: Feb 14, 2024</span>
+                        <span><i class="fas fa-user"></i> John Smith</span>
+                    </div>
+                    <div class="task-footer">
+                        <span class="task-status status-completed">Completed</span>
+                        <div class="task-actions">
+                            <button class="btn btn-outline btn-sm" onclick="editTask(1)">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <div class="dropdown">
+                                <button class="btn btn-outline btn-sm dropdown-toggle" data-task-id="1">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <div class="dropdown-menu" id="dropdown-1">
+                                    <a href="#" onclick="event.preventDefault(); viewTaskDetails(1)"><i
+                                            class="fas fa-eye"></i> View Details</a>
+                                    <a href="#" onclick="event.preventDefault(); editTask(1)"><i
+                                            class="fas fa-edit"></i> Edit Task</a>
+                                    <a href="#" onclick="event.preventDefault(); startTask(1)"><i
+                                            class="fas fa-play"></i> Start Task</a>
+                                    <a href="#" onclick="event.preventDefault(); completeTask(1)"><i
+                                            class="fas fa-check"></i> Mark Complete</a>
+                                    <a href="#" onclick="event.preventDefault(); assignTask(1)"><i
+                                            class="fas fa-user-plus"></i> Assign</a>
+                                    <a href="#" onclick="event.preventDefault(); addTaskComment(1)"><i
+                                            class="fas fa-comment"></i> Add Comment</a>
+                                    <a href="#" onclick="event.preventDefault(); deleteTask(1)" class="danger"><i
+                                            class="fas fa-trash"></i> Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="task-card critical" id="task-2">
+                    <div class="task-header">
+                        <h3 class="task-title">Steel Framework Installation</h3>
+                        <span class="task-priority priority-critical">Critical</span>
+                    </div>
+                    <p class="task-description">Install steel framework for floors 1-5</p>
+
+                    <div class="task-dependencies">
+                        <strong>Depends on:</strong> Foundation Excavation
+                    </div>
+
+                    <div class="task-meta">
+                        <span><i class="fas fa-project-diagram"></i> Downtown Office Complex</span>
+                        <span><i class="far fa-calendar"></i> Due: Mar 29, 2024</span>
+                        <span><i class="fas fa-user"></i> Maria Garcia</span>
+                    </div>
+                    <div class="task-footer">
+                        <span class="task-status status-in-progress">In Progress</span>
+                        <div class="task-actions">
+                            <button class="btn btn-outline btn-sm" onclick="editTask(2)">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <div class="dropdown">
+                                <button class="btn btn-outline btn-sm dropdown-toggle" data-task-id="2">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <div class="dropdown-menu" id="dropdown-2">
+                                    <a href="#" onclick="event.preventDefault(); viewTaskDetails(2)"><i
+                                            class="fas fa-eye"></i> View Details</a>
+                                    <a href="#" onclick="event.preventDefault(); editTask(2)"><i
+                                            class="fas fa-edit"></i> Edit Task</a>
+                                    <a href="#" onclick="event.preventDefault(); startTask(2)"><i
+                                            class="fas fa-play"></i> Start Task</a>
+                                    <a href="#" onclick="event.preventDefault(); completeTask(2)"><i
+                                            class="fas fa-check"></i> Mark Complete</a>
+                                    <a href="#" onclick="event.preventDefault(); assignTask(2)"><i
+                                            class="fas fa-user-plus"></i> Assign</a>
+                                    <a href="#" onclick="event.preventDefault(); addTaskComment(2)"><i
+                                            class="fas fa-comment"></i> Add Comment</a>
+                                    <a href="#" onclick="event.preventDefault(); deleteTask(2)" class="danger"><i
+                                            class="fas fa-trash"></i> Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="task-card medium" id="task-3">
+                    <div class="task-header">
+                        <h3 class="task-title">Site Preparation</h3>
+                        <span class="task-priority priority-medium">Medium</span>
+                    </div>
+                    <p class="task-description">Clear and grade construction site</p>
+
+                    <div class="task-meta">
+                        <span><i class="fas fa-project-diagram"></i> Residential Housing Development</span>
+                        <span><i class="far fa-calendar"></i> Due: Feb 27, 2024</span>
+                        <span><i class="fas fa-user"></i> David Johnson</span>
+                    </div>
+                    <div class="task-footer">
+                        <span class="task-status status-in-progress">In Progress</span>
+                        <div class="task-actions">
+                            <button class="btn btn-outline btn-sm" onclick="editTask(3)">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <div class="dropdown">
+                                <button class="btn btn-outline btn-sm dropdown-toggle" data-task-id="3">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <div class="dropdown-menu" id="dropdown-3">
+                                    <a href="#" onclick="event.preventDefault(); viewTaskDetails(3)"><i
+                                            class="fas fa-eye"></i> View Details</a>
+                                    <a href="#" onclick="event.preventDefault(); editTask(3)"><i
+                                            class="fas fa-edit"></i> Edit Task</a>
+                                    <a href="#" onclick="event.preventDefault(); startTask(3)"><i
+                                            class="fas fa-play"></i> Start Task</a>
+                                    <a href="#" onclick="event.preventDefault(); completeTask(3)"><i
+                                            class="fas fa-check"></i> Mark Complete</a>
+                                    <a href="#" onclick="event.preventDefault(); assignTask(3)"><i
+                                            class="fas fa-user-plus"></i> Assign</a>
+                                    <a href="#" onclick="event.preventDefault(); addTaskComment(3)"><i
+                                            class="fas fa-comment"></i> Add Comment</a>
+                                    <a href="#" onclick="event.preventDefault(); deleteTask(3)" class="danger"><i
+                                            class="fas fa-trash"></i> Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="task-card high" id="task-4">
+                    <div class="task-header">
+                        <h3 class="task-title">Utility Connections</h3>
+                        <span class="task-priority priority-high">High</span>
+                    </div>
+                    <p class="task-description">Install water, sewer, and electrical connections</p>
+
+                    <div class="task-dependencies">
+                        <strong>Depends on:</strong> Site Preparation
+                    </div>
+
+                    <div class="task-meta">
+                        <span><i class="fas fa-project-diagram"></i> Residential Housing Development</span>
+                        <span><i class="far fa-calendar"></i> Due: Apr 14, 2024</span>
+
+                    </div>
+                    <div class="task-footer">
+                        <span class="task-status status-in-progress">In Progress</span>
+                        <div class="task-actions">
+                            <button class="btn btn-outline btn-sm" onclick="editTask(4)">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <div class="dropdown">
+                                <button class="btn btn-outline btn-sm dropdown-toggle" data-task-id="4">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <div class="dropdown-menu" id="dropdown-4">
+                                    <a href="#" onclick="event.preventDefault(); viewTaskDetails(4)"><i
+                                            class="fas fa-eye"></i> View Details</a>
+                                    <a href="#" onclick="event.preventDefault(); editTask(4)"><i
+                                            class="fas fa-edit"></i> Edit Task</a>
+                                    <a href="#" onclick="event.preventDefault(); startTask(4)"><i
+                                            class="fas fa-play"></i> Start Task</a>
+                                    <a href="#" onclick="event.preventDefault(); completeTask(4)"><i
+                                            class="fas fa-check"></i> Mark Complete</a>
+                                    <a href="#" onclick="event.preventDefault(); assignTask(4)"><i
+                                            class="fas fa-user-plus"></i> Assign</a>
+                                    <a href="#" onclick="event.preventDefault(); addTaskComment(4)"><i
+                                            class="fas fa-comment"></i> Add Comment</a>
+                                    <a href="#" onclick="event.preventDefault(); deleteTask(4)" class="danger"><i
+                                            class="fas fa-trash"></i> Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="task-card medium" id="task-1755444165861">
+                    <div class="task-header">
+                        <h3 class="task-title">Foundation Excavation</h3>
+                        <span class="task-priority priority-medium">Medium</span>
+                    </div>
+                    <p class="task-description">sdfsdfsdsdfsdf</p>
+
+                    <div class="task-meta">
+                        <span><i class="fas fa-project-diagram"></i> Highway Infrastructure Upgrade</span>
+                        <span><i class="far fa-calendar"></i> Due: Aug 19, 2025</span>
+                        <span><i class="fas fa-user"></i> Maria Garcia</span>
+                    </div>
+                    <div class="task-footer">
+                        <span class="task-status status-in-progress">In Progress</span>
+                        <div class="task-actions">
+                            <button class="btn btn-outline btn-sm" onclick="editTask(1755444165861)">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <div class="dropdown">
+                                <button class="btn btn-outline btn-sm dropdown-toggle" data-task-id="1755444165861">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <div class="dropdown-menu" id="dropdown-1755444165861">
+                                    <a href="#" onclick="event.preventDefault(); viewTaskDetails(1755444165861)"><i
+                                            class="fas fa-eye"></i> View Details</a>
+                                    <a href="#" onclick="event.preventDefault(); editTask(1755444165861)"><i
+                                            class="fas fa-edit"></i> Edit Task</a>
+                                    <a href="#" onclick="event.preventDefault(); startTask(1755444165861)"><i
+                                            class="fas fa-play"></i> Start Task</a>
+                                    <a href="#" onclick="event.preventDefault(); completeTask(1755444165861)"><i
+                                            class="fas fa-check"></i> Mark Complete</a>
+                                    <a href="#" onclick="event.preventDefault(); assignTask(1755444165861)"><i
+                                            class="fas fa-user-plus"></i> Assign</a>
+                                    <a href="#" onclick="event.preventDefault(); addTaskComment(1755444165861)"><i
+                                            class="fas fa-comment"></i> Add Comment</a>
+                                    <a href="#" onclick="event.preventDefault(); deleteTask(1755444165861)"
+                                        class="danger"><i class="fas fa-trash"></i> Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="task-card high" id="task-1755469400468">
+                    <div class="task-header">
+                        <h3 class="task-title">broken glass on the windows</h3>
+                        <span class="task-priority priority-high">High</span>
+                    </div>
+                    <p class="task-description">there is broken glass on the windows. need to send it to the right
+                        people</p>
+
+                    <div class="task-meta">
+                        <span><i class="fas fa-project-diagram"></i> ertwert</span>
+                        <span><i class="far fa-calendar"></i> Due: Aug 28, 2025</span>
+                        <span><i class="fas fa-user"></i> Maria Garcia</span>
+                    </div>
+                    <div class="task-footer">
+                        <span class="task-status status-in-progress">In Progress</span>
+                        <div class="task-actions">
+                            <button class="btn btn-outline btn-sm" onclick="editTask(1755469400468)">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <div class="dropdown">
+                                <button class="btn btn-outline btn-sm dropdown-toggle" data-task-id="1755469400468">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <div class="dropdown-menu" id="dropdown-1755469400468">
+                                    <a href="#" onclick="event.preventDefault(); viewTaskDetails(1755469400468)"><i
+                                            class="fas fa-eye"></i> View Details</a>
+                                    <a href="#" onclick="event.preventDefault(); editTask(1755469400468)"><i
+                                            class="fas fa-edit"></i> Edit Task</a>
+                                    <a href="#" onclick="event.preventDefault(); startTask(1755469400468)"><i
+                                            class="fas fa-play"></i> Start Task</a>
+                                    <a href="#" onclick="event.preventDefault(); completeTask(1755469400468)"><i
+                                            class="fas fa-check"></i> Mark Complete</a>
+                                    <a href="#" onclick="event.preventDefault(); assignTask(1755469400468)"><i
+                                            class="fas fa-user-plus"></i> Assign</a>
+                                    <a href="#" onclick="event.preventDefault(); addTaskComment(1755469400468)"><i
+                                            class="fas fa-comment"></i> Add Comment</a>
+                                    <a href="#" onclick="event.preventDefault(); deleteTask(1755469400468)"
+                                        class="danger"><i class="fas fa-trash"></i> Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="task-card low" id="task-1755469447811">
+                    <div class="task-header">
+                        <h3 class="task-title">install overhead garage doors</h3>
+                        <span class="task-priority priority-low">Low</span>
+                    </div>
+                    <p class="task-description">install overhead garage doors. Call the right person to do that</p>
+
+                    <div class="task-dependencies">
+                        <strong>Depends on:</strong> Steel Framework Installation
+                    </div>
+
+                    <div class="task-meta">
+                        <span><i class="fas fa-project-diagram"></i> ertwert</span>
+                        <span><i class="far fa-calendar"></i> Due: Sep 4, 2025</span>
+                        <span><i class="fas fa-user"></i> David Johnson</span>
+                    </div>
+                    <div class="task-footer">
+                        <span class="task-status status-in-progress">In Progress</span>
+                        <div class="task-actions">
+                            <button class="btn btn-outline btn-sm" onclick="editTask(1755469447811)">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <div class="dropdown">
+                                <button class="btn btn-outline btn-sm dropdown-toggle" data-task-id="1755469447811">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <div class="dropdown-menu" id="dropdown-1755469447811">
+                                    <a href="#" onclick="event.preventDefault(); viewTaskDetails(1755469447811)"><i
+                                            class="fas fa-eye"></i> View Details</a>
+                                    <a href="#" onclick="event.preventDefault(); editTask(1755469447811)"><i
+                                            class="fas fa-edit"></i> Edit Task</a>
+                                    <a href="#" onclick="event.preventDefault(); startTask(1755469447811)"><i
+                                            class="fas fa-play"></i> Start Task</a>
+                                    <a href="#" onclick="event.preventDefault(); completeTask(1755469447811)"><i
+                                            class="fas fa-check"></i> Mark Complete</a>
+                                    <a href="#" onclick="event.preventDefault(); assignTask(1755469447811)"><i
+                                            class="fas fa-user-plus"></i> Assign</a>
+                                    <a href="#" onclick="event.preventDefault(); addTaskComment(1755469447811)"><i
+                                            class="fas fa-comment"></i> Add Comment</a>
+                                    <a href="#" onclick="event.preventDefault(); deleteTask(1755469447811)"
+                                        class="danger"><i class="fas fa-trash"></i> Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="task-card low" id="task-1755469501000">
+                    <div class="task-header">
+                        <h3 class="task-title">pump out the water from the heavy rain from the trenches</h3>
+                        <span class="task-priority priority-low">Low</span>
+                    </div>
+                    <p class="task-description">pump out the water from the heavy rain in the trenches</p>
+
+                    <div class="task-dependencies">
+                        <strong>Depends on:</strong> Foundation Excavation
+                    </div>
+
+                    <div class="task-meta">
+                        <span><i class="fas fa-project-diagram"></i> ertwert</span>
+                        <span><i class="far fa-calendar"></i> Due: Aug 16, 2025</span>
+                        <span><i class="fas fa-user"></i> David Johnson</span>
+                    </div>
+                    <div class="task-footer">
+                        <span class="task-status status-in-progress">In Progress</span>
+                        <div class="task-actions">
+                            <button class="btn btn-outline btn-sm" onclick="editTask(1755469501000)">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <div class="dropdown">
+                                <button class="btn btn-outline btn-sm dropdown-toggle" data-task-id="1755469501000">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <div class="dropdown-menu" id="dropdown-1755469501000">
+                                    <a href="#" onclick="event.preventDefault(); viewTaskDetails(1755469501000)"><i
+                                            class="fas fa-eye"></i> View Details</a>
+                                    <a href="#" onclick="event.preventDefault(); editTask(1755469501000)"><i
+                                            class="fas fa-edit"></i> Edit Task</a>
+                                    <a href="#" onclick="event.preventDefault(); startTask(1755469501000)"><i
+                                            class="fas fa-play"></i> Start Task</a>
+                                    <a href="#" onclick="event.preventDefault(); completeTask(1755469501000)"><i
+                                            class="fas fa-check"></i> Mark Complete</a>
+                                    <a href="#" onclick="event.preventDefault(); assignTask(1755469501000)"><i
+                                            class="fas fa-user-plus"></i> Assign</a>
+                                    <a href="#" onclick="event.preventDefault(); addTaskComment(1755469501000)"><i
+                                            class="fas fa-comment"></i> Add Comment</a>
+                                    <a href="#" onclick="event.preventDefault(); deleteTask(1755469501000)"
+                                        class="danger"><i class="fas fa-trash"></i> Delete</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    
-        <div class="task-card critical" id="task-2">
-            <div class="task-header">
-                <h3 class="task-title">Steel Framework Installation</h3>
-                <span class="task-priority priority-critical">Critical</span>
-            </div>
-            <p class="task-description">Install steel framework for floors 1-5</p>
-            
-            <div class="task-dependencies">
-                <strong>Depends on:</strong> Foundation Excavation
-            </div>
-        
-            <div class="task-meta">
-                <span><i class="fas fa-project-diagram"></i> Downtown Office Complex</span>
-                <span><i class="far fa-calendar"></i> Due: Mar 29, 2024</span>
-                <span><i class="fas fa-user"></i> Maria Garcia</span>
-            </div>
-            <div class="task-footer">
-                <span class="task-status status-in-progress">In Progress</span>
-                <div class="task-actions">
-                    <button class="btn btn-outline btn-sm" onclick="editTask(2)">
-                        <i class="fas fa-edit"></i> Edit
-                    </button>
-                    <div class="dropdown">
-                        <button class="btn btn-outline btn-sm dropdown-toggle" data-task-id="2">
-                            <i class="fas fa-ellipsis-v"></i>
-                        </button>
-                        <div class="dropdown-menu" id="dropdown-2">
-                            <a href="#" onclick="event.preventDefault(); viewTaskDetails(2)"><i class="fas fa-eye"></i> View Details</a>
-                            <a href="#" onclick="event.preventDefault(); editTask(2)"><i class="fas fa-edit"></i> Edit Task</a>
-                            <a href="#" onclick="event.preventDefault(); startTask(2)"><i class="fas fa-play"></i> Start Task</a>
-                            <a href="#" onclick="event.preventDefault(); completeTask(2)"><i class="fas fa-check"></i> Mark Complete</a>
-                            <a href="#" onclick="event.preventDefault(); assignTask(2)"><i class="fas fa-user-plus"></i> Assign</a>
-                            <a href="#" onclick="event.preventDefault(); addTaskComment(2)"><i class="fas fa-comment"></i> Add Comment</a>
-                            <a href="#" onclick="event.preventDefault(); deleteTask(2)" class="danger"><i class="fas fa-trash"></i> Delete</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    
-        <div class="task-card medium" id="task-3">
-            <div class="task-header">
-                <h3 class="task-title">Site Preparation</h3>
-                <span class="task-priority priority-medium">Medium</span>
-            </div>
-            <p class="task-description">Clear and grade construction site</p>
-            
-            <div class="task-meta">
-                <span><i class="fas fa-project-diagram"></i> Residential Housing Development</span>
-                <span><i class="far fa-calendar"></i> Due: Feb 27, 2024</span>
-                <span><i class="fas fa-user"></i> David Johnson</span>
-            </div>
-            <div class="task-footer">
-                <span class="task-status status-in-progress">In Progress</span>
-                <div class="task-actions">
-                    <button class="btn btn-outline btn-sm" onclick="editTask(3)">
-                        <i class="fas fa-edit"></i> Edit
-                    </button>
-                    <div class="dropdown">
-                        <button class="btn btn-outline btn-sm dropdown-toggle" data-task-id="3">
-                            <i class="fas fa-ellipsis-v"></i>
-                        </button>
-                        <div class="dropdown-menu" id="dropdown-3">
-                            <a href="#" onclick="event.preventDefault(); viewTaskDetails(3)"><i class="fas fa-eye"></i> View Details</a>
-                            <a href="#" onclick="event.preventDefault(); editTask(3)"><i class="fas fa-edit"></i> Edit Task</a>
-                            <a href="#" onclick="event.preventDefault(); startTask(3)"><i class="fas fa-play"></i> Start Task</a>
-                            <a href="#" onclick="event.preventDefault(); completeTask(3)"><i class="fas fa-check"></i> Mark Complete</a>
-                            <a href="#" onclick="event.preventDefault(); assignTask(3)"><i class="fas fa-user-plus"></i> Assign</a>
-                            <a href="#" onclick="event.preventDefault(); addTaskComment(3)"><i class="fas fa-comment"></i> Add Comment</a>
-                            <a href="#" onclick="event.preventDefault(); deleteTask(3)" class="danger"><i class="fas fa-trash"></i> Delete</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    
-        <div class="task-card high" id="task-4">
-            <div class="task-header">
-                <h3 class="task-title">Utility Connections</h3>
-                <span class="task-priority priority-high">High</span>
-            </div>
-            <p class="task-description">Install water, sewer, and electrical connections</p>
-            
-            <div class="task-dependencies">
-                <strong>Depends on:</strong> Site Preparation
-            </div>
-        
-            <div class="task-meta">
-                <span><i class="fas fa-project-diagram"></i> Residential Housing Development</span>
-                <span><i class="far fa-calendar"></i> Due: Apr 14, 2024</span>
-                
-            </div>
-            <div class="task-footer">
-                <span class="task-status status-in-progress">In Progress</span>
-                <div class="task-actions">
-                    <button class="btn btn-outline btn-sm" onclick="editTask(4)">
-                        <i class="fas fa-edit"></i> Edit
-                    </button>
-                    <div class="dropdown">
-                        <button class="btn btn-outline btn-sm dropdown-toggle" data-task-id="4">
-                            <i class="fas fa-ellipsis-v"></i>
-                        </button>
-                        <div class="dropdown-menu" id="dropdown-4">
-                            <a href="#" onclick="event.preventDefault(); viewTaskDetails(4)"><i class="fas fa-eye"></i> View Details</a>
-                            <a href="#" onclick="event.preventDefault(); editTask(4)"><i class="fas fa-edit"></i> Edit Task</a>
-                            <a href="#" onclick="event.preventDefault(); startTask(4)"><i class="fas fa-play"></i> Start Task</a>
-                            <a href="#" onclick="event.preventDefault(); completeTask(4)"><i class="fas fa-check"></i> Mark Complete</a>
-                            <a href="#" onclick="event.preventDefault(); assignTask(4)"><i class="fas fa-user-plus"></i> Assign</a>
-                            <a href="#" onclick="event.preventDefault(); addTaskComment(4)"><i class="fas fa-comment"></i> Add Comment</a>
-                            <a href="#" onclick="event.preventDefault(); deleteTask(4)" class="danger"><i class="fas fa-trash"></i> Delete</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    
-        <div class="task-card medium" id="task-1755444165861">
-            <div class="task-header">
-                <h3 class="task-title">Foundation Excavation</h3>
-                <span class="task-priority priority-medium">Medium</span>
-            </div>
-            <p class="task-description">sdfsdfsdsdfsdf</p>
-            
-            <div class="task-meta">
-                <span><i class="fas fa-project-diagram"></i> Highway Infrastructure Upgrade</span>
-                <span><i class="far fa-calendar"></i> Due: Aug 19, 2025</span>
-                <span><i class="fas fa-user"></i> Maria Garcia</span>
-            </div>
-            <div class="task-footer">
-                <span class="task-status status-in-progress">In Progress</span>
-                <div class="task-actions">
-                    <button class="btn btn-outline btn-sm" onclick="editTask(1755444165861)">
-                        <i class="fas fa-edit"></i> Edit
-                    </button>
-                    <div class="dropdown">
-                        <button class="btn btn-outline btn-sm dropdown-toggle" data-task-id="1755444165861">
-                            <i class="fas fa-ellipsis-v"></i>
-                        </button>
-                        <div class="dropdown-menu" id="dropdown-1755444165861">
-                            <a href="#" onclick="event.preventDefault(); viewTaskDetails(1755444165861)"><i class="fas fa-eye"></i> View Details</a>
-                            <a href="#" onclick="event.preventDefault(); editTask(1755444165861)"><i class="fas fa-edit"></i> Edit Task</a>
-                            <a href="#" onclick="event.preventDefault(); startTask(1755444165861)"><i class="fas fa-play"></i> Start Task</a>
-                            <a href="#" onclick="event.preventDefault(); completeTask(1755444165861)"><i class="fas fa-check"></i> Mark Complete</a>
-                            <a href="#" onclick="event.preventDefault(); assignTask(1755444165861)"><i class="fas fa-user-plus"></i> Assign</a>
-                            <a href="#" onclick="event.preventDefault(); addTaskComment(1755444165861)"><i class="fas fa-comment"></i> Add Comment</a>
-                            <a href="#" onclick="event.preventDefault(); deleteTask(1755444165861)" class="danger"><i class="fas fa-trash"></i> Delete</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    
-        <div class="task-card high" id="task-1755469400468">
-            <div class="task-header">
-                <h3 class="task-title">broken glass on the windows</h3>
-                <span class="task-priority priority-high">High</span>
-            </div>
-            <p class="task-description">there is broken glass on the windows. need to send it to the right people</p>
-            
-            <div class="task-meta">
-                <span><i class="fas fa-project-diagram"></i> ertwert</span>
-                <span><i class="far fa-calendar"></i> Due: Aug 28, 2025</span>
-                <span><i class="fas fa-user"></i> Maria Garcia</span>
-            </div>
-            <div class="task-footer">
-                <span class="task-status status-in-progress">In Progress</span>
-                <div class="task-actions">
-                    <button class="btn btn-outline btn-sm" onclick="editTask(1755469400468)">
-                        <i class="fas fa-edit"></i> Edit
-                    </button>
-                    <div class="dropdown">
-                        <button class="btn btn-outline btn-sm dropdown-toggle" data-task-id="1755469400468">
-                            <i class="fas fa-ellipsis-v"></i>
-                        </button>
-                        <div class="dropdown-menu" id="dropdown-1755469400468">
-                            <a href="#" onclick="event.preventDefault(); viewTaskDetails(1755469400468)"><i class="fas fa-eye"></i> View Details</a>
-                            <a href="#" onclick="event.preventDefault(); editTask(1755469400468)"><i class="fas fa-edit"></i> Edit Task</a>
-                            <a href="#" onclick="event.preventDefault(); startTask(1755469400468)"><i class="fas fa-play"></i> Start Task</a>
-                            <a href="#" onclick="event.preventDefault(); completeTask(1755469400468)"><i class="fas fa-check"></i> Mark Complete</a>
-                            <a href="#" onclick="event.preventDefault(); assignTask(1755469400468)"><i class="fas fa-user-plus"></i> Assign</a>
-                            <a href="#" onclick="event.preventDefault(); addTaskComment(1755469400468)"><i class="fas fa-comment"></i> Add Comment</a>
-                            <a href="#" onclick="event.preventDefault(); deleteTask(1755469400468)" class="danger"><i class="fas fa-trash"></i> Delete</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    
-        <div class="task-card low" id="task-1755469447811">
-            <div class="task-header">
-                <h3 class="task-title">install overhead garage doors</h3>
-                <span class="task-priority priority-low">Low</span>
-            </div>
-            <p class="task-description">install overhead garage doors. Call the right person to do that</p>
-            
-            <div class="task-dependencies">
-                <strong>Depends on:</strong> Steel Framework Installation
-            </div>
-        
-            <div class="task-meta">
-                <span><i class="fas fa-project-diagram"></i> ertwert</span>
-                <span><i class="far fa-calendar"></i> Due: Sep 4, 2025</span>
-                <span><i class="fas fa-user"></i> David Johnson</span>
-            </div>
-            <div class="task-footer">
-                <span class="task-status status-in-progress">In Progress</span>
-                <div class="task-actions">
-                    <button class="btn btn-outline btn-sm" onclick="editTask(1755469447811)">
-                        <i class="fas fa-edit"></i> Edit
-                    </button>
-                    <div class="dropdown">
-                        <button class="btn btn-outline btn-sm dropdown-toggle" data-task-id="1755469447811">
-                            <i class="fas fa-ellipsis-v"></i>
-                        </button>
-                        <div class="dropdown-menu" id="dropdown-1755469447811">
-                            <a href="#" onclick="event.preventDefault(); viewTaskDetails(1755469447811)"><i class="fas fa-eye"></i> View Details</a>
-                            <a href="#" onclick="event.preventDefault(); editTask(1755469447811)"><i class="fas fa-edit"></i> Edit Task</a>
-                            <a href="#" onclick="event.preventDefault(); startTask(1755469447811)"><i class="fas fa-play"></i> Start Task</a>
-                            <a href="#" onclick="event.preventDefault(); completeTask(1755469447811)"><i class="fas fa-check"></i> Mark Complete</a>
-                            <a href="#" onclick="event.preventDefault(); assignTask(1755469447811)"><i class="fas fa-user-plus"></i> Assign</a>
-                            <a href="#" onclick="event.preventDefault(); addTaskComment(1755469447811)"><i class="fas fa-comment"></i> Add Comment</a>
-                            <a href="#" onclick="event.preventDefault(); deleteTask(1755469447811)" class="danger"><i class="fas fa-trash"></i> Delete</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    
-        <div class="task-card low" id="task-1755469501000">
-            <div class="task-header">
-                <h3 class="task-title">pump out the water from the heavy rain from the trenches</h3>
-                <span class="task-priority priority-low">Low</span>
-            </div>
-            <p class="task-description">pump out the water from the heavy rain in the trenches</p>
-            
-            <div class="task-dependencies">
-                <strong>Depends on:</strong> Foundation Excavation
-            </div>
-        
-            <div class="task-meta">
-                <span><i class="fas fa-project-diagram"></i> ertwert</span>
-                <span><i class="far fa-calendar"></i> Due: Aug 16, 2025</span>
-                <span><i class="fas fa-user"></i> David Johnson</span>
-            </div>
-            <div class="task-footer">
-                <span class="task-status status-in-progress">In Progress</span>
-                <div class="task-actions">
-                    <button class="btn btn-outline btn-sm" onclick="editTask(1755469501000)">
-                        <i class="fas fa-edit"></i> Edit
-                    </button>
-                    <div class="dropdown">
-                        <button class="btn btn-outline btn-sm dropdown-toggle" data-task-id="1755469501000">
-                            <i class="fas fa-ellipsis-v"></i>
-                        </button>
-                        <div class="dropdown-menu" id="dropdown-1755469501000">
-                            <a href="#" onclick="event.preventDefault(); viewTaskDetails(1755469501000)"><i class="fas fa-eye"></i> View Details</a>
-                            <a href="#" onclick="event.preventDefault(); editTask(1755469501000)"><i class="fas fa-edit"></i> Edit Task</a>
-                            <a href="#" onclick="event.preventDefault(); startTask(1755469501000)"><i class="fas fa-play"></i> Start Task</a>
-                            <a href="#" onclick="event.preventDefault(); completeTask(1755469501000)"><i class="fas fa-check"></i> Mark Complete</a>
-                            <a href="#" onclick="event.preventDefault(); assignTask(1755469501000)"><i class="fas fa-user-plus"></i> Assign</a>
-                            <a href="#" onclick="event.preventDefault(); addTaskComment(1755469501000)"><i class="fas fa-comment"></i> Add Comment</a>
-                            <a href="#" onclick="event.preventDefault(); deleteTask(1755469501000)" class="danger"><i class="fas fa-trash"></i> Delete</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
         </section>
 
         <!-- Calendar Tab -->
@@ -902,7 +998,14 @@
 
             <!-- Calendar Filters -->
             <div class="calendar-filters">
-                <select id="calendarProjectFilter"><option value="">All Projects</option><option value="1">Downtown Office Complex</option><option value="2">Residential Housing Development</option><option value="3">Highway Infrastructure Upgrade</option><option value="1755445560544">Building 5 livingston north</option><option value="1755445578915">ertwert</option></select>
+                <select id="calendarProjectFilter">
+                    <option value="">All Projects</option>
+                    <option value="1">Downtown Office Complex</option>
+                    <option value="2">Residential Housing Development</option>
+                    <option value="3">Highway Infrastructure Upgrade</option>
+                    <option value="1755445560544">Building 5 livingston north</option>
+                    <option value="1755445578915">ertwert</option>
+                </select>
                 <select id="calendarViewFilter">
                     <option value="month">Month View</option>
                     <option value="week">Week View</option>
@@ -913,369 +1016,384 @@
             <!-- Calendar Container -->
             <div class="calendar-container">
                 <div class="calendar-view" id="calendarView" style="display: block;">
-        <table class="month-calendar">
-            <thead>
-                <tr>
-                    <th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th>
-                </tr>
-            </thead>
-            <tbody>
-    <tr>
-                <td>
-                    <div class="calendar-day other-month">27</div>
-                    <div class="calendar-tasks">
-                        
-                        
-                    </div>
-                </td>
-            
-                <td>
-                    <div class="calendar-day other-month">28</div>
-                    <div class="calendar-tasks">
-                        
-                        
-                    </div>
-                </td>
-            
-                <td>
-                    <div class="calendar-day other-month">29</div>
-                    <div class="calendar-tasks">
-                        
-                        
-                    </div>
-                </td>
-            
-                <td>
-                    <div class="calendar-day other-month">30</div>
-                    <div class="calendar-tasks">
-                        
-                        
-                    </div>
-                </td>
-            
-                <td>
-                    <div class="calendar-day other-month">31</div>
-                    <div class="calendar-tasks">
-                        
-                        
-                    </div>
-                </td>
-            
-                <td>
-                    <div class="calendar-day">1</div>
-                    <div class="calendar-tasks">
-                        
-                        
-                    </div>
-                </td>
-            
-                <td>
-                    <div class="calendar-day">2</div>
-                    <div class="calendar-tasks">
-                        
-                        
-                    </div>
-                </td>
-            </tr><tr>
-                <td>
-                    <div class="calendar-day">3</div>
-                    <div class="calendar-tasks">
-                        
-                        
-                    </div>
-                </td>
-            
-                <td>
-                    <div class="calendar-day">4</div>
-                    <div class="calendar-tasks">
-                        
-                        
-                    </div>
-                </td>
-            
-                <td>
-                    <div class="calendar-day">5</div>
-                    <div class="calendar-tasks">
-                        
-                        
-                    </div>
-                </td>
-            
-                <td>
-                    <div class="calendar-day">6</div>
-                    <div class="calendar-tasks">
-                        
-                        
-                    </div>
-                </td>
-            
-                <td>
-                    <div class="calendar-day">7</div>
-                    <div class="calendar-tasks">
-                        
-                        
-                    </div>
-                </td>
-            
-                <td>
-                    <div class="calendar-day">8</div>
-                    <div class="calendar-tasks">
-                        
-                        
-                    </div>
-                </td>
-            
-                <td>
-                    <div class="calendar-day">9</div>
-                    <div class="calendar-tasks">
-                        
-                        
-                    </div>
-                </td>
-            </tr><tr>
-                <td>
-                    <div class="calendar-day">10</div>
-                    <div class="calendar-tasks">
-                        
-                        
-                    </div>
-                </td>
-            
-                <td>
-                    <div class="calendar-day">11</div>
-                    <div class="calendar-tasks">
-                        
-                        
-                    </div>
-                </td>
-            
-                <td>
-                    <div class="calendar-day">12</div>
-                    <div class="calendar-tasks">
-                        
-                        
-                    </div>
-                </td>
-            
-                <td>
-                    <div class="calendar-day">13</div>
-                    <div class="calendar-tasks">
-                        
-                        
-                    </div>
-                </td>
-            
-                <td>
-                    <div class="calendar-day">14</div>
-                    <div class="calendar-tasks">
-                        
-                        
-                    </div>
-                </td>
-            
-                <td>
-                    <div class="calendar-day">15</div>
-                    <div class="calendar-tasks">
-                        
-                        
-                    </div>
-                </td>
-            
-                <td>
-                    <div class="calendar-day">16</div>
-                    <div class="calendar-tasks">
-                        
-                        
-                    </div>
-                </td>
-            </tr><tr>
-                <td>
-                    <div class="calendar-day">17</div>
-                    <div class="calendar-tasks">
-                        
-                            <div class="calendar-task low" onclick="viewTaskFromCalendar(1755469501000)" title="pump out the water from the heavy rain from the trenches">
-                                pump out the water from the heavy rain from the trenches
-                            </div>
-                        
-                        
-                    </div>
-                </td>
-            
-                <td>
-                    <div class="calendar-day today">18</div>
-                    <div class="calendar-tasks">
-                        
-                        
-                    </div>
-                </td>
-            
-                <td>
-                    <div class="calendar-day">19</div>
-                    <div class="calendar-tasks">
-                        
-                        
-                    </div>
-                </td>
-            
-                <td>
-                    <div class="calendar-day">20</div>
-                    <div class="calendar-tasks">
-                        
-                            <div class="calendar-task medium" onclick="viewTaskFromCalendar(1755444165861)" title="Foundation Excavation">
-                                Foundation Excavation
-                            </div>
-                        
-                        
-                    </div>
-                </td>
-            
-                <td>
-                    <div class="calendar-day">21</div>
-                    <div class="calendar-tasks">
-                        
-                        
-                    </div>
-                </td>
-            
-                <td>
-                    <div class="calendar-day">22</div>
-                    <div class="calendar-tasks">
-                        
-                        
-                    </div>
-                </td>
-            
-                <td>
-                    <div class="calendar-day">23</div>
-                    <div class="calendar-tasks">
-                        
-                        
-                    </div>
-                </td>
-            </tr><tr>
-                <td>
-                    <div class="calendar-day">24</div>
-                    <div class="calendar-tasks">
-                        
-                        
-                    </div>
-                </td>
-            
-                <td>
-                    <div class="calendar-day">25</div>
-                    <div class="calendar-tasks">
-                        
-                        
-                    </div>
-                </td>
-            
-                <td>
-                    <div class="calendar-day">26</div>
-                    <div class="calendar-tasks">
-                        
-                        
-                    </div>
-                </td>
-            
-                <td>
-                    <div class="calendar-day">27</div>
-                    <div class="calendar-tasks">
-                        
-                        
-                    </div>
-                </td>
-            
-                <td>
-                    <div class="calendar-day">28</div>
-                    <div class="calendar-tasks">
-                        
-                        
-                    </div>
-                </td>
-            
-                <td>
-                    <div class="calendar-day">29</div>
-                    <div class="calendar-tasks">
-                        
-                            <div class="calendar-task high" onclick="viewTaskFromCalendar(1755469400468)" title="broken glass on the windows">
-                                broken glass on the windows
-                            </div>
-                        
-                        
-                    </div>
-                </td>
-            
-                <td>
-                    <div class="calendar-day">30</div>
-                    <div class="calendar-tasks">
-                        
-                        
-                    </div>
-                </td>
-            </tr><tr>
-                <td>
-                    <div class="calendar-day">31</div>
-                    <div class="calendar-tasks">
-                        
-                        
-                    </div>
-                </td>
-            
-                <td>
-                    <div class="calendar-day other-month">1</div>
-                    <div class="calendar-tasks">
-                        
-                        
-                    </div>
-                </td>
-            
-                <td>
-                    <div class="calendar-day other-month">2</div>
-                    <div class="calendar-tasks">
-                        
-                        
-                    </div>
-                </td>
-            
-                <td>
-                    <div class="calendar-day other-month">3</div>
-                    <div class="calendar-tasks">
-                        
-                        
-                    </div>
-                </td>
-            
-                <td>
-                    <div class="calendar-day other-month">4</div>
-                    <div class="calendar-tasks">
-                        
-                        
-                    </div>
-                </td>
-            
-                <td>
-                    <div class="calendar-day other-month">5</div>
-                    <div class="calendar-tasks">
-                        
-                            <div class="calendar-task low" onclick="viewTaskFromCalendar(1755469447811)" title="install overhead garage doors">
-                                install overhead garage doors
-                            </div>
-                        
-                        
-                    </div>
-                </td>
-            
-                <td>
-                    <div class="calendar-day other-month">6</div>
-                    <div class="calendar-tasks">
-                        
-                        
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+                    <table class="month-calendar">
+                        <thead>
+                            <tr>
+                                <th>Sun</th>
+                                <th>Mon</th>
+                                <th>Tue</th>
+                                <th>Wed</th>
+                                <th>Thu</th>
+                                <th>Fri</th>
+                                <th>Sat</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="calendar-day other-month">27</div>
+                                    <div class="calendar-tasks">
+
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="calendar-day other-month">28</div>
+                                    <div class="calendar-tasks">
+
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="calendar-day other-month">29</div>
+                                    <div class="calendar-tasks">
+
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="calendar-day other-month">30</div>
+                                    <div class="calendar-tasks">
+
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="calendar-day other-month">31</div>
+                                    <div class="calendar-tasks">
+
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="calendar-day">1</div>
+                                    <div class="calendar-tasks">
+
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="calendar-day">2</div>
+                                    <div class="calendar-tasks">
+
+
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="calendar-day">3</div>
+                                    <div class="calendar-tasks">
+
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="calendar-day">4</div>
+                                    <div class="calendar-tasks">
+
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="calendar-day">5</div>
+                                    <div class="calendar-tasks">
+
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="calendar-day">6</div>
+                                    <div class="calendar-tasks">
+
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="calendar-day">7</div>
+                                    <div class="calendar-tasks">
+
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="calendar-day">8</div>
+                                    <div class="calendar-tasks">
+
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="calendar-day">9</div>
+                                    <div class="calendar-tasks">
+
+
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="calendar-day">10</div>
+                                    <div class="calendar-tasks">
+
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="calendar-day">11</div>
+                                    <div class="calendar-tasks">
+
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="calendar-day">12</div>
+                                    <div class="calendar-tasks">
+
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="calendar-day">13</div>
+                                    <div class="calendar-tasks">
+
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="calendar-day">14</div>
+                                    <div class="calendar-tasks">
+
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="calendar-day">15</div>
+                                    <div class="calendar-tasks">
+
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="calendar-day">16</div>
+                                    <div class="calendar-tasks">
+
+
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="calendar-day">17</div>
+                                    <div class="calendar-tasks">
+
+                                        <div class="calendar-task low" onclick="viewTaskFromCalendar(1755469501000)"
+                                            title="pump out the water from the heavy rain from the trenches">
+                                            pump out the water from the heavy rain from the trenches
+                                        </div>
+
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="calendar-day today">18</div>
+                                    <div class="calendar-tasks">
+
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="calendar-day">19</div>
+                                    <div class="calendar-tasks">
+
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="calendar-day">20</div>
+                                    <div class="calendar-tasks">
+
+                                        <div class="calendar-task medium" onclick="viewTaskFromCalendar(1755444165861)"
+                                            title="Foundation Excavation">
+                                            Foundation Excavation
+                                        </div>
+
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="calendar-day">21</div>
+                                    <div class="calendar-tasks">
+
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="calendar-day">22</div>
+                                    <div class="calendar-tasks">
+
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="calendar-day">23</div>
+                                    <div class="calendar-tasks">
+
+
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="calendar-day">24</div>
+                                    <div class="calendar-tasks">
+
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="calendar-day">25</div>
+                                    <div class="calendar-tasks">
+
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="calendar-day">26</div>
+                                    <div class="calendar-tasks">
+
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="calendar-day">27</div>
+                                    <div class="calendar-tasks">
+
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="calendar-day">28</div>
+                                    <div class="calendar-tasks">
+
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="calendar-day">29</div>
+                                    <div class="calendar-tasks">
+
+                                        <div class="calendar-task high" onclick="viewTaskFromCalendar(1755469400468)"
+                                            title="broken glass on the windows">
+                                            broken glass on the windows
+                                        </div>
+
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="calendar-day">30</div>
+                                    <div class="calendar-tasks">
+
+
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="calendar-day">31</div>
+                                    <div class="calendar-tasks">
+
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="calendar-day other-month">1</div>
+                                    <div class="calendar-tasks">
+
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="calendar-day other-month">2</div>
+                                    <div class="calendar-tasks">
+
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="calendar-day other-month">3</div>
+                                    <div class="calendar-tasks">
+
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="calendar-day other-month">4</div>
+                                    <div class="calendar-tasks">
+
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="calendar-day other-month">5</div>
+                                    <div class="calendar-tasks">
+
+                                        <div class="calendar-task low" onclick="viewTaskFromCalendar(1755469447811)"
+                                            title="install overhead garage doors">
+                                            install overhead garage doors
+                                        </div>
+
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="calendar-day other-month">6</div>
+                                    <div class="calendar-tasks">
+
+
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
                 <div class="timeline-view" id="timelineView" style="display: none;">
                     <!-- Timeline will be loaded here -->
                 </div>
@@ -1288,18 +1406,26 @@
                 <button class="btn btn-primary" id="addDailyReportBtn">
                     <i class="fas fa-plus"></i> New Report
                 </button>
-            <div class="report-actions">
-            <button class="btn btn-outline" onclick="exportReports('csv')" style="margin-left: 1rem;">
-                <i class="fas fa-file-csv"></i> Export CSV
-            </button>
-            <button class="btn btn-outline" onclick="exportReports('pdf')" style="margin-left: 0.5rem;">
-                <i class="fas fa-file-pdf"></i> Export PDF
-            </button>
-        </div></div>
+                <div class="report-actions">
+                    <button class="btn btn-outline" onclick="exportReports('csv')" style="margin-left: 1rem;">
+                        <i class="fas fa-file-csv"></i> Export CSV
+                    </button>
+                    <button class="btn btn-outline" onclick="exportReports('pdf')" style="margin-left: 0.5rem;">
+                        <i class="fas fa-file-pdf"></i> Export PDF
+                    </button>
+                </div>
+            </div>
 
             <!-- Report Filters -->
             <div class="report-filters">
-                <select id="reportProjectFilter"><option value="">All Projects</option><option value="1">Downtown Office Complex</option><option value="2">Residential Housing Development</option><option value="3">Highway Infrastructure Upgrade</option><option value="1755445560544">Building 5 livingston north</option><option value="1755445578915">ertwert</option></select>
+                <select id="reportProjectFilter">
+                    <option value="">All Projects</option>
+                    <option value="1">Downtown Office Complex</option>
+                    <option value="2">Residential Housing Development</option>
+                    <option value="3">Highway Infrastructure Upgrade</option>
+                    <option value="1755445560544">Building 5 livingston north</option>
+                    <option value="1755445578915">ertwert</option>
+                </select>
                 <input type="date" id="reportDateFilter" placeholder="Filter by date">
                 <select id="reportStatusFilter">
                     <option value="">All Statuses</option>
@@ -1314,226 +1440,236 @@
 
             <!-- Reports List -->
             <div id="reportsContainer">
-            <div class="report-card approved" id="report-1755460998708">
-                <div class="report-header">
-                    <div>
-                        <h3 class="report-title">Building 5 livingston north</h3>
-                        <p class="report-date">Aug 26, 2025</p>
+                <div class="report-card approved" id="report-1755460998708">
+                    <div class="report-header">
+                        <div>
+                            <h3 class="report-title">Building 5 livingston north</h3>
+                            <p class="report-date">Aug 26, 2025</p>
+                        </div>
+                        <span class="report-status status-approved">
+                            Approved
+                        </span>
                     </div>
-                    <span class="report-status status-approved">
-                        Approved
-                    </span>
+
+                    <div class="report-meta">
+                        <span><i class="fas fa-users"></i> 9 workers</span>
+                        <span><i class="fas fa-clock"></i> 3 hours</span>
+                    </div>
+
+                    <div class="report-section">
+                        <h4><i class="fas fa-tasks"></i> Tasks Completed</h4>
+                        <ul>
+                            <li>fhgjhgjfhgjfghjfhg</li>
+                        </ul>
+                    </div>
+
+                    <div class="report-section">
+                        <h4><i class="fas fa-cloud-sun"></i> Weather</h4>
+                        <p>sunny - fghjfghjfghjfghjfgh</p>
+                    </div>
+
+
+                    <div class="report-section">
+                        <h4><i class="fas fa-sticky-note"></i> Notes</h4>
+                        <p>fghjfghjfghjfghjfhg</p>
+                    </div>
+
+
+                    <div class="report-actions">
+                        <button class="btn btn-outline btn-sm" onclick="viewReportDetails(1755460998708)">
+                            <i class="fas fa-eye"></i> View
+                        </button>
+                        <button class="btn btn-outline btn-sm" onclick="editReport(1755460998708)">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+
+                    </div>
                 </div>
-                
-                <div class="report-meta">
-                    <span><i class="fas fa-users"></i> 9 workers</span>
-                    <span><i class="fas fa-clock"></i> 3 hours</span>
+
+                <div class="report-card approved" id="report-1755460962324">
+                    <div class="report-header">
+                        <div>
+                            <h3 class="report-title">Residential Housing Development</h3>
+                            <p class="report-date">Aug 17, 2025</p>
+                        </div>
+                        <span class="report-status status-approved">
+                            Approved
+                        </span>
+                    </div>
+
+                    <div class="report-meta">
+                        <span><i class="fas fa-users"></i> 8 workers</span>
+                        <span><i class="fas fa-clock"></i> 19 hours</span>
+                    </div>
+
+                    <div class="report-section">
+                        <h4><i class="fas fa-tasks"></i> Tasks Completed</h4>
+                        <ul>
+                            <li>asdfasdfasdfasdfasdwf</li>
+                        </ul>
+                    </div>
+
+                    <div class="report-section">
+                        <h4><i class="fas fa-cloud-sun"></i> Weather</h4>
+                        <p>cloudy - sadfasdfasdfasdfasdf</p>
+                    </div>
+
+
+                    <div class="report-section">
+                        <h4><i class="fas fa-sticky-note"></i> Notes</h4>
+                        <p>sdfaasdfasdfasdfsdaf</p>
+                    </div>
+
+
+                    <div class="report-actions">
+                        <button class="btn btn-outline btn-sm" onclick="viewReportDetails(1755460962324)">
+                            <i class="fas fa-eye"></i> View
+                        </button>
+                        <button class="btn btn-outline btn-sm" onclick="editReport(1755460962324)">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+
+                    </div>
                 </div>
-                
-                <div class="report-section">
-                    <h4><i class="fas fa-tasks"></i> Tasks Completed</h4>
-                    <ul><li>fhgjhgjfhgjfghjfhg</li></ul>
+
+                <div class="report-card approved" id="report-1755460911776">
+                    <div class="report-header">
+                        <div>
+                            <h3 class="report-title">Downtown Office Complex</h3>
+                            <p class="report-date">Aug 16, 2025</p>
+                        </div>
+                        <span class="report-status status-approved">
+                            Approved
+                        </span>
+                    </div>
+
+                    <div class="report-meta">
+                        <span><i class="fas fa-users"></i> 5 workers</span>
+                        <span><i class="fas fa-clock"></i> 8 hours</span>
+                    </div>
+
+                    <div class="report-section">
+                        <h4><i class="fas fa-tasks"></i> Tasks Completed</h4>
+                        <ul>
+                            <li>sfsdfsdfsdfsdfsdfsdfsd</li>
+                        </ul>
+                    </div>
+
+                    <div class="report-section">
+                        <h4><i class="fas fa-cloud-sun"></i> Weather</h4>
+                        <p>rainy - fdghfdghdfghfdghfdg</p>
+                    </div>
+
+
+                    <div class="report-section">
+                        <h4><i class="fas fa-sticky-note"></i> Notes</h4>
+                        <p>fdghdfghdfghdfghdfghdfghgf</p>
+                    </div>
+
+
+                    <div class="report-actions">
+                        <button class="btn btn-outline btn-sm" onclick="viewReportDetails(1755460911776)">
+                            <i class="fas fa-eye"></i> View
+                        </button>
+                        <button class="btn btn-outline btn-sm" onclick="editReport(1755460911776)">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+
+                    </div>
                 </div>
-                
-                <div class="report-section">
-                    <h4><i class="fas fa-cloud-sun"></i> Weather</h4>
-                    <p>sunny - fghjfghjfghjfghjfgh</p>
+
+                <div class="report-card approved" id="report-1755470612243">
+                    <div class="report-header">
+                        <div>
+                            <h3 class="report-title">ertwert</h3>
+                            <p class="report-date">Aug 16, 2025</p>
+                        </div>
+                        <span class="report-status status-approved">
+                            Approved
+                        </span>
+                    </div>
+
+                    <div class="report-meta">
+                        <span><i class="fas fa-users"></i> 7 workers</span>
+                        <span><i class="fas fa-clock"></i> 45 hours</span>
+                    </div>
+
+                    <div class="report-section">
+                        <h4><i class="fas fa-tasks"></i> Tasks Completed</h4>
+                        <ul>
+                            <li>sdfgfdsgfsdgsdfgdfsgf</li>
+                        </ul>
+                    </div>
+
+                    <div class="report-section">
+                        <h4><i class="fas fa-cloud-sun"></i> Weather</h4>
+                        <p>cloudy - sdfgfsdgsdfgfsd</p>
+                    </div>
+
+
+                    <div class="report-section">
+                        <h4><i class="fas fa-sticky-note"></i> Notes</h4>
+                        <p>sdfgsdfgsdfgsfdgsfd</p>
+                    </div>
+
+
+                    <div class="report-actions">
+                        <button class="btn btn-outline btn-sm" onclick="viewReportDetails(1755470612243)">
+                            <i class="fas fa-eye"></i> View
+                        </button>
+                        <button class="btn btn-outline btn-sm" onclick="editReport(1755470612243)">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+
+                    </div>
                 </div>
-                
-                
-                <div class="report-section">
-                    <h4><i class="fas fa-sticky-note"></i> Notes</h4>
-                    <p>fghjfghjfghjfghjfhg</p>
-                </div>
-                
-                
-                <div class="report-actions">
-                    <button class="btn btn-outline btn-sm" onclick="viewReportDetails(1755460998708)">
-                        <i class="fas fa-eye"></i> View
-                    </button>
-                    <button class="btn btn-outline btn-sm" onclick="editReport(1755460998708)">
-                        <i class="fas fa-edit"></i> Edit
-                    </button>
-                    
+
+                <div class="report-card approved" id="report-1755470642624">
+                    <div class="report-header">
+                        <div>
+                            <h3 class="report-title">ertwert</h3>
+                            <p class="report-date">Aug 16, 2025</p>
+                        </div>
+                        <span class="report-status status-approved">
+                            Approved
+                        </span>
+                    </div>
+
+                    <div class="report-meta">
+                        <span><i class="fas fa-users"></i> 5 workers</span>
+                        <span><i class="fas fa-clock"></i> 2 hours</span>
+                    </div>
+
+                    <div class="report-section">
+                        <h4><i class="fas fa-tasks"></i> Tasks Completed</h4>
+                        <ul>
+                            <li>3dfgsdfgsdfgsdf</li>
+                        </ul>
+                    </div>
+
+                    <div class="report-section">
+                        <h4><i class="fas fa-cloud-sun"></i> Weather</h4>
+                        <p>cloudy - sdfgsdfgsdfgsfdg</p>
+                    </div>
+
+
+                    <div class="report-section">
+                        <h4><i class="fas fa-sticky-note"></i> Notes</h4>
+                        <p>sdfgsdfgsdfgsdfgsdf</p>
+                    </div>
+
+
+                    <div class="report-actions">
+                        <button class="btn btn-outline btn-sm" onclick="viewReportDetails(1755470642624)">
+                            <i class="fas fa-eye"></i> View
+                        </button>
+                        <button class="btn btn-outline btn-sm" onclick="editReport(1755470642624)">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+
+                    </div>
                 </div>
             </div>
-        
-            <div class="report-card approved" id="report-1755460962324">
-                <div class="report-header">
-                    <div>
-                        <h3 class="report-title">Residential Housing Development</h3>
-                        <p class="report-date">Aug 17, 2025</p>
-                    </div>
-                    <span class="report-status status-approved">
-                        Approved
-                    </span>
-                </div>
-                
-                <div class="report-meta">
-                    <span><i class="fas fa-users"></i> 8 workers</span>
-                    <span><i class="fas fa-clock"></i> 19 hours</span>
-                </div>
-                
-                <div class="report-section">
-                    <h4><i class="fas fa-tasks"></i> Tasks Completed</h4>
-                    <ul><li>asdfasdfasdfasdfasdwf</li></ul>
-                </div>
-                
-                <div class="report-section">
-                    <h4><i class="fas fa-cloud-sun"></i> Weather</h4>
-                    <p>cloudy - sadfasdfasdfasdfasdf</p>
-                </div>
-                
-                
-                <div class="report-section">
-                    <h4><i class="fas fa-sticky-note"></i> Notes</h4>
-                    <p>sdfaasdfasdfasdfsdaf</p>
-                </div>
-                
-                
-                <div class="report-actions">
-                    <button class="btn btn-outline btn-sm" onclick="viewReportDetails(1755460962324)">
-                        <i class="fas fa-eye"></i> View
-                    </button>
-                    <button class="btn btn-outline btn-sm" onclick="editReport(1755460962324)">
-                        <i class="fas fa-edit"></i> Edit
-                    </button>
-                    
-                </div>
-            </div>
-        
-            <div class="report-card approved" id="report-1755460911776">
-                <div class="report-header">
-                    <div>
-                        <h3 class="report-title">Downtown Office Complex</h3>
-                        <p class="report-date">Aug 16, 2025</p>
-                    </div>
-                    <span class="report-status status-approved">
-                        Approved
-                    </span>
-                </div>
-                
-                <div class="report-meta">
-                    <span><i class="fas fa-users"></i> 5 workers</span>
-                    <span><i class="fas fa-clock"></i> 8 hours</span>
-                </div>
-                
-                <div class="report-section">
-                    <h4><i class="fas fa-tasks"></i> Tasks Completed</h4>
-                    <ul><li>sfsdfsdfsdfsdfsdfsdfsd</li></ul>
-                </div>
-                
-                <div class="report-section">
-                    <h4><i class="fas fa-cloud-sun"></i> Weather</h4>
-                    <p>rainy - fdghfdghdfghfdghfdg</p>
-                </div>
-                
-                
-                <div class="report-section">
-                    <h4><i class="fas fa-sticky-note"></i> Notes</h4>
-                    <p>fdghdfghdfghdfghdfghdfghgf</p>
-                </div>
-                
-                
-                <div class="report-actions">
-                    <button class="btn btn-outline btn-sm" onclick="viewReportDetails(1755460911776)">
-                        <i class="fas fa-eye"></i> View
-                    </button>
-                    <button class="btn btn-outline btn-sm" onclick="editReport(1755460911776)">
-                        <i class="fas fa-edit"></i> Edit
-                    </button>
-                    
-                </div>
-            </div>
-        
-            <div class="report-card approved" id="report-1755470612243">
-                <div class="report-header">
-                    <div>
-                        <h3 class="report-title">ertwert</h3>
-                        <p class="report-date">Aug 16, 2025</p>
-                    </div>
-                    <span class="report-status status-approved">
-                        Approved
-                    </span>
-                </div>
-                
-                <div class="report-meta">
-                    <span><i class="fas fa-users"></i> 7 workers</span>
-                    <span><i class="fas fa-clock"></i> 45 hours</span>
-                </div>
-                
-                <div class="report-section">
-                    <h4><i class="fas fa-tasks"></i> Tasks Completed</h4>
-                    <ul><li>sdfgfdsgfsdgsdfgdfsgf</li></ul>
-                </div>
-                
-                <div class="report-section">
-                    <h4><i class="fas fa-cloud-sun"></i> Weather</h4>
-                    <p>cloudy - sdfgfsdgsdfgfsd</p>
-                </div>
-                
-                
-                <div class="report-section">
-                    <h4><i class="fas fa-sticky-note"></i> Notes</h4>
-                    <p>sdfgsdfgsdfgsfdgsfd</p>
-                </div>
-                
-                
-                <div class="report-actions">
-                    <button class="btn btn-outline btn-sm" onclick="viewReportDetails(1755470612243)">
-                        <i class="fas fa-eye"></i> View
-                    </button>
-                    <button class="btn btn-outline btn-sm" onclick="editReport(1755470612243)">
-                        <i class="fas fa-edit"></i> Edit
-                    </button>
-                    
-                </div>
-            </div>
-        
-            <div class="report-card approved" id="report-1755470642624">
-                <div class="report-header">
-                    <div>
-                        <h3 class="report-title">ertwert</h3>
-                        <p class="report-date">Aug 16, 2025</p>
-                    </div>
-                    <span class="report-status status-approved">
-                        Approved
-                    </span>
-                </div>
-                
-                <div class="report-meta">
-                    <span><i class="fas fa-users"></i> 5 workers</span>
-                    <span><i class="fas fa-clock"></i> 2 hours</span>
-                </div>
-                
-                <div class="report-section">
-                    <h4><i class="fas fa-tasks"></i> Tasks Completed</h4>
-                    <ul><li>3dfgsdfgsdfgsdf</li></ul>
-                </div>
-                
-                <div class="report-section">
-                    <h4><i class="fas fa-cloud-sun"></i> Weather</h4>
-                    <p>cloudy - sdfgsdfgsdfgsfdg</p>
-                </div>
-                
-                
-                <div class="report-section">
-                    <h4><i class="fas fa-sticky-note"></i> Notes</h4>
-                    <p>sdfgsdfgsdfgsdfgsdf</p>
-                </div>
-                
-                
-                <div class="report-actions">
-                    <button class="btn btn-outline btn-sm" onclick="viewReportDetails(1755470642624)">
-                        <i class="fas fa-eye"></i> View
-                    </button>
-                    <button class="btn btn-outline btn-sm" onclick="editReport(1755470642624)">
-                        <i class="fas fa-edit"></i> Edit
-                    </button>
-                    
-                </div>
-            </div>
-        </div>
         </section>
         <!-- Add this new section for weekly reports -->
         <section id="weekly-reports" class="tab-content">
@@ -1543,386 +1679,394 @@
 
             <!-- Report Filters -->
             <div class="report-filters">
-                <select id="weeklyProjectFilter"><option value="">All Projects</option><option value="1">Downtown Office Complex</option><option value="2">Residential Housing Development</option><option value="3">Highway Infrastructure Upgrade</option><option value="1755445560544">Building 5 livingston north</option><option value="1755445578915">ertwert</option></select>
+                <select id="weeklyProjectFilter">
+                    <option value="">All Projects</option>
+                    <option value="1">Downtown Office Complex</option>
+                    <option value="2">Residential Housing Development</option>
+                    <option value="3">Highway Infrastructure Upgrade</option>
+                    <option value="1755445560544">Building 5 livingston north</option>
+                    <option value="1755445578915">ertwert</option>
+                </select>
             </div>
 
             <!-- Weekly Reports List -->
             <div class="weekly-reports-container" id="weeklyReportsContainer">
-        <div class="weekly-report-card" data-week="2025-08-18" data-reports="1">
-            <div class="weekly-report-header">
-                <h3>Week of Aug 17, 2025</h3>
-                <span class="week-range">Aug 17, 2025 - Aug 23, 2025</span>
-                <span class="report-count">1 daily reports</span>
-            </div>
-            
-            <div class="weekly-summary-stats">
-                <div class="stat-item">
-                    <span class="stat-label">Man-hours</span>
-                    <span class="stat-value">152</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-label">Tasks Completed</span>
-                    <span class="stat-value">1</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-label">Days Reported</span>
-                    <span class="stat-value">1/7</span>
-                </div>
-            </div>
-            
-            <div class="weekly-metrics-grid">
-                <div class="metric-card">
-                    <div class="metric-icon bg-blue">
-                        <i class="fas fa-chart-line"></i>
+                <div class="weekly-report-card" data-week="2025-08-18" data-reports="1">
+                    <div class="weekly-report-header">
+                        <h3>Week of Aug 17, 2025</h3>
+                        <span class="week-range">Aug 17, 2025 - Aug 23, 2025</span>
+                        <span class="report-count">1 daily reports</span>
                     </div>
-                    <div class="metric-content">
-                        <div class="metric-value">0.01</div>
-                        <div class="metric-label">Tasks/Man-hour</div>
-                        <div class="metric-trend neutral">
-                            <i class="fas fa-equals"></i>
-                            stable
+
+                    <div class="weekly-summary-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">Man-hours</span>
+                            <span class="stat-value">152</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Tasks Completed</span>
+                            <span class="stat-value">1</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Days Reported</span>
+                            <span class="stat-value">1/7</span>
                         </div>
                     </div>
-                </div>
-                
-                <div class="metric-card">
-                    <div class="metric-icon bg-green">
-                        <i class="fas fa-hard-hat"></i>
-                    </div>
-                    <div class="metric-content">
-                        <div class="metric-value">0</div>
-                        <div class="metric-label">Safety Incidents</div>
-                        <div class="metric-trend neutral">
-                            <i class="fas fa-equals"></i>
-                            stable
+
+                    <div class="weekly-metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-icon bg-blue">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="metric-content">
+                                <div class="metric-value">0.01</div>
+                                <div class="metric-label">Tasks/Man-hour</div>
+                                <div class="metric-trend neutral">
+                                    <i class="fas fa-equals"></i>
+                                    stable
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-icon bg-green">
+                                <i class="fas fa-hard-hat"></i>
+                            </div>
+                            <div class="metric-content">
+                                <div class="metric-value">0</div>
+                                <div class="metric-label">Safety Incidents</div>
+                                <div class="metric-trend neutral">
+                                    <i class="fas fa-equals"></i>
+                                    stable
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-icon bg-purple">
+                                <i class="fas fa-clipboard-check"></i>
+                            </div>
+                            <div class="metric-content">
+                                <div class="metric-value">100%</div>
+                                <div class="metric-label">Quality Score</div>
+                                <div class="metric-trend neutral">
+                                    <i class="fas fa-equals"></i>
+                                    stable
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                
-                <div class="metric-card">
-                    <div class="metric-icon bg-purple">
-                        <i class="fas fa-clipboard-check"></i>
-                    </div>
-                    <div class="metric-content">
-                        <div class="metric-value">100%</div>
-                        <div class="metric-label">Quality Score</div>
-                        <div class="metric-trend neutral">
-                            <i class="fas fa-equals"></i>
-                            stable
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="weekly-highlights">
-                <h4><i class="fas fa-star"></i> Highlights</h4>
-                
-                    <ul>
-                        
+
+                    <div class="weekly-highlights">
+                        <h4><i class="fas fa-star"></i> Highlights</h4>
+
+                        <ul>
+
                             <li class="positive">
                                 <i class="fas fa-check-circle"></i>
                                 Zero safety incidents this week
                             </li>
-                        
+
                             <li class="positive">
                                 <i class="fas fa-check-circle"></i>
                                 Excellent quality score: 100.0%
                             </li>
-                        
-                    </ul>
-                
-            </div>
-            
-            <div class="weekly-actions">
-                <button class="btn btn-outline" onclick="viewWeeklyReportDetails('2025-08-18', null)">
-                    <i class="fas fa-file-alt"></i> View Full Report
-                </button>
-                <button class="btn btn-outline" onclick="viewDailyReportsForWeek('2025-08-18', null)">
-                    <i class="fas fa-list"></i> Daily Reports (1)
-                </button>
-                <button class="btn btn-primary" onclick="exportWeeklyReport('2025-08-18', null)">
-                    <i class="fas fa-download"></i> Export
-                </button>
-            </div>
-        </div>
-    
-        <div class="weekly-report-card" data-week="2025-08-11" data-reports="3">
-            <div class="weekly-report-header">
-                <h3>Week of Aug 10, 2025</h3>
-                <span class="week-range">Aug 10, 2025 - Aug 16, 2025</span>
-                <span class="report-count">3 daily reports</span>
-            </div>
-            
-            <div class="weekly-summary-stats">
-                <div class="stat-item">
-                    <span class="stat-label">Man-hours</span>
-                    <span class="stat-value">365</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-label">Tasks Completed</span>
-                    <span class="stat-value">3</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-label">Days Reported</span>
-                    <span class="stat-value">1/7</span>
-                </div>
-            </div>
-            
-            <div class="weekly-metrics-grid">
-                <div class="metric-card">
-                    <div class="metric-icon bg-blue">
-                        <i class="fas fa-chart-line"></i>
+
+                        </ul>
+
                     </div>
-                    <div class="metric-content">
-                        <div class="metric-value">0.01</div>
-                        <div class="metric-label">Tasks/Man-hour</div>
-                        <div class="metric-trend positive">
-                            <i class="fas fa-arrow-up"></i>
-                            improving
+
+                    <div class="weekly-actions">
+                        <button class="btn btn-outline" onclick="viewWeeklyReportDetails('2025-08-18', null)">
+                            <i class="fas fa-file-alt"></i> View Full Report
+                        </button>
+                        <button class="btn btn-outline" onclick="viewDailyReportsForWeek('2025-08-18', null)">
+                            <i class="fas fa-list"></i> Daily Reports (1)
+                        </button>
+                        <button class="btn btn-primary" onclick="exportWeeklyReport('2025-08-18', null)">
+                            <i class="fas fa-download"></i> Export
+                        </button>
+                    </div>
+                </div>
+
+                <div class="weekly-report-card" data-week="2025-08-11" data-reports="3">
+                    <div class="weekly-report-header">
+                        <h3>Week of Aug 10, 2025</h3>
+                        <span class="week-range">Aug 10, 2025 - Aug 16, 2025</span>
+                        <span class="report-count">3 daily reports</span>
+                    </div>
+
+                    <div class="weekly-summary-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">Man-hours</span>
+                            <span class="stat-value">365</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Tasks Completed</span>
+                            <span class="stat-value">3</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Days Reported</span>
+                            <span class="stat-value">1/7</span>
                         </div>
                     </div>
-                </div>
-                
-                <div class="metric-card">
-                    <div class="metric-icon bg-green">
-                        <i class="fas fa-hard-hat"></i>
-                    </div>
-                    <div class="metric-content">
-                        <div class="metric-value">0</div>
-                        <div class="metric-label">Safety Incidents</div>
-                        <div class="metric-trend neutral">
-                            <i class="fas fa-equals"></i>
-                            stable
+
+                    <div class="weekly-metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-icon bg-blue">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="metric-content">
+                                <div class="metric-value">0.01</div>
+                                <div class="metric-label">Tasks/Man-hour</div>
+                                <div class="metric-trend positive">
+                                    <i class="fas fa-arrow-up"></i>
+                                    improving
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-icon bg-green">
+                                <i class="fas fa-hard-hat"></i>
+                            </div>
+                            <div class="metric-content">
+                                <div class="metric-value">0</div>
+                                <div class="metric-label">Safety Incidents</div>
+                                <div class="metric-trend neutral">
+                                    <i class="fas fa-equals"></i>
+                                    stable
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-icon bg-purple">
+                                <i class="fas fa-clipboard-check"></i>
+                            </div>
+                            <div class="metric-content">
+                                <div class="metric-value">100%</div>
+                                <div class="metric-label">Quality Score</div>
+                                <div class="metric-trend neutral">
+                                    <i class="fas fa-equals"></i>
+                                    stable
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                
-                <div class="metric-card">
-                    <div class="metric-icon bg-purple">
-                        <i class="fas fa-clipboard-check"></i>
-                    </div>
-                    <div class="metric-content">
-                        <div class="metric-value">100%</div>
-                        <div class="metric-label">Quality Score</div>
-                        <div class="metric-trend neutral">
-                            <i class="fas fa-equals"></i>
-                            stable
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="weekly-highlights">
-                <h4><i class="fas fa-star"></i> Highlights</h4>
-                
-                    <ul>
-                        
+
+                    <div class="weekly-highlights">
+                        <h4><i class="fas fa-star"></i> Highlights</h4>
+
+                        <ul>
+
                             <li class="positive">
                                 <i class="fas fa-check-circle"></i>
                                 Zero safety incidents this week
                             </li>
-                        
+
                             <li class="positive">
                                 <i class="fas fa-check-circle"></i>
                                 Excellent quality score: 100.0%
                             </li>
-                        
-                    </ul>
-                
-            </div>
-            
-            <div class="weekly-actions">
-                <button class="btn btn-outline" onclick="viewWeeklyReportDetails('2025-08-11', null)">
-                    <i class="fas fa-file-alt"></i> View Full Report
-                </button>
-                <button class="btn btn-outline" onclick="viewDailyReportsForWeek('2025-08-11', null)">
-                    <i class="fas fa-list"></i> Daily Reports (3)
-                </button>
-                <button class="btn btn-primary" onclick="exportWeeklyReport('2025-08-11', null)">
-                    <i class="fas fa-download"></i> Export
-                </button>
-            </div>
-        </div>
-    
-        <div class="weekly-report-card" data-week="2025-08-04" data-reports="0">
-            <div class="weekly-report-header">
-                <h3>Week of No date set</h3>
-                <span class="week-range">No date set - No date set</span>
-                <span class="report-count">0 daily reports</span>
-            </div>
-            
-            <div class="weekly-summary-stats">
-                <div class="stat-item">
-                    <span class="stat-label">Man-hours</span>
-                    <span class="stat-value">0</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-label">Tasks Completed</span>
-                    <span class="stat-value">0</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-label">Days Reported</span>
-                    <span class="stat-value">undefined/7</span>
-                </div>
-            </div>
-            
-            <div class="weekly-metrics-grid">
-                <div class="metric-card">
-                    <div class="metric-icon bg-blue">
-                        <i class="fas fa-chart-line"></i>
+
+                        </ul>
+
                     </div>
-                    <div class="metric-content">
-                        <div class="metric-value">0</div>
-                        <div class="metric-label">Tasks/Man-hour</div>
-                        <div class="metric-trend neutral">
-                            <i class="fas fa-equals"></i>
-                            stable
+
+                    <div class="weekly-actions">
+                        <button class="btn btn-outline" onclick="viewWeeklyReportDetails('2025-08-11', null)">
+                            <i class="fas fa-file-alt"></i> View Full Report
+                        </button>
+                        <button class="btn btn-outline" onclick="viewDailyReportsForWeek('2025-08-11', null)">
+                            <i class="fas fa-list"></i> Daily Reports (3)
+                        </button>
+                        <button class="btn btn-primary" onclick="exportWeeklyReport('2025-08-11', null)">
+                            <i class="fas fa-download"></i> Export
+                        </button>
+                    </div>
+                </div>
+
+                <div class="weekly-report-card" data-week="2025-08-04" data-reports="0">
+                    <div class="weekly-report-header">
+                        <h3>Week of No date set</h3>
+                        <span class="week-range">No date set - No date set</span>
+                        <span class="report-count">0 daily reports</span>
+                    </div>
+
+                    <div class="weekly-summary-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">Man-hours</span>
+                            <span class="stat-value">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Tasks Completed</span>
+                            <span class="stat-value">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Days Reported</span>
+                            <span class="stat-value">undefined/7</span>
                         </div>
                     </div>
-                </div>
-                
-                <div class="metric-card">
-                    <div class="metric-icon bg-green">
-                        <i class="fas fa-hard-hat"></i>
-                    </div>
-                    <div class="metric-content">
-                        <div class="metric-value">0</div>
-                        <div class="metric-label">Safety Incidents</div>
-                        <div class="metric-trend neutral">
-                            <i class="fas fa-equals"></i>
-                            stable
+
+                    <div class="weekly-metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-icon bg-blue">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="metric-content">
+                                <div class="metric-value">0</div>
+                                <div class="metric-label">Tasks/Man-hour</div>
+                                <div class="metric-trend neutral">
+                                    <i class="fas fa-equals"></i>
+                                    stable
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-icon bg-green">
+                                <i class="fas fa-hard-hat"></i>
+                            </div>
+                            <div class="metric-content">
+                                <div class="metric-value">0</div>
+                                <div class="metric-label">Safety Incidents</div>
+                                <div class="metric-trend neutral">
+                                    <i class="fas fa-equals"></i>
+                                    stable
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-icon bg-purple">
+                                <i class="fas fa-clipboard-check"></i>
+                            </div>
+                            <div class="metric-content">
+                                <div class="metric-value">100%</div>
+                                <div class="metric-label">Quality Score</div>
+                                <div class="metric-trend neutral">
+                                    <i class="fas fa-equals"></i>
+                                    stable
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                
-                <div class="metric-card">
-                    <div class="metric-icon bg-purple">
-                        <i class="fas fa-clipboard-check"></i>
+
+                    <div class="weekly-highlights">
+                        <h4><i class="fas fa-star"></i> Highlights</h4>
+
+                        <p class="no-highlights">No significant highlights this week</p>
+
                     </div>
-                    <div class="metric-content">
-                        <div class="metric-value">100%</div>
-                        <div class="metric-label">Quality Score</div>
-                        <div class="metric-trend neutral">
-                            <i class="fas fa-equals"></i>
-                            stable
+
+                    <div class="weekly-actions">
+                        <button class="btn btn-outline" onclick="viewWeeklyReportDetails('undefined', null)">
+                            <i class="fas fa-file-alt"></i> View Full Report
+                        </button>
+                        <button class="btn btn-outline" onclick="viewDailyReportsForWeek('undefined', null)">
+                            <i class="fas fa-list"></i> Daily Reports (0)
+                        </button>
+                        <button class="btn btn-primary" onclick="exportWeeklyReport('undefined', null)">
+                            <i class="fas fa-download"></i> Export
+                        </button>
+                    </div>
+                </div>
+
+                <div class="weekly-report-card" data-week="2025-07-28" data-reports="0">
+                    <div class="weekly-report-header">
+                        <h3>Week of No date set</h3>
+                        <span class="week-range">No date set - No date set</span>
+                        <span class="report-count">0 daily reports</span>
+                    </div>
+
+                    <div class="weekly-summary-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">Man-hours</span>
+                            <span class="stat-value">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Tasks Completed</span>
+                            <span class="stat-value">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Days Reported</span>
+                            <span class="stat-value">undefined/7</span>
                         </div>
                     </div>
-                </div>
-            </div>
-            
-            <div class="weekly-highlights">
-                <h4><i class="fas fa-star"></i> Highlights</h4>
-                
-                    <p class="no-highlights">No significant highlights this week</p>
-                
-            </div>
-            
-            <div class="weekly-actions">
-                <button class="btn btn-outline" onclick="viewWeeklyReportDetails('undefined', null)">
-                    <i class="fas fa-file-alt"></i> View Full Report
-                </button>
-                <button class="btn btn-outline" onclick="viewDailyReportsForWeek('undefined', null)">
-                    <i class="fas fa-list"></i> Daily Reports (0)
-                </button>
-                <button class="btn btn-primary" onclick="exportWeeklyReport('undefined', null)">
-                    <i class="fas fa-download"></i> Export
-                </button>
-            </div>
-        </div>
-    
-        <div class="weekly-report-card" data-week="2025-07-28" data-reports="0">
-            <div class="weekly-report-header">
-                <h3>Week of No date set</h3>
-                <span class="week-range">No date set - No date set</span>
-                <span class="report-count">0 daily reports</span>
-            </div>
-            
-            <div class="weekly-summary-stats">
-                <div class="stat-item">
-                    <span class="stat-label">Man-hours</span>
-                    <span class="stat-value">0</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-label">Tasks Completed</span>
-                    <span class="stat-value">0</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-label">Days Reported</span>
-                    <span class="stat-value">undefined/7</span>
-                </div>
-            </div>
-            
-            <div class="weekly-metrics-grid">
-                <div class="metric-card">
-                    <div class="metric-icon bg-blue">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <div class="metric-content">
-                        <div class="metric-value">0</div>
-                        <div class="metric-label">Tasks/Man-hour</div>
-                        <div class="metric-trend neutral">
-                            <i class="fas fa-equals"></i>
-                            stable
+
+                    <div class="weekly-metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-icon bg-blue">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="metric-content">
+                                <div class="metric-value">0</div>
+                                <div class="metric-label">Tasks/Man-hour</div>
+                                <div class="metric-trend neutral">
+                                    <i class="fas fa-equals"></i>
+                                    stable
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-icon bg-green">
+                                <i class="fas fa-hard-hat"></i>
+                            </div>
+                            <div class="metric-content">
+                                <div class="metric-value">0</div>
+                                <div class="metric-label">Safety Incidents</div>
+                                <div class="metric-trend neutral">
+                                    <i class="fas fa-equals"></i>
+                                    stable
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-icon bg-purple">
+                                <i class="fas fa-clipboard-check"></i>
+                            </div>
+                            <div class="metric-content">
+                                <div class="metric-value">100%</div>
+                                <div class="metric-label">Quality Score</div>
+                                <div class="metric-trend neutral">
+                                    <i class="fas fa-equals"></i>
+                                    stable
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                
-                <div class="metric-card">
-                    <div class="metric-icon bg-green">
-                        <i class="fas fa-hard-hat"></i>
+
+                    <div class="weekly-highlights">
+                        <h4><i class="fas fa-star"></i> Highlights</h4>
+
+                        <p class="no-highlights">No significant highlights this week</p>
+
                     </div>
-                    <div class="metric-content">
-                        <div class="metric-value">0</div>
-                        <div class="metric-label">Safety Incidents</div>
-                        <div class="metric-trend neutral">
-                            <i class="fas fa-equals"></i>
-                            stable
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="metric-card">
-                    <div class="metric-icon bg-purple">
-                        <i class="fas fa-clipboard-check"></i>
-                    </div>
-                    <div class="metric-content">
-                        <div class="metric-value">100%</div>
-                        <div class="metric-label">Quality Score</div>
-                        <div class="metric-trend neutral">
-                            <i class="fas fa-equals"></i>
-                            stable
-                        </div>
+
+                    <div class="weekly-actions">
+                        <button class="btn btn-outline" onclick="viewWeeklyReportDetails('undefined', null)">
+                            <i class="fas fa-file-alt"></i> View Full Report
+                        </button>
+                        <button class="btn btn-outline" onclick="viewDailyReportsForWeek('undefined', null)">
+                            <i class="fas fa-list"></i> Daily Reports (0)
+                        </button>
+                        <button class="btn btn-primary" onclick="exportWeeklyReport('undefined', null)">
+                            <i class="fas fa-download"></i> Export
+                        </button>
                     </div>
                 </div>
             </div>
-            
-            <div class="weekly-highlights">
-                <h4><i class="fas fa-star"></i> Highlights</h4>
-                
-                    <p class="no-highlights">No significant highlights this week</p>
-                
-            </div>
-            
-            <div class="weekly-actions">
-                <button class="btn btn-outline" onclick="viewWeeklyReportDetails('undefined', null)">
-                    <i class="fas fa-file-alt"></i> View Full Report
-                </button>
-                <button class="btn btn-outline" onclick="viewDailyReportsForWeek('undefined', null)">
-                    <i class="fas fa-list"></i> Daily Reports (0)
-                </button>
-                <button class="btn btn-primary" onclick="exportWeeklyReport('undefined', null)">
-                    <i class="fas fa-download"></i> Export
-                </button>
-            </div>
-        </div>
-    </div>
         </section>
         <!-- Daily Report Modal: Only show in Daily Reports tab -->
         <div id="dailyReportModal" class="modal" style="display:none;">
             <div class="modal-content">
                 <div class="modal-header">
                     <h2 id="reportModalTitle">Daily Progress Report</h2>
-                    <span class="close" onclick="window.app?.hideModal &amp;&amp; window.app.hideModal('dailyReportModal')">×</span>
+                    <span class="close"
+                        onclick="window.app?.hideModal &amp;&amp; window.app.hideModal('dailyReportModal')">×</span>
                 </div>
                 <div class="modal-body">
                     <form id="dailyReportForm">
@@ -1934,7 +2078,14 @@
                             </div>
                             <div class="form-group">
                                 <label for="reportProject">Project *</label>
-                                <select id="reportProject" required=""><option value="">Select Project</option><option value="1">Downtown Office Complex</option><option value="2">Residential Housing Development</option><option value="3">Highway Infrastructure Upgrade</option><option value="1755445560544">Building 5 livingston north</option><option value="1755445578915">ertwert</option></select>
+                                <select id="reportProject" required="">
+                                    <option value="">Select Project</option>
+                                    <option value="1">Downtown Office Complex</option>
+                                    <option value="2">Residential Housing Development</option>
+                                    <option value="3">Highway Infrastructure Upgrade</option>
+                                    <option value="1755445560544">Building 5 livingston north</option>
+                                    <option value="1755445578915">ertwert</option>
+                                </select>
                             </div>
                         </div>
 
@@ -1963,7 +2114,8 @@
 
                         <div class="form-group">
                             <label for="reportTasksCompleted">Tasks Completed</label>
-                            <textarea id="reportTasksCompleted" rows="4" placeholder="List tasks completed today, one per line"></textarea>
+                            <textarea id="reportTasksCompleted" rows="4"
+                                placeholder="List tasks completed today, one per line"></textarea>
                         </div>
 
                         <div class="form-group">
@@ -1981,12 +2133,14 @@
 
                         <div class="form-group">
                             <label for="reportWeatherNotes">Weather Notes</label>
-                            <textarea id="reportWeatherNotes" rows="2" placeholder="Any weather-related impacts on work"></textarea>
+                            <textarea id="reportWeatherNotes" rows="2"
+                                placeholder="Any weather-related impacts on work"></textarea>
                         </div>
 
                         <div class="form-group">
                             <label for="reportNotes">Additional Notes</label>
-                            <textarea id="reportNotes" rows="3" placeholder="Any other important information"></textarea>
+                            <textarea id="reportNotes" rows="3"
+                                placeholder="Any other important information"></textarea>
                         </div>
 
                         <div class="form-actions">
@@ -2006,7 +2160,14 @@
 
             <!-- Analytics Filters -->
             <div class="report-filters">
-                <select id="visualProjectFilter"><option value="">All Projects</option><option value="1">Downtown Office Complex</option><option value="2">Residential Housing Development</option><option value="3">Highway Infrastructure Upgrade</option><option value="1755445560544">Building 5 livingston north</option><option value="1755445578915">ertwert</option></select>
+                <select id="visualProjectFilter">
+                    <option value="">All Projects</option>
+                    <option value="1">Downtown Office Complex</option>
+                    <option value="2">Residential Housing Development</option>
+                    <option value="3">Highway Infrastructure Upgrade</option>
+                    <option value="1755445560544">Building 5 livingston north</option>
+                    <option value="1755445578915">ertwert</option>
+                </select>
             </div>
 
             <!-- Analytics Dashboard -->
@@ -2019,17 +2180,17 @@
                             <canvas id="progressChart" width="400" height="300"></canvas>
                         </div>
                         <div class="progress-details" id="progressText">
-            <h3>All Projects Progress</h3>
-            <p><strong>Total Tasks:</strong> 8</p>
-            <p><strong>Completed:</strong> 1</p>
-            <p><strong>Progress:</strong> 13%</p>
-            <div class="progress-bar-container">
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: 13%; background: #ef4444"></div>
-                </div>
-                <span>13%</span>
-            </div>
-        </div>
+                            <h3>All Projects Progress</h3>
+                            <p><strong>Total Tasks:</strong> 8</p>
+                            <p><strong>Completed:</strong> 1</p>
+                            <p><strong>Progress:</strong> 13%</p>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 13%; background: #ef4444"></div>
+                                </div>
+                                <span>13%</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -2093,7 +2254,14 @@
 
             <!-- Document Filters -->
             <div class="document-filters">
-                <select id="documentProjectFilter"><option value="">All Projects</option><option value="1">Downtown Office Complex</option><option value="2">Residential Housing Development</option><option value="3">Highway Infrastructure Upgrade</option><option value="1755445560544">Building 5 livingston north</option><option value="1755445578915">ertwert</option></select>
+                <select id="documentProjectFilter">
+                    <option value="">All Projects</option>
+                    <option value="1">Downtown Office Complex</option>
+                    <option value="2">Residential Housing Development</option>
+                    <option value="3">Highway Infrastructure Upgrade</option>
+                    <option value="1755445560544">Building 5 livingston north</option>
+                    <option value="1755445578915">ertwert</option>
+                </select>
                 <select id="documentCategoryFilter">
                     <option value="">All Categories</option>
                     <option value="drawings">Drawings</option>
@@ -2106,19 +2274,19 @@
                 </select>
                 <input type="text" id="searchDocuments" placeholder="Search documents...">
             </div>
-            
+
 
             <!-- Documents List -->
             <div class="documents-container" id="documentsContainer">
-            <div class="empty-state-documents">
-                <i class="fas fa-file-alt"></i>
-                <h3>No Documents Found</h3>
-                <p>Try adjusting your filters or upload a new document.</p>
-                <button class="btn btn-primary" onclick="showDocumentModal()">
-                    <i class="fas fa-upload"></i> Upload Document
-                </button>
+                <div class="empty-state-documents">
+                    <i class="fas fa-file-alt"></i>
+                    <h3>No Documents Found</h3>
+                    <p>Try adjusting your filters or upload a new document.</p>
+                    <button class="btn btn-primary" onclick="showDocumentModal()">
+                        <i class="fas fa-upload"></i> Upload Document
+                    </button>
+                </div>
             </div>
-        </div>
         </section>
 
         <!-- Team Tab -->
@@ -2132,60 +2300,63 @@
 
             <!-- Team Members Grid -->
             <div class="team-grid" id="teamContainer">
-            <div class="team-member">
-                <img src="https://ui-avatars.com/api/?name=John%20Smith&amp;background=random" alt="John Smith" class="member-avatar">
-                <h3 class="member-name">John Smith</h3>
-                <div class="member-role">Project Manager</div>
-                <div class="member-contact">
-                    <div><i class="fas fa-envelope"></i> john.smith@company.com</div>
-                    <div><i class="fas fa-phone"></i> +1 (555) 123-4567</div>
+                <div class="team-member">
+                    <img src="https://ui-avatars.com/api/?name=John%20Smith&amp;background=random" alt="John Smith"
+                        class="member-avatar">
+                    <h3 class="member-name">John Smith</h3>
+                    <div class="member-role">Project Manager</div>
+                    <div class="member-contact">
+                        <div><i class="fas fa-envelope"></i> john.smith@company.com</div>
+                        <div><i class="fas fa-phone"></i> +1 (555) 123-4567</div>
+                    </div>
+                    <div class="member-actions">
+                        <button class="btn btn-outline" onclick="editMember(1)">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-danger" onclick="deleteMember(1)">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
                 </div>
-                <div class="member-actions">
-                    <button class="btn btn-outline" onclick="editMember(1)">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="btn btn-danger" onclick="deleteMember(1)">
-                        <i class="fas fa-trash"></i>
-                    </button>
+
+                <div class="team-member">
+                    <img src="https://ui-avatars.com/api/?name=Maria%20Garcia&amp;background=random" alt="Maria Garcia"
+                        class="member-avatar">
+                    <h3 class="member-name">Maria Garcia</h3>
+                    <div class="member-role">Site Supervisor</div>
+                    <div class="member-contact">
+                        <div><i class="fas fa-envelope"></i> maria.garcia@company.com</div>
+                        <div><i class="fas fa-phone"></i> +1 (555) 234-5678</div>
+                    </div>
+                    <div class="member-actions">
+                        <button class="btn btn-outline" onclick="editMember(2)">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-danger" onclick="deleteMember(2)">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="team-member">
+                    <img src="https://ui-avatars.com/api/?name=David%20Johnson&amp;background=random"
+                        alt="David Johnson" class="member-avatar">
+                    <h3 class="member-name">David Johnson</h3>
+                    <div class="member-role">Engineer</div>
+                    <div class="member-contact">
+                        <div><i class="fas fa-envelope"></i> david.johnson@company.com</div>
+                        <div><i class="fas fa-phone"></i> +1 (555) 345-6789</div>
+                    </div>
+                    <div class="member-actions">
+                        <button class="btn btn-outline" onclick="editMember(3)">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-danger" onclick="deleteMember(3)">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
-        
-            <div class="team-member">
-                <img src="https://ui-avatars.com/api/?name=Maria%20Garcia&amp;background=random" alt="Maria Garcia" class="member-avatar">
-                <h3 class="member-name">Maria Garcia</h3>
-                <div class="member-role">Site Supervisor</div>
-                <div class="member-contact">
-                    <div><i class="fas fa-envelope"></i> maria.garcia@company.com</div>
-                    <div><i class="fas fa-phone"></i> +1 (555) 234-5678</div>
-                </div>
-                <div class="member-actions">
-                    <button class="btn btn-outline" onclick="editMember(2)">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="btn btn-danger" onclick="deleteMember(2)">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
-            </div>
-        
-            <div class="team-member">
-                <img src="https://ui-avatars.com/api/?name=David%20Johnson&amp;background=random" alt="David Johnson" class="member-avatar">
-                <h3 class="member-name">David Johnson</h3>
-                <div class="member-role">Engineer</div>
-                <div class="member-contact">
-                    <div><i class="fas fa-envelope"></i> david.johnson@company.com</div>
-                    <div><i class="fas fa-phone"></i> +1 (555) 345-6789</div>
-                </div>
-                <div class="member-actions">
-                    <button class="btn btn-outline" onclick="editMember(3)">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="btn btn-danger" onclick="deleteMember(3)">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
         </section>
     </main>
 
@@ -2404,7 +2575,8 @@
                     </div>
                     <div class="form-group">
                         <label for="documentFile">File Upload</label>
-                        <input type="file" id="documentFile" accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.dwg,.dxf" required="">
+                        <input type="file" id="documentFile"
+                            accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.dwg,.dxf" required="">
                         <small class="form-text">Supported formats: PDF, DOC, DOCX, XLS, XLSX, JPG, PNG, DWG,
                             DXF</small>
                     </div>
@@ -2421,7 +2593,7 @@
     <div class="notification" id="notification"></div>
 
     <!-- JavaScript Files -->
-     <script src="js/utils.js"></script>
+    <script src="js/utils.js"></script>
     <script src="js/main.js"></script>
     <script src="js/daily-reports.js"></script>
     <script src="js/weekly-analytics.js"></script>
@@ -2436,4 +2608,6 @@
 
 
 
-</body></html>
+</body>
+
+</html>
