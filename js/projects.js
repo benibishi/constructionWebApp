@@ -314,10 +314,10 @@ function loadProjectDetails(projectId) {
                                                     <i class="fas fa-edit"></i>
                                                 </button>
                                                 <div class="dropdown">
-                                                    <button class="btn btn-outline btn-sm dropdown-toggle" onclick="toggleTaskDropdown(${task.id})">
+                                                    <button class="btn btn-outline btn-sm dropdown-toggle" data-task-id="${task.id}">
                                                         <i class="fas fa-ellipsis-v"></i>
                                                     </button>
-                                                    <div class="dropdown-menu" id="task-dropdown-${task.id}">
+                                                    <div class="dropdown-menu" id="dropdown-${task.id}">
                                                         <a href="#" onclick="event.preventDefault(); viewTaskDetails(${task.id})"><i class="fas fa-eye"></i> View Details</a>
                                                         <a href="#" onclick="event.preventDefault(); editTask(${task.id})"><i class="fas fa-edit"></i> Edit Task</a>
                                                         <a href="#" onclick="event.preventDefault(); startTask(${task.id})"><i class="fas fa-play"></i> Start Task</a>
@@ -373,6 +373,32 @@ function loadProjectDetails(projectId) {
             `}
         </div>
     `;
+
+    // Add event listener for the new dropdowns in the project details view
+    content.addEventListener('click', function(event) {
+        const toggleButton = event.target.closest('.dropdown-toggle');
+
+        if (toggleButton && toggleButton.dataset.taskId) {
+            event.preventDefault();
+            const taskId = toggleButton.dataset.taskId;
+            const dropdownMenu = document.getElementById(`dropdown-${taskId}`);
+
+            if (dropdownMenu) {
+                const isCurrentlyOpen = dropdownMenu.classList.contains('show');
+
+                // Close all other open dropdowns first.
+                // This is important to ensure only one menu is open at a time.
+                document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
+                    if (menu.id !== `dropdown-${taskId}`) {
+                        menu.classList.remove('show');
+                    }
+                });
+
+                // Toggle the state of the clicked dropdown
+                dropdownMenu.classList.toggle('show');
+            }
+        }
+    });
 }
 /*
  * Navigates to the project details view for a given project ID.
