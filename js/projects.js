@@ -253,25 +253,24 @@ function loadProjectDetails(projectId) {
     const content = document.getElementById('projectDetailsContent');
     content.innerHTML = `
         <!-- Project Overview Section -->
-    <!-- Updated HTML -->
 <div class="project-overview">
     <div class="overview-card timeline">
         <h4><i class="fas fa-calendar"></i> Timeline</h4>
         <div class="timeline-item">
             <span class="label">Start:</span>
-            <span class="value">Jan 31, 2024</span>
+            <span class="value">${formatDate(project.startDate)}</span>
         </div>
         <div class="timeline-item">
             <span class="label">End:</span>
-            <span class="value">Nov 29, 2024</span>
+            <span class="value">${formatDate(project.endDate)}</span>
         </div>
         <div class="timeline-item">
             <span class="label">Dur:</span>
-            <span class="value">303 days</span>
+            <span class="value">${durationDays} days</span>
         </div>
         <div class="timeline-item">
             <span class="label">Stat:</span>
-            <span class="value"><span class="status-active">Active</span></span>
+            <span class="value"><span class="project-status status-${project.status}">${project.status.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}</span></span>
         </div>
     </div>
 
@@ -279,15 +278,15 @@ function loadProjectDetails(projectId) {
         <h4><i class="fas fa-chart-line"></i> Progress</h4>
         <div class="progress-bar-container">
             <div class="progress-bar">
-                <div class="progress-fill" style="width: 45%; background: #f59e0b;"></div>
+                <div class="progress-fill" style="width: ${project.progress}%; background: ${getProgressColor(project.progress)};"></div>
             </div>
             <div class="progress-info">
                 <span class="label">Overall:</span>
-                <span class="value">45%</span>
+                <span class="value">${project.progress}%</span>
             </div>
             <div class="progress-info">
                 <span class="label">Rate:</span>
-                <span class="value">50%</span>
+                <span class="value">${projectTasks.length > 0 ? Math.round((completedTasks / projectTasks.length) * 100) : 0}%</span>
             </div>
         </div>
     </div>
@@ -296,19 +295,19 @@ function loadProjectDetails(projectId) {
         <h4><i class="fas fa-tasks"></i> Tasks</h4>
         <div class="stats-item">
             <span class="label">Total:</span>
-            <span class="value">2</span>
+            <span class="value">${projectTasks.length}</span>
         </div>
         <div class="stats-item">
             <span class="label">Completed:</span>
-            <span class="value">1</span>
+            <span class="value">${completedTasks}</span>
         </div>
         <div class="stats-item">
             <span class="label">In Progress:</span>
-            <span class="value">0</span>
+            <span class="value">${inProgressTasks}</span>
         </div>
         <div class="stats-item">
             <span class="label">Pending:</span>
-            <span class="value">1</span>
+            <span class="value">${pendingTasks}</span>
         </div>
     </div>
 </div>
