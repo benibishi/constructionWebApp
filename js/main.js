@@ -1,4 +1,5 @@
 // Main Application Controller
+console.log("main.js file loaded and parsed.");
 class ConstructionManager {
     constructor() {
         this.currentTab = 'dashboard';
@@ -427,5 +428,6 @@ const sampleData = {
 
 // Initialize app when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
+    console.log("main.js: DOMContentLoaded fired.");
     window.app = new ConstructionManager();
 });
