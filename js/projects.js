@@ -72,7 +72,7 @@ function renderProjectList(containerId) {
         return `
             <div class="project-card" onclick="showProjectDetails(${project.id})" style="cursor: pointer; position: relative; padding-top: 2rem;">
                  <!-- Checkbox for selection -->
-                <div style="position: absolute; top: 0.5rem; left: 0.5rem;" onclick="event.stopPropagation();">
+                <div style="position: absolute; top: 0.5rem; left: 0.5rem;">
                     <input type="checkbox" class="project-checkbox" data-project-id="${project.id}" id="select-project-${project.id}" ${isSelected ? 'checked' : ''}>
                 </div>
                 <div class="project-header">
@@ -126,7 +126,20 @@ function renderProjectList(containerId) {
         // Remove old listener to prevent duplicates
         checkbox.removeEventListener('change', handleProjectCheckboxChange);
         checkbox.addEventListener('change', handleProjectCheckboxChange);
+
+        // --- NEW FIX: Stop click propagation on the checkbox wrapper ---
+        const checkboxWrapper = checkbox.parentElement;
+        if (checkboxWrapper) {
+            // Remove listener first to avoid duplicates if re-rendering
+            checkboxWrapper.removeEventListener('click', stopPropagationOnClick);
+            checkboxWrapper.addEventListener('click', stopPropagationOnClick);
+        }
     });
+
+    // Helper function to be used as the event listener
+    function stopPropagationOnClick(event) {
+        event.stopPropagation();
+    }
 
     const bulkDeleteProjectsBtn = document.getElementById('bulkDeleteProjectsBtn');
     if (bulkDeleteProjectsBtn) {
