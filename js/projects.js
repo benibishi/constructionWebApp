@@ -406,6 +406,7 @@ function loadProjectDetails(projectId) {
 
         if (toggleButton && toggleButton.dataset.taskId) {
             event.preventDefault();
+            event.stopPropagation(); // Stop the event from bubbling to document
             const taskId = toggleButton.dataset.taskId;
             const dropdownMenu = document.getElementById(`dropdown-${taskId}`);
 
