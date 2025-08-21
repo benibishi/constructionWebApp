@@ -13,48 +13,62 @@ class ConstructionManager {
     }
 
     setupEventListeners() {
-        // Main Tab Navigation
+        // Navigation tab switching (Main Tabs)
         document.querySelectorAll('.nav-link[data-tab]').forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
+                // Close any open dropdowns first
+                document.querySelectorAll('.nav-dropdown-menu.show').forEach(menu => menu.classList.remove('show'));
                 const tab = e.currentTarget.dataset.tab;
-                if (tab === 'reports') {
-                    const dropdownMenu = e.currentTarget.nextElementSibling;
-                    if (dropdownMenu) {
-                        dropdownMenu.classList.toggle('show');
-                    }
-                } else {
-                    this.switchTab(tab);
-                }
+                this.switchTab(tab);
             });
         });
-
-        // Sub-Tab Navigation
+        // --- NEW: Handle clicks on Report Sub-tabs ---
         document.querySelectorAll('.nav-dropdown-item[data-subtab]').forEach(item => {
             item.addEventListener('click', (e) => {
                 e.preventDefault();
-                e.stopPropagation();
+                e.stopPropagation(); // Prevent triggering parent link
                 const subTab = e.currentTarget.dataset.subtab;
                 this.switchSubTab(subTab);
-                const parentDropdown = e.currentTarget.closest('.nav-dropdown-menu');
-                if (parentDropdown) {
-                    parentDropdown.classList.remove('show');
-                }
+                // Close the dropdown menu after selection
+                document.querySelectorAll('.nav-dropdown-menu.show').forEach(menu => menu.classList.remove('show'));
             });
         });
 
-        // Global click listener to close dropdowns
+        // --- NEW: Toggle Report Dropdown ---
+        document.querySelectorAll('.nav-link[data-tab="reports"]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                // Toggle the dropdown menu visibility
+                const dropdownMenu = e.currentTarget.nextElementSibling; // Assumes menu is the next sibling
+                if (dropdownMenu && dropdownMenu.classList.contains('nav-dropdown-menu')) {
+                    dropdownMenu.classList.toggle('show');
+                    e.preventDefault(); // Prevent default link behavior only for toggle
+                }
+            });
+        });
+        // Modal close buttons (existing logic)
         document.addEventListener('click', (e) => {
-            if (!e.target.closest('.nav-dropdown')) {
-                document.querySelectorAll('.nav-dropdown-menu.show').forEach(menu => {
-                    menu.classList.remove('show');
-                });
-            }
-            if (e.target.classList.contains('close') || e.target.matches('.modal')) {
+            if (e.target.classList.contains('close') || e.target.classList.contains('btn-secondary')) {
                 this.closeAllModals();
             }
+            // --- NEW: Close dropdowns when clicking outside ---
+            if (!e.target.closest('.nav-dropdown')) {
+                document.querySelectorAll('.nav-dropdown-menu.show').forEach(menu => menu.classList.remove('show'));
+            }
+            // --- END NEW ---
+        });
+
+        // Click outside modal to close (existing logic)
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    this.closeAllModals();
+                }
+            });
         });
     }
+
+    // js/main.js (inside ConstructionManager class)
 
     switchTab(tabName) {
         // Deactivate all content
@@ -74,34 +88,6 @@ class ConstructionManager {
 
         this.currentTab = tabName;
         this.loadTab(tabName);
-    }
-
-    switchSubTab(subTabName) {
-        // Deactivate all content
-        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-        // Deactivate all main nav links and sub-tab links
-        document.querySelectorAll('.nav-link[data-tab]').forEach(link => link.classList.remove('active'));
-        document.querySelectorAll('.nav-dropdown-item').forEach(item => item.classList.remove('active'));
-
-        // Activate the selected sub-tab content
-        const subTabContent = document.getElementById(subTabName);
-        if (subTabContent) {
-            subTabContent.classList.add('active');
-        }
-
-        // Activate the main "Reports" tab and the specific sub-tab link
-        const reportsMainLink = document.querySelector('.nav-link[data-tab="reports"]');
-        if (reportsMainLink) {
-            reportsMainLink.classList.add('active');
-        }
-        const subTabLink = document.querySelector(`.nav-dropdown-item[data-subtab="${subTabName}"]`);
-        if (subTabLink) {
-            subTabLink.classList.add('active');
-        }
-
-        this.currentTab = 'reports';
-        this.currentSubTab = subTabName;
-        this.loadTab(subTabName);
     }
 
     loadTab(tabName) {
