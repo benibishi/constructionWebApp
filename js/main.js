@@ -261,6 +261,24 @@ const sampleData = {
             endDate: "2024-08-31",
             status: "on-hold",
             progress: 78
+        },
+        {
+            id: 1755445560544,
+            name: "Building 5 livingston north",
+            description: "kimi k2. the best building services and thebuilder in the whole world",
+            startDate: "2025-09-30",
+            endDate: "2025-12-30",
+            status: "active",
+            progress: 0
+        },
+        {
+            id: 1755445578915,
+            name: "ertwert",
+            description: "sadfgasdfasdfd",
+            startDate: "2025-09-14",
+            endDate: "2026-03-16",
+            status: "active",
+            progress: 0
         }
     ],
     tasks: [

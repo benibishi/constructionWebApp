@@ -1,7 +1,7 @@
 // Dashboard Module
 function loadDashboard() {
     updateStats();
-    loadProjects();
+    // loadProjects(); // This is handled by the projects tab
     loadActivityFeed();
 }
 
@@ -397,25 +397,3 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // The incorrect loadProjectsList function has been removed from this file.
 // The correct version is now in js/projects.js and will be used instead.
-
-// Add fallback notification function
-function showNotification(message, type = 'info') {
-    // Simple alert fallback
-    alert(`[${type.toUpperCase()}] ${message}`);
-}
-
-// Add fallback dropdown functions
-function populateProjectDropdown() {
-    // This function should be in tasks.js
-    console.log('populateProjectDropdown called - should be in tasks.js');
-}
-
-function populateAssigneeDropdown() {
-    // This function should be in tasks.js
-    console.log('populateAssigneeDropdown called - should be in tasks.js');
-}
-
-function populateDependenciesDropdown() {
-    // This function should be in tasks.js
-    console.log('populateDependenciesDropdown called - should be in tasks.js');
-}
