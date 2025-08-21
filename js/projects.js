@@ -157,6 +157,13 @@ function renderProjectList(containerId, includeCheckboxes = true) { // Add param
             // Also add click listener as a safeguard
             checkbox.removeEventListener('click', function (e) { e.stopPropagation(); });
             checkbox.addEventListener('click', function (e) { e.stopPropagation(); });
+
+            // NEW: Add stopPropagation to the label as well to prevent navigation
+            const label = checkbox.closest('.custom-checkbox-container');
+            if (label) {
+                label.removeEventListener('click', function(e) { e.stopPropagation(); }); // Prevent multiple listeners
+                label.addEventListener('click', function(e) { e.stopPropagation(); });
+            }
         });
 
         const bulkDeleteProjectsBtn = document.getElementById('bulkDeleteProjectsBtn');
