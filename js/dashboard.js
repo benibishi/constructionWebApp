@@ -33,7 +33,7 @@ function updateStats() {
 function loadProjects() {
     // Instead of having the logic here, delegate to the unified function
     // The dashboard projects container is 'projectsContainer' (from index.html and original dashboard.js)
-    renderProjectList('projectsContainer');
+    renderProjectList('projectsContainer', false);
 }
 
 // Project Details Navigation Functions

@@ -8,21 +8,27 @@ let selectedProjectIds = new Set();
 // --- Main Load Function for Projects List Page ---
 function loadProjectsList() {
     // Delegate to the unified renderer, specifying the container for the projects list page
-    renderProjectList('projectsListContainer');
+    renderProjectList('projectsListContainer', true);
 }
 
-// --- Unified Project List Renderer ---
-/**
- * Renders the list of projects into the specified container.
- * @param {string} containerId - The ID of the HTML element to render the projects into.
+/* Renders the list of projects into the specified container.
+ * @param { string } containerId - The ID of the HTML element to render the projects into.
+ * @param { boolean } [includeCheckboxes = true] - Whether to include selection checkboxes.
  */
-function renderProjectList(containerId) {
+function renderProjectList(containerId, includeCheckboxes = true) { // Add parameter with default
     const projects = JSON.parse(localStorage.getItem('projects') || '[]');
     const container = document.getElementById(containerId);
 
     // --- Get Search Term (if filter exists) ---
-    const searchFilter = document.getElementById('searchProjects')?.value.toLowerCase().trim() || '';
-    console.log(`Projects.js: Rendering list in #${containerId}, search term: '${searchFilter}'`);
+    // Use the correct search input ID based on the container
+    let searchFilter = '';
+    if (containerId === 'projectsListContainer') {
+        searchFilter = document.getElementById('searchProjects')?.value.toLowerCase().trim() || '';
+    } else if (containerId === 'projectsContainer') {
+        // If you add a search filter to the dashboard later, use its ID here
+        // searchFilter = document.getElementById('searchProjectsDashboard')?.value.toLowerCase().trim() || '';
+    }
+    console.log(`Projects.js: Rendering list in #${containerId}, search term: '${searchFilter}', checkboxes: ${includeCheckboxes}`);
 
     // --- Apply Search Filter ---
     let filteredProjects = projects;
@@ -40,22 +46,24 @@ function renderProjectList(containerId) {
     }
 
     if (filteredProjects.length === 0) {
-        // Use a generic empty state
+        // Generic empty state
         container.innerHTML = `
             <div class="empty-state-full">
                 <i class="fas fa-project-diagram"></i>
                 <h3>No Projects Found</h3>
-                <p>Try adjusting your search or get started by creating your first project.</p>
+                <p>${containerId === 'projectsListContainer' ? 'Try adjusting your search or get started by creating your first project.' : 'Get started by creating your first project.'}</p>
                 <button class="btn btn-primary" onclick="showProjectModal()">
                     <i class="fas fa-plus"></i> Create Project
                 </button>
             </div>
         `;
-        // Hide bulk actions bar if no projects
-        const bulkActionsBarProjects = document.getElementById('bulkActionsBarProjects');
-        if (bulkActionsBarProjects) {
-            bulkActionsBarProjects.style.display = 'none';
-            selectedProjectIds.clear();
+        // Hide bulk actions bar if no projects (only relevant for projects page)
+        if (containerId === 'projectsListContainer') {
+            const bulkActionsBarProjects = document.getElementById('bulkActionsBarProjects');
+            if (bulkActionsBarProjects) {
+                bulkActionsBarProjects.style.display = 'none';
+                selectedProjectIds.clear();
+            }
         }
         return;
     }
@@ -65,16 +73,24 @@ function renderProjectList(containerId) {
         const statusClass = `status-${project.status}`;
         const statusText = project.status.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
 
-        // Check if this project is selected
-        const isSelected = selectedProjectIds.has(project.id);
+        // Check if this project is selected (only relevant if checkboxes are shown)
+        const isSelected = includeCheckboxes ? selectedProjectIds.has(project.id) : false;
+
+        // Conditionally build the checkbox HTML
+        const checkboxHtml = includeCheckboxes ? `
+            <!-- Checkbox for selection -->
+            <div style="position: absolute; top: 0.5rem; left: 0.5rem;">
+                <input type="checkbox" class="project-checkbox" data-project-id="${project.id}" id="select-project-${project.id}" ${isSelected ? 'checked' : ''}>
+            </div>
+        ` : '';
 
         // Use consistent HTML structure for project cards
+        // Adjust padding-top based on whether checkbox is present
+        const cardStyle = includeCheckboxes ? 'cursor: pointer; position: relative; padding-top: 2rem;' : 'cursor: pointer; position: relative;';
+
         return `
-            <div class="project-card" onclick="showProjectDetails(${project.id})" style="cursor: pointer; position: relative; padding-top: 2rem;">
-                 <!-- Checkbox for selection -->
-                <div style="position: absolute; top: 0.5rem; left: 0.5rem;">
-                    <input type="checkbox" class="project-checkbox" data-project-id="${project.id}" id="select-project-${project.id}" ${isSelected ? 'checked' : ''}>
-                </div>
+            <div class="project-card" onclick="showProjectDetails(${project.id})" style="${cardStyle}">
+                ${checkboxHtml} <!-- Insert checkbox HTML conditionally -->
                 <div class="project-header">
                     <h3>${escapeHtml(project.name)}</h3>
                     <p>${escapeHtml(project.description || '')}</p>
@@ -106,37 +122,46 @@ function renderProjectList(containerId) {
 
     container.innerHTML = projectCardsHtml;
 
-    // --- Add Selection and Bulk Action Logic AFTER rendering ---
-    const bulkActionsBarProjects = document.getElementById('bulkActionsBarProjects');
-    const selectAllProjectsCheckbox = document.getElementById('selectAllProjectsCheckbox');
-    const selectedProjectsCount = document.getElementById('selectedProjectsCount');
+    // --- Add Selection and Bulk Action Logic AFTER rendering (ONLY for projects page) ---
+    if (includeCheckboxes && containerId === 'projectsListContainer') {
+        const bulkActionsBarProjects = document.getElementById('bulkActionsBarProjects');
+        const selectAllProjectsCheckbox = document.getElementById('selectAllProjectsCheckbox');
+        const selectedProjectsCount = document.getElementById('selectedProjectsCount');
 
-    if (selectAllProjectsCheckbox) {
-        updateSelectAllProjectsCheckboxState();
-        // Remove old listener to prevent duplicates
-        selectAllProjectsCheckbox.removeEventListener('change', handleSelectAllProjectsChange);
-        selectAllProjectsCheckbox.addEventListener('change', handleSelectAllProjectsChange);
+        if (selectAllProjectsCheckbox) {
+            updateSelectAllProjectsCheckboxState();
+            selectAllProjectsCheckbox.removeEventListener('change', handleSelectAllProjectsChange);
+            selectAllProjectsCheckbox.addEventListener('change', handleSelectAllProjectsChange);
+        }
+
+        const projectCheckboxes = container.querySelectorAll('.project-checkbox');
+        projectCheckboxes.forEach(checkbox => {
+            const projectId = parseInt(checkbox.dataset.projectId);
+            checkbox.checked = selectedProjectIds.has(projectId);
+            // Use a specific handler name to avoid conflicts or confusion
+            const specificHandler = function (event) {
+                // CRITICAL: Stop the click event from bubbling up to the card's onclick handler
+                event.stopPropagation();
+                // Call the main logic
+                handleProjectCheckboxChange(event);
+            };
+            checkbox.removeEventListener('change', specificHandler); // Remove potential old one
+            checkbox.addEventListener('change', specificHandler);
+
+            // Also add click listener as a safeguard
+            checkbox.removeEventListener('click', function (e) { e.stopPropagation(); });
+            checkbox.addEventListener('click', function (e) { e.stopPropagation(); });
+        });
+
+        const bulkDeleteProjectsBtn = document.getElementById('bulkDeleteProjectsBtn');
+        if (bulkDeleteProjectsBtn) {
+            bulkDeleteProjectsBtn.removeEventListener('click', handleBulkDeleteProjects);
+            bulkDeleteProjectsBtn.addEventListener('click', handleBulkDeleteProjects);
+        }
+
+        updateSelectedProjectsCountDisplay();
+        updateBulkProjectsActionBarVisibility();
     }
-
-    const projectCheckboxes = container.querySelectorAll('.project-checkbox');
-    projectCheckboxes.forEach(checkbox => {
-        const projectId = parseInt(checkbox.dataset.projectId);
-        // Ensure checkbox state matches selection state
-        checkbox.checked = selectedProjectIds.has(projectId);
-        // Remove old listener to prevent duplicates
-        checkbox.removeEventListener('change', handleProjectCheckboxChange);
-        checkbox.addEventListener('change', handleProjectCheckboxChange);
-    });
-
-    const bulkDeleteProjectsBtn = document.getElementById('bulkDeleteProjectsBtn');
-    if (bulkDeleteProjectsBtn) {
-        // Remove old listener to prevent duplicates
-        bulkDeleteProjectsBtn.removeEventListener('click', handleBulkDeleteProjects);
-        bulkDeleteProjectsBtn.addEventListener('click', handleBulkDeleteProjects);
-    }
-
-    updateSelectedProjectsCountDisplay();
-    updateBulkProjectsActionBarVisibility();
     // --- End of Selection and Bulk Action Logic ---
 }
 
@@ -375,7 +400,7 @@ function loadProjectDetails(projectId) {
     `;
 
     // Add event listener for the new dropdowns in the project details view
-    content.addEventListener('click', function(event) {
+    content.addEventListener('click', function (event) {
         const toggleButton = event.target.closest('.dropdown-toggle');
 
         if (toggleButton && toggleButton.dataset.taskId) {
