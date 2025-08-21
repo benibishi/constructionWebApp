@@ -852,6 +852,8 @@ document.addEventListener('DOMContentLoaded', function () {
         tasksContainer.addEventListener('click', function (e) {
             const toggleButton = e.target.closest('.dropdown-toggle');
             if (toggleButton && toggleButton.dataset.taskId) {
+                // Stop the event from bubbling up to the document's click listener
+                e.stopPropagation();
                 toggleTaskPageDropdown(parseInt(toggleButton.dataset.taskId, 10));
             }
         });
