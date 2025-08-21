@@ -1106,3 +1106,71 @@ th.sortable:hover .sort-indicator {
 .fade-in {
     animation: fadeIn 0.3s ease-out;
 }
+
+/* --- Custom Form Elements --- */
+/* Custom Checkbox Container */
+.custom-checkbox-container {
+    display: block;
+    position: relative;
+    padding-left: 35px; /* Make space for the checkmark */
+    min-height: 22px;   /* Ensure it has height for clicking */
+    cursor: pointer;
+    font-size: 1rem;
+    user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.custom-checkbox-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 22px; /* Larger size */
+    width: 22px;  /* Larger size */
+    background-color: var(--light);
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+/* On mouse-over, add a grey background color */
+.custom-checkbox-container:hover input ~ .checkmark {
+    background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a green background */
+.custom-checkbox-container input:checked ~ .checkmark {
+    background-color: var(--success);
+    border-color: var(--success);
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the checkmark when checked */
+.custom-checkbox-container input:checked ~ .checkmark:after {
+    display: block;
+}
+
+/* Style the checkmark/indicator */
+.custom-checkbox-container .checkmark:after {
+    left: 7px;
+    top: 3px;
+    width: 6px;
+    height: 12px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+}

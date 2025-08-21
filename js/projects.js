@@ -83,7 +83,10 @@ function renderProjectList(containerId, includeCheckboxes = true) { // Add param
         const checkboxHtml = includeCheckboxes ? `
             <!-- Checkbox for selection -->
             <div style="position: absolute; top: 0.5rem; left: 0.5rem;">
-                <input type="checkbox" class="project-checkbox" data-project-id="${project.id}" id="select-project-${project.id}" ${isSelected ? 'checked' : ''}>
+                <label class="custom-checkbox-container">
+                    <input type="checkbox" class="project-checkbox" data-project-id="${project.id}" id="select-project-${project.id}" ${isSelected ? 'checked' : ''}>
+                    <span class="checkmark"></span>
+                </label>
             </div>
         ` : '';
 

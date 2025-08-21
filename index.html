@@ -384,8 +384,11 @@
             <div id="bulkActionsBarProjects" class="bulk-actions-bar"
                 style="display: none; margin-bottom: 1rem; padding: 1rem; background-color: var(--light); border: 1px solid var(--border); border-radius: 0.5rem;">
                 <div style="display: flex; align-items: center; gap: 1rem;">
-                    <input type="checkbox" id="selectAllProjectsCheckbox">
-                    <label for="selectAllProjectsCheckbox" style="margin-right: 1rem;">Select All</label>
+                    <label class="custom-checkbox-container" style="padding-left: 30px; margin-right: 1rem;">
+                        Select All
+                        <input type="checkbox" id="selectAllProjectsCheckbox">
+                        <span class="checkmark"></span>
+                    </label>
                     <!-- Example bulk action: Change Status -->
                     <select id="bulkChangeStatusSelect">
                         <option value="">Change Status To...</option>
@@ -602,8 +605,11 @@
             <div id="bulkActionsBar" class="bulk-actions-bar"
                 style="display: none; margin-bottom: 1rem; padding: 1rem; background-color: var(--light); border: 1px solid var(--border); border-radius: 0.5rem;">
                 <div style="display: flex; align-items: center; gap: 1rem;">
-                    <input type="checkbox" id="selectAllCheckbox">
-                    <label for="selectAllCheckbox" style="margin-right: 1rem;">Select All</label>
+                    <label class="custom-checkbox-container" style="padding-left: 30px; margin-right: 1rem;">
+                        Select All
+                        <input type="checkbox" id="selectAllCheckbox">
+                        <span class="checkmark"></span>
+                    </label>
                     <button id="bulkMarkCompleteBtn" class="btn btn-success btn-sm">
                         <i class="fas fa-check"></i> Mark Complete
                     </button>

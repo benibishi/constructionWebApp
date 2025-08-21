@@ -254,7 +254,10 @@ function loadTaskList() {
         <div class="task-card ${task.priority}" id="task-${task.id}" style="position: relative; padding-top: 2rem;"> <!-- Add padding for checkbox -->
             <!-- Checkbox for selection -->
             <div style="position: absolute; top: 0.5rem; left: 0.5rem;">
-                <input type="checkbox" class="task-checkbox" data-task-id="${task.id}" id="select-task-${task.id}" ${isSelected ? 'checked' : ''}>
+                <label class="custom-checkbox-container">
+                    <input type="checkbox" class="task-checkbox" data-task-id="${task.id}" id="select-task-${task.id}" ${isSelected ? 'checked' : ''}>
+                    <span class="checkmark"></span>
+                </label>
             </div>
             <div class="task-header">
                 <h3 class="task-title">${escapeHtml(task.name)}</h3>
