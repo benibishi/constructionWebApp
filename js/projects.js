@@ -72,7 +72,7 @@ function renderProjectList(containerId) {
         return `
             <div class="project-card" onclick="showProjectDetails(${project.id})" style="cursor: pointer; position: relative; padding-top: 2rem;">
                  <!-- Checkbox for selection -->
-                <div style="position: absolute; top: 0.5rem; left: 0.5rem;">
+                <div style="position: absolute; top: 0.5rem; left: 0.5rem;" onclick="event.stopPropagation();">
                     <input type="checkbox" class="project-checkbox" data-project-id="${project.id}" id="select-project-${project.id}" ${isSelected ? 'checked' : ''}>
                 </div>
                 <div class="project-header">
