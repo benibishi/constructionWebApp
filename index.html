@@ -1402,16 +1402,18 @@
         <section id="daily-reports" class="tab-content">
             <div class="page-header">
                 <h1>Daily Progress Reports</h1>
-                <button class="btn btn-primary" id="addDailyReportBtn">
-                    <i class="fas fa-plus"></i> New Report
-                </button>
-                <div class="report-actions">
-                    <button class="btn btn-outline" onclick="exportReports('csv')" style="margin-left: 1rem;">
-                        <i class="fas fa-file-csv"></i> Export CSV
+                <div class="header-button-group">
+                    <button class="btn btn-primary" id="addDailyReportBtn">
+                        <i class="fas fa-plus"></i> New Report
                     </button>
-                    <button class="btn btn-outline" onclick="exportReports('pdf')" style="margin-left: 0.5rem;">
-                        <i class="fas fa-file-pdf"></i> Export PDF
-                    </button>
+                    <div class="report-actions">
+                        <button class="btn btn-outline" onclick="exportReports('csv')">
+                            <i class="fas fa-file-csv"></i> Export CSV
+                        </button>
+                        <button class="btn btn-outline" onclick="exportReports('pdf')">
+                            <i class="fas fa-file-pdf"></i> Export PDF
+                        </button>
+                    </div>
                 </div>
             </div>
 

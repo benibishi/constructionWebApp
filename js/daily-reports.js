@@ -503,25 +503,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Add export buttons after the page loads
-    setTimeout(() => {
-        const exportButtonsContainer = document.createElement('div');
-        exportButtonsContainer.className = 'report-actions';
-        exportButtonsContainer.innerHTML = `
-            <button class="btn btn-outline" onclick="exportReports('csv')" style="margin-left: 1rem;">
-                <i class="fas fa-file-csv"></i> Export CSV
-            </button>
-            <button class="btn btn-outline" onclick="exportReports('pdf')" style="margin-left: 0.5rem;">
-                <i class="fas fa-file-pdf"></i> Export PDF
-            </button>
-        `;
-
-        // Add export buttons to the page header
-        const pageHeader = document.querySelector('#daily-reports .page-header');
-        if (pageHeader) {
-            pageHeader.appendChild(exportButtonsContainer);
-        }
-    }, 1000);
 });
 
 // Make functions available globally
