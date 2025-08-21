@@ -239,8 +239,16 @@ function loadProjectDetails(projectId) {
     document.getElementById('projectDetailTitle').textContent = project.name;
 
     // Set up action buttons
-    document.getElementById('editProjectDetailBtn').onclick = () => editProject(projectId);
-    document.getElementById('addTaskToProjectBtn').onclick = () => {
+    const editBtn = document.getElementById('editProjectDetailBtn');
+    editBtn.replaceWith(editBtn.cloneNode(true)); // Remove any existing listeners
+    document.getElementById('editProjectDetailBtn').addEventListener('click', () => {
+        console.log(`DEBUG: Edit button clicked for project ID: ${projectId}`);
+        editProject(projectId);
+    });
+
+    const addTaskBtn = document.getElementById('addTaskToProjectBtn');
+    addTaskBtn.replaceWith(addTaskBtn.cloneNode(true)); // Remove any existing listeners
+    document.getElementById('addTaskToProjectBtn').addEventListener('click', () => {
         // Set the project in the task form and show task modal
         document.getElementById('taskProject').value = projectId;
         populateProjectDropdown();
@@ -492,6 +500,7 @@ function showProjectDetails(projectId) {
 }
 
 function editProject(projectId) {
+    console.log(`DEBUG: editProject called for projectId: ${projectId}`);
     const projects = JSON.parse(localStorage.getItem('projects') || '[]');
     const project = projects.find(p => p.id === projectId);
 
@@ -832,6 +841,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     // --- Refresh views (existing logic) ---
                     console.log("Projects.js: Refreshing views..."); // Debug log
+
+                    // 4. Refresh the current project details view if it's active
+                    const projectDetailsTab = document.getElementById('project-details');
+                    if (projectDetailsTab && projectDetailsTab.classList.contains('active')) {
+                        const currentProjectId = parseInt(projectId, 10);
+                        if (currentProjectId && typeof loadProjectDetails === 'function') {
+                            console.log(`Projects.js: Refreshing project details for project ID ${currentProjectId}.`);
+                            loadProjectDetails(currentProjectId);
+                        }
+                    }
 
                     // 1. Refresh dashboard stats (if function exists)
                     if (typeof updateStats === 'function') {

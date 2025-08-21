@@ -350,10 +350,8 @@ function populateProjectDropdown() {
 
     if (!select) return;
 
-    // Clear existing options except the first one
-    while (select.children.length > 1) {
-        select.removeChild(select.lastChild);
-    }
+    // Clear existing options
+    select.innerHTML = '<option value="">Select Project</option>';
 
     // Add project options
     projects.forEach(project => {
@@ -370,10 +368,8 @@ function populateAssigneeDropdown() {
 
     if (!select) return;
 
-    // Clear existing options except the first one
-    while (select.children.length > 1) {
-        select.removeChild(select.lastChild);
-    }
+    // Clear existing options
+    select.innerHTML = '<option value="">Unassigned</option>';
 
     // Add team member options
     team.forEach(member => {
