@@ -7,9 +7,9 @@ class ConstructionManager {
         this.init();
     }
     init() {
+        this.initializeData();
         this.setupEventListeners();
         this.loadTab(this.currentTab);
-        this.initializeData();
     }
 
     setupEventListeners() {
